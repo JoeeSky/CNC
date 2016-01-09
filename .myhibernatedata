@@ -1,0 +1,16 @@
+#MyEclipse Hibernate Properties
+#Fri Jan 30 20:01:03 CST 2015
+genVersionTag=false
+genAnnotations=false
+configFile=/CRMS/src/main/resources/applicationContext.xml
+reStrategyClass=
+sessionFactoryId=sessionFactory
+profile=
+detectM2M=false
+genBasicCompId=false
+keyGenerator=
+createConfigFile=true
+basePersistenceClass=org.nfmedia.crms.domain.BaseDomain
+detectO2O=false
+useJavaTypes=true
+reSettingsFile=

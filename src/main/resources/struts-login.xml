@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "struts-2.1.dtd" >
+<struts>
+	<package name="login" extends="default" namespace="/">
+		<!-- 登录 -->
+		<action name="login" class="org.nfmedia.crms.action.LoginAction" method="login">
+			<interceptor-ref name="defaultStack"/>
+			<result name="login">/WEB-INF/content/login.jsp</result>
+			<result name="success" type="redirectAction">${returnURL}</result>
+		</action>
+		<!-- 登录检查用户名密码是否匹配 -->
+		<action name="loginCheck" class="org.nfmedia.crms.action.LoginAction">
+			<interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="token"/>
+			<result name="invalid.token" type="redirectAction">login</result>
+			<result name="success" type="redirectAction">${returnURL}</result>
+			<result name="input">/WEB-INF/content/login.jsp</result>
+			<result name="error">/WEB-INF/content/login.jsp</result>
+		</action>
+		<!-- 退出登录 -->
+		<action name="logout" class="org.nfmedia.crms.action.LoginAction" method="logout">
+			<interceptor-ref name="defaultStack"/>
+			<result name="success" type="redirectAction">login</result>
+		</action>
+		<action name="updateInitPassword" class="org.nfmedia.crms.action.UserAction" method="updateInitPassword">
+		</action>
+		<action name="profileAction" class="org.nfmedia.crms.action.UserAction" method="viewProfile">
+			<result>/WEB-INF/content/profile.jsp</result>
+		</action>
+		<action name="updateMyInfo" class="org.nfmedia.crms.action.UserAction" method="updateMyInfo">
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		<action name="updateMyPassword" class="org.nfmedia.crms.action.UserAction" method="updateMyPassword">
+			<interceptor-ref name="defaultStack"/>
+		</action>
+	</package>
+</struts>

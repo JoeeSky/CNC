@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.nfmedia.crms.domain">
+ <class dynamic-insert="true" dynamic-update="true" name="Department">
+  <meta attribute="extends">BaseDomain</meta>
+  <id name="id" type="short">
+   <generator class="native"/>
+  </id>
+  <property generated="never" lazy="false" length="50" name="name"
+   not-null="true" type="string"/>
+  <many-to-one cascade="save-update" class="Department" column="upperID"
+   lazy="proxy" name="parentDepartment" not-null="false"/>
+  <set inverse="true" lazy="true" name="childDepartments" sort="unsorted">
+   <key column="upperID"/>
+   <one-to-many class="Department"/>
+  </set>
+ </class>
+</hibernate-mapping>

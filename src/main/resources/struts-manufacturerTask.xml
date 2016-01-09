@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="manufacturerTask" extends="default" namespace="/manufacturerTask">
+		<action name="uploadManufacturerTask" class="org.nfmedia.crms.action.ManufacturerTaskPageAction" method="viewUploadManufacturerTaskPage">
+			<result>/WEB-INF/content/manufacturerTask/uploadManufacturerTask.jsp</result>
+		</action>
+		<action name="manufacturerTaskList" class="org.nfmedia.crms.action.ManufacturerTaskPageAction" method="viewManufacturerTaskListPage">
+			<result>/WEB-INF/content/manufacturerTask/manufacturerTaskList.jsp</result>
+		</action>
+		<action name="acceptManufacturerTask" class="org.nfmedia.crms.action.ManufacturerTaskPageAction" method="viewAcceptManufacturerTaskPage">
+			<result>/WEB-INF/content/manufacturerTask/acceptManufacturerTask.jsp</result>
+		</action>
+		<action name="getManufacturerTaskList" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="getManufacturerTaskList">
+		</action>
+	</package>
+</struts> 

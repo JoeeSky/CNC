@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.nfmedia.crms.domain">
+ <class dynamic-insert="true" dynamic-update="true" name="SystemLog">
+  <meta attribute="extends">BaseDomain</meta>
+  <id name="id" type="integer">
+   <generator class="native"/>
+  </id>
+  <many-to-one cascade="save-update" class="User" column="user_id"
+   lazy="proxy" name="user" not-null="true"/>
+  <property generated="never" lazy="false" length="1000" name="log_desc"
+   not-null="true" type="string"/>
+   <property generated="never" lazy="false" length="1000" name="event_table"
+   not-null="true" type="string"/>
+   <property generated="never" lazy="false" name="log_time"
+   not-null="true" type="date"/>
+ </class>
+</hibernate-mapping>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="programTask" extends="default" namespace="/programTask">
+		<action name="uploadProgramTask" class="org.nfmedia.crms.action.ProgramTaskPageAction" method="viewUploadProgramTaskPage">
+			<result>/WEB-INF/content/programTask/uploadProgramTask.jsp</result>
+		</action>
+		<action name="programTaskList" class="org.nfmedia.crms.action.ProgramTaskPageAction" method="viewProgramTaskListPage">
+			<result>/WEB-INF/content/programTask/programTaskList.jsp</result>
+		</action>
+		<action name="acceptProgramTask" class="org.nfmedia.crms.action.ProgramTaskPageAction" method="viewAcceptProgramTaskPage">
+			<result>/WEB-INF/content/programTask/acceptProgramTask.jsp</result>
+		</action>
+	</package>
+</struts> 

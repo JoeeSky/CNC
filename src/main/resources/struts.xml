@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<constant name="struts.i18n.encoding" value="UTF-8"/>
+	<constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
+	<constant name="struts.ui.theme" value="simple"/>
+	<constant name="struts.custom.i18n.resources" value="contentMessage.globalMessage"/>
+	<constant name="struts.action.extension" value="action,ajax,,"/>
+	<constant name="struts.serve.static.browserCache" value="false"/>
+	<constant name="struts.devMode" value="true"/>
+	<include file="struts-fileDownload.xml"/>
+	<include file="struts-login.xml"/>
+	<include file="struts-userManage.xml"/>
+	<include file="struts-programTask.xml"/>
+	<include file="struts-manufacturerTask.xml"/>
+		<package name="default" extends="struts-default">
+		<interceptors>
+			<interceptor name="accessPrepossess" class="org.nfmedia.crms.interceptor.AccessPrepossessInterceptor"/>
+			<interceptor-stack name="myDefault">
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="accessPrepossess"/>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="myDefault" />
+		<default-action-ref name="404Action"></default-action-ref>
+		<global-results>
+			<result name="404" type="httpheader">
+				<param name="error">404</param>
+				<param name="errorMessage">Not Found</param>
+			</result>
+			<result name="500" type="httpheader">
+				<param name="error">500</param>
+				<param name="errorMessage">Internal server error</param>
+			</result>
+			<result name="redirectLogin">/WEB-INF/content/redirectLogin.jsp</result>
+			<result name="noAccess">/WEB-INF/content/noAccess.jsp</result>
+			<result name="auctionException">/WEB-INF/content/auctionException.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="auctionException" exception="org.nfmedia.crms.exception.AuctionException"/>
+<!-- 			<exception-mapping result="500" exception="java.lang.Exception"/> -->
+		</global-exception-mappings>
+		<action name="404Action" class="org.nfmedia.crms.action.PageNotFoundAction">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+		</action>
+	</package>
+</struts>    

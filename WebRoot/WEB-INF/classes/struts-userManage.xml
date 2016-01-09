@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="userManage" extends="default" namespace="/userManage">
+		<action name="listUser" class="org.nfmedia.crms.action.UserQueryAction">
+		</action>
+		<action name="addUser" class="org.nfmedia.crms.action.UserAction" method="add">
+		</action>
+		<action name="importUser" class="org.nfmedia.crms.action.UserAction" method="batchImportUser">
+		</action>
+		<action name="updateUser" class="org.nfmedia.crms.action.UserAction" method="update">
+		</action> 
+		<action name="editUser" class="org.nfmedia.crms.action.UserAction" method="edit">
+		</action>
+		<action name="checkAccount" class="org.nfmedia.crms.action.UserAction" method="checkAccount">
+		</action>
+		<action name="resetPassword" class="org.nfmedia.crms.action.UserAction" method="resetPassword">
+		</action>
+		<action name="userList" class="org.nfmedia.crms.action.UserAction" method="viewListPage">
+			<result>/WEB-INF/content/userManage/userList.jsp</result>
+		</action>
+		<action name="userAdd" class="org.nfmedia.crms.action.UserAction" method="viewAddPage">
+			<result>/WEB-INF/content/userManage/userAdd.jsp</result>
+		</action>
+		<action name="userUpdateDo" class="org.nfmedia.crms.action.UserAction" method="viewUpdatePage">
+			<result>/WEB-INF/content/userManage/userUpdate.jsp</result>
+		</action>
+		<action name="userInfoDo" class="org.nfmedia.crms.action.UserAction" method="viewInfoPage">
+			<result>/WEB-INF/content/userManage/userInfo.jsp</result>
+		</action>
+		<action name="queryRole" class="org.nfmedia.crms.action.UserAction" method="queryRole">
+		</action>
+	</package>
+</struts> 
