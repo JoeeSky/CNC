@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="register" extends="default" namespace="/register">
+		<action name="add" class="org.nfmedia.crms.action.CncAction" method="viewAddPage">
+			<result>/register20160114.jsp</result>
+		</action>
+		<action name="addCnc" class="org.nfmedia.crms.action.CncAction" method="add">
+		</action>
+		<action name="checkCncName" class="org.nfmedia.crms.action.CncAction" method="checkName">
+		</action>
+		<action name="addDemander" class="org.nfmedia.crms.action.DemanderAction" method="add">
+		</action>
+		<action name="checkDemanderName" class="org.nfmedia.crms.action.DemanderAction" method="checkName">
+		</action>
+		<action name="addManufacturer" class="org.nfmedia.crms.action.ManufacturerAction" method="add">
+		</action>
+		<action name="checkManufacturerName" class="org.nfmedia.crms.action.ManufacturerAction" method="checkName">
+		</action>
+	</package>
+</struts>

@@ -4,17 +4,27 @@
 <hibernate-mapping package="org.nfmedia.crms.domain">
  <class dynamic-insert="true" dynamic-update="true" name="Cnc">
   <meta attribute="extends">BaseDomain</meta>
-  <id name="id" type="short">
+  <id name="id" type="integer">
    <generator class="native"/>
   </id>
   <property generated="never" lazy="false" length="50" name="name"
    not-null="true" type="string"/>
   <property generated="never" lazy="false" length="500"
-   name="description" not-null="true" type="string"/>
-  <property lazy="false" length="100" name="pinyin" not-null="true" type="string"/>
-  <property lazy="false" length="200" name="address" not-null="true" type="string"/>
-  <property lazy="false" length="100" name="contact" not-null="true" type="string"/>
-  <property lazy="false" length="100" name="email" not-null="true" type="string"/>
-  <property length="100" name="mobile" type="string"/>
+   name="description" type="string"/>
+  <property generated="never" lazy="false" length="100" name="pinyin"
+   not-null="true" type="string"/>
+  <property generated="never" lazy="false" length="200" name="address"
+   not-null="true" type="string"/>
+  <property generated="never" lazy="false" length="100" name="contact"
+   not-null="true" type="string"/>
+  <property generated="never" lazy="false" length="100" name="email"
+   not-null="true" type="string"/>
+  <property generated="never" lazy="false" length="100" name="mobile"
+   not-null="true" type="string"/>
+  <property generated="never" lazy="false" length="100" name="tel" type="string"/>
+  <property generated="never" lazy="false" length="10"
+   name="verifystatus" not-null="true" type="integer"/>
+  <property generated="never" lazy="false" length="200" name="logo" type="string"/>
+  <property generated="never" lazy="false" length="200" name="url" type="string"/>
  </class>
 </hibernate-mapping>

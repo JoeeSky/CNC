@@ -11,8 +11,22 @@ public class Demander extends BaseDomain{
 	private String mobile;
 	private String tel;
 	private Integer verifystatus;
+	private String logo;
+	private String url;
 	
 	
+	public String getLogo() {
+		return logo;
+	}
+	public void setLogo(String logo) {
+		this.logo = logo;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public Integer getId() {
 		return id;
 	}
