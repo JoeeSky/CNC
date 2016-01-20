@@ -140,8 +140,7 @@
 					})
 				}
 			})
-			
-
+	
 
 			$("input[name='user.account']").maxlength({
 		    	maxCharacters:20,
