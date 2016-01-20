@@ -3,7 +3,7 @@
 <struts>
 	<package name="register" extends="default" namespace="/register">
 		<action name="add" class="org.nfmedia.crms.action.CncAction" method="viewAddPage">
-			<result>/register20160114.jsp</result>
+			<result>/register.jsp</result>
 		</action>
 		<action name="addCnc" class="org.nfmedia.crms.action.CncAction" method="add">
 		</action>
