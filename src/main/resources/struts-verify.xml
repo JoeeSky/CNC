@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="verify" extends="default" namespace="/verify">
+		<action name="list" class="org.nfmedia.crms.action.CncAction" method="viewAddPage">
+			<result>/WEB-INF/content/companyVerify/companyList.jsp</result>
+		</action>
+		<action name="getCncListSimple" class="org.nfmedia.crms.action.CncAction" method="getCncListSimple">
+		</action>
+		<action name="getCompanyListByCondition" class="org.nfmedia.crms.action.VerifyAction" method="getCompanyListByCondition">
+		</action>
+	</package>
+</struts>
