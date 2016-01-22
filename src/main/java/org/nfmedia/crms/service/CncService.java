@@ -1,5 +1,7 @@
 package org.nfmedia.crms.service;
 
+import java.util.List;
+
 import org.nfmedia.crms.dao.CncDao;
 import org.nfmedia.crms.domain.Cnc;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,8 @@ public class CncService {
 	
 	public void addCnc(Cnc cnc){
 		System.out.println(cnc.toString());
-//		if(cnc.getDescription().equals(""))
-			cnc.setDescription("");
-//		if(cnc.getVerifystatus().equals(""))
+			cnc.setDescription("数控工厂");
 			cnc.setVerifystatus(0);
-//		if(cnc.getLogo().equals(""))
 			cnc.setLogo("");
 		cncDao.save(cnc);
 	}
@@ -26,5 +25,13 @@ public class CncService {
 	public Cnc loadCncByName(String name){
 		Cnc cnc = cncDao.getCncByName(name);
 		return cnc;
+	}
+	
+	public List getCncList() {
+		return cncDao.getCncList();
+	}
+	
+	public List getCncListByCondition(String searchString) {
+		return cncDao.getCncListByCondition(searchString);
 	}
 }

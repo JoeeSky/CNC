@@ -12,6 +12,7 @@
 	<include file="struts-login.xml"/>
 	<include file="struts-userManage.xml"/>
 	<include file="struts-register.xml"/>
+	<include file="struts-verify.xml"/>
 	<include file="struts-programTask.xml"/>
 	<include file="struts-manufacturerTask.xml"/>
 		<package name="default" extends="struts-default">
