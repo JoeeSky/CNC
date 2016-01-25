@@ -41,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">公司类型</div>
 						<select id="companyType" name="companyType" class="form-control">
-							<option  value="demander">需求方</option>
+							<option  value="demander">需求商</option>
 							<option  value="cnc">数控工厂</option>
 							<option  value="manufacturer">制造商</option>					
 						</select>						
@@ -82,6 +82,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="js/jquery.jqGrid.fluid.js"></script>
 	<script src="js/king-common.js"></script>
 	<script>	
+		function verifyClick(id){
+		    var rowData = $("#jqgrid").jqGrid("getRowData",id);//根据上面的id获得本行的所有数据
+        	var description= rowData.description; //获得制定列的值 （auditStatus 为colModel的name）
+			if(description=="数控工厂"){
+				window.open('verify/cncInfo?id='+id);
+			}else if(description=="需求商"){
+				window.open('verify/demanderInfo?id='+id);
+			}else if(description=="制造商"){
+				window.open('verify/manufacturerInfo?id='+id);
+			}	
+			}
+		
 		$(document).ready(function() {
 		    function e() {
 		        $("#jqgrid").length > 0 && t.fluidGrid({
@@ -91,7 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    }
 		    var t = $("#jqgrid");
 		    var type = $.trim($("#companyType").val());
-		    if(type=="需求方")type=demander;
+		    if(type=="需求商")type=demander;
 		    $("#jqgrid").length > 0 && (t.jqGrid({
 		    	url:"verify/getCompanyListByCondition.ajax",
 		    	mtype:"GET",
@@ -152,7 +164,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		gridComplete: function(){
         			var ids = $("#jqgrid").jqGrid("getDataIDs");
         			for(var i=0;i < ids.length;i++){
-        				alter = '<button class="btn btn-info btn-xs" onclick="location.href=\'userManage/userUpdateDo?tid='+ids[i]+'\'">进行审核</button>';
+        				alter = '<button class="btn btn-info btn-xs" onclick="verifyClick('+ids[i]+')")>进行审核</button>';
+        				//alter = '<button class="btn btn-info btn-xs" onclick=window.open(\'userManage/userInfoDo?tid='+ids[i]+'\')>进行审核</button>';
+        				//alter = '<button class="btn btn-info btn-xs" onclick="location.href=\'userManage/userInfoDo?tid='+ids[i]+'\'">进行审核</button>';
                         //delet = '<button class="btn btn-danger btn-xs" onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';
                         //load = '<button class="btn btn-success btn-xs" onclick="resetPassword('+ids[i]+')">下载文件</button>';
                         t.jqGrid('setRowData',ids[i],{operation:alter});

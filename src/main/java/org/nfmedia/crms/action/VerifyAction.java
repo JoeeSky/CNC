@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.nfmedia.crms.cons.CommonConstant;
 import org.nfmedia.crms.domain.Cnc;
+import org.nfmedia.crms.domain.Demander;
+import org.nfmedia.crms.domain.Manufacturer;
 import org.nfmedia.crms.domain.Resource;
 import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.service.CncService;
@@ -24,6 +28,10 @@ import com.opensymphony.xwork2.ActionSupport;
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class VerifyAction extends ActionSupport{
 	
+	private Cnc cnc;
+	private Demander demander;
+	private Manufacturer manufacturer;
+	
 	private CncService cncService;
 	private DemanderService demanderService;
 	private ManufacturerService manufacturerService;
@@ -32,7 +40,11 @@ public class VerifyAction extends ActionSupport{
 	private String type;
 	private boolean _search;
 	private String searchString;
-	
+	private String companyType;
+	private Integer verifyStatus;
+	private Integer id;
+
+
 	
 	private void sentMsg(String content) throws IOException{
 		HttpServletResponse response=ServletActionContext.getResponse();
@@ -93,6 +105,47 @@ public class VerifyAction extends ActionSupport{
 		return null;
 	}
 	
+	public String updateCncVerifyStatus()throws Exception{
+		//Map session = ActionContext.getContext().getSession();
+		cncService.updateVerifyStatus(id, verifyStatus);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("info", true);
+		sentMsg(jsonObject.toString());
+		return null;
+	}
+	
+	public String updateDemanderVerifyStatus()throws Exception{
+		//Map session = ActionContext.getContext().getSession();
+		demanderService.updateVerifyStatus(id, verifyStatus);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("info", true);
+		sentMsg(jsonObject.toString());
+		return null;
+	}
+	
+	public String updateManufacturerVerifyStatus()throws Exception{
+		//Map session = ActionContext.getContext().getSession();
+		manufacturerService.updateVerifyStatus(id, verifyStatus);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("info", true);
+		sentMsg(jsonObject.toString());
+		return null;
+	}
+	
+	public String viewCncInfoPage() throws Exception{
+		cnc = cncService.loadCncByID(id);
+		return SUCCESS;
+	}
+	
+	public String viewDemanderInfoPage() throws Exception{
+		demander = demanderService.loadDemanderByID(id);
+		return SUCCESS;
+	}
+	
+	public String viewManufacturerInfoPage() throws Exception{
+		manufacturer = manufacturerService.loadManufacturerByID(id);
+		return SUCCESS;
+	}
 	
 	public CncService getCncService() {
 		return cncService;
@@ -151,7 +204,54 @@ public class VerifyAction extends ActionSupport{
 	public void setSearchString(String searchString) {
 		this.searchString = searchString;
 	}
-	
+
+	public String getCompanyType() {
+		return companyType;
+	}
+
+	public void setCompanyType(String companyType) {
+		this.companyType = companyType;
+	}
+
+	public Integer getVerifyStatus() {
+		return verifyStatus;
+	}
+
+	public void setVerifyStatus(Integer verifyStatus) {
+		this.verifyStatus = verifyStatus;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Cnc getCnc() {
+		return cnc;
+	}
+
+	public void setCnc(Cnc cnc) {
+		this.cnc = cnc;
+	}
+
+	public Demander getDemander() {
+		return demander;
+	}
+
+	public void setDemander(Demander demander) {
+		this.demander = demander;
+	}
+
+	public Manufacturer getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(Manufacturer manufacturer) {
+		this.manufacturer = manufacturer;
+	}
 	
 	
 }

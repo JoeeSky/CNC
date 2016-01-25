@@ -9,5 +9,20 @@
 		</action>
 		<action name="getCompanyListByCondition" class="org.nfmedia.crms.action.VerifyAction" method="getCompanyListByCondition">
 		</action>
+		<action name="updateCncVerifyStatus" class="org.nfmedia.crms.action.VerifyAction" method="updateCncVerifyStatus">
+		</action>	
+		<action name="updateDemanderVerifyStatus" class="org.nfmedia.crms.action.VerifyAction" method="updateDemanderVerifyStatus">
+		</action>	
+		<action name="updateManufacturerVerifyStatus" class="org.nfmedia.crms.action.VerifyAction" method="updateManufacturerVerifyStatus">
+		</action>	
+		<action name="cncInfo" class="org.nfmedia.crms.action.VerifyAction" method="viewCncInfoPage">
+		<result>/WEB-INF/content/companyVerify/cncInfo.jsp</result>
+		</action>
+		<action name="demanderInfo" class="org.nfmedia.crms.action.VerifyAction" method="viewDemanderInfoPage">
+		<result>/WEB-INF/content/companyVerify/demanderInfo.jsp</result>
+		</action>	
+		<action name="manufacturerInfo" class="org.nfmedia.crms.action.VerifyAction" method="viewManufacturerInfoPage">
+		<result>/WEB-INF/content/companyVerify/manufacturerInfo.jsp</result>
+		</action>
 	</package>
 </struts>
