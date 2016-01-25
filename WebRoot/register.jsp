@@ -34,7 +34,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</li>				
 					<li class="active">
 						<a href="#demander-tab" data-toggle="tab">
-							需求方
+							需求商
 						</a>
 					</li>
 					<li >
@@ -50,7 +50,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				</ul>
 			    <div class="tab-content">
 			   		<div class="tab-pane active" id="demander-tab">
-			   			<h2>需求方注册</h2>
+			   			<h2>需求商注册</h2>
 						<form id="form_demander" class="form-horizontal" role="form">
 					  	<div class="col-sm-7"style="float:left">
 							<div class="form-group" style="margin-bottom:0;">
@@ -123,7 +123,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<label for="tel" class="col-sm-4 control-label">固定电话 <span class="text-danger">*</span></label>
 								<div class="col-sm-8"><input type="text" class="form-control input-sm" name="demander.tel" maxlength="20" onpropertychange="dcheckTel(this.value)" oninput="dcheckTel(this.value)"></div>
 							</div>
-							<div class="form-group">
+							<div class="form-group" style="display:none;">
 								<label for="uploadFile" class="col-sm-4 control-label">公司Logo</label>
 								<div class="col-sm-8"><input type="file"  name="uploadFile" ></div>
 							</div>
@@ -215,7 +215,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<label for="tel" class="col-sm-4 control-label">固定电话 <span class="text-danger">*</span></label>
 								<div class="col-sm-8"><input type="text" class="form-control input-sm" name="cnc.tel" maxlength="20" onpropertychange="ccheckTel(this.value)" oninput="ccheckTel(this.value)"></div>
 							</div>
-							<div class="form-group">
+							<div class="form-group" style="display:none;">
 								<label for="uploadFile" class="col-sm-4 control-label">公司Logo</label>
 								<div class="col-sm-8"><input type="file"  name="uploadFile" ></div>
 							</div>
@@ -306,7 +306,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<label for="tel" class="col-sm-4 control-label">固定电话 <span class="text-danger">*</span></label>
 								<div class="col-sm-8"><input type="text" class="form-control input-sm" name="manufacturer.tel" maxlength="20" onpropertychange="mcheckTel(this.value)" oninput="mcheckTel(this.value)"></div>
 							</div>
-							<div class="form-group">
+							<div class="form-group" style="display:none;">
 								<label for="uploadFile" class="col-sm-4 control-label">公司Logo</label>
 								<div class="col-sm-8"><input type="file"  name="uploadFile" ></div>
 							</div>
@@ -315,7 +315,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<div class="col-sm-8"><input type="text" class="form-control input-sm" name="manufacturer.url" maxlength="20" onpropertychange="mcheckUrl(this.value)" oninput="mcheckUrl(this.value)"></div>
 							</div>		
 						</div>
-					
 						</form>
 						<p class="text-center" style="margin-top:50px">
 							<button type="button" class="btn btn-custom-primary btn-large" id="back" onclick="goBack()" style="margin-top:10%;float:left;background:#AAAAAB;border:2px solid #e5e5e5;margin-left:40%;width:85px">取消</button>

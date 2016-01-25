@@ -2,8 +2,10 @@ package org.nfmedia.crms.service;
 
 import java.util.List;
 
+import org.nfmedia.crms.cons.UserState;
 import org.nfmedia.crms.dao.CncDao;
 import org.nfmedia.crms.domain.Cnc;
+import org.nfmedia.crms.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +35,15 @@ public class CncService {
 	
 	public List getCncListByCondition(String searchString) {
 		return cncDao.getCncListByCondition(searchString);
+	}
+	
+	public void updateVerifyStatus(Integer id,Integer verifyStatus){
+		Cnc cnc = cncDao.load(id);
+		cnc.setVerifystatus(verifyStatus);
+		cncDao.update(cnc);
+	}
+	
+	public Cnc loadCncByID(Integer id){
+		return cncDao.load(id);
 	}
 }
