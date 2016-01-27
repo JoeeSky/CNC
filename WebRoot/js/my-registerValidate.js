@@ -22,17 +22,42 @@ function ccheckName(value){
 	}
 }
 
-
 function ccheckPinyin(value){
-	if(value!=""){
-		$("#cpinyinCheck").addClass("hidden");
-		nameValid = true;
+	if(value){
+		$.ajax({
+			url:"register/checkCncPinyin.ajax?pinyin="+value,
+			type:"get",
+			dataType:"json",
+			success:function(data){
+				if(!data.info){
+					$("#cpinyinCheck span").text('抱歉，此拼音账号已存在，请在拼音之后添加3位的数字。');
+					$("#cpinyinCheck").removeClass("hidden");
+					nameValid = false;
+				}else{
+					$("#cpinyinCheck").addClass("hidden");
+					nameValid = true;
+				}
+			}
+		})
 	}else{
-		$("#cpinyinCheck span").text('公司拼音不能为空');
-		$("#cpinyinCheck").removeClass("hidden");
-		nameValid = false;
+		$("#cnameCheck").addClass("hidden");
 	}
 }
+
+
+
+
+
+//function ccheckPinyin(value){
+//	if(value!=""){
+//		$("#cpinyinCheck").addClass("hidden");
+//		nameValid = true;
+//	}else{
+//		$("#cpinyinCheck span").text('公司拼音不能为空');
+//		$("#cpinyinCheck").removeClass("hidden");
+//		nameValid = false;
+//	}
+//}
 
 function ccheckAddress(value){
 	if(value!=""){
@@ -176,17 +201,38 @@ function dcheckName(value){
 	}
 }
 
-
 function dcheckPinyin(value){
-	if(value!=""){
-		$("#pinyinCheck").addClass("hidden");
-		nameValid = true;
+	if(value){
+		$.ajax({
+			url:"register/checkDemanderPinyin.ajax?pinyin="+value,
+			type:"get",
+			dataType:"json",
+			success:function(data){
+				if(!data.info){
+					$("#pinyinCheck span").text('抱歉，此拼音账号已存在，请在拼音之后添加3位的数字。');
+					$("#pinyinCheck").removeClass("hidden");
+					nameValid = false;
+				}else{
+					$("#pinyinCheck").addClass("hidden");
+					nameValid = true;
+				}
+			}
+		})
 	}else{
-		$("#pinyinCheck span").text('公司拼音不能为空');
-		$("#pinyinCheck").removeClass("hidden");
-		nameValid = false;
+		$("#nameCheck").addClass("hidden");
 	}
 }
+
+//function dcheckPinyin(value){
+//	if(value!=""){
+//		$("#pinyinCheck").addClass("hidden");
+//		nameValid = true;
+//	}else{
+//		$("#pinyinCheck span").text('公司拼音不能为空');
+//		$("#pinyinCheck").removeClass("hidden");
+//		nameValid = false;
+//	}
+//}
 
 function dcheckAddress(value){
 	if(value!=""){
@@ -329,17 +375,38 @@ function mcheckName(value){
 	}
 }
 
-
 function mcheckPinyin(value){
-	if(value!=""){
-		$("#mpinyinCheck").addClass("hidden");
-		nameValid = true;
+	if(value){
+		$.ajax({
+			url:"register/checkManufacturerPinyin.ajax?pinyin="+value,
+			type:"get",
+			dataType:"json",
+			success:function(data){
+				if(!data.info){
+					$("#mpinyinCheck span").text('抱歉，此拼音账号已存在，请在拼音之后添加3位的数字。');
+					$("#mpinyinCheck").removeClass("hidden");
+					nameValid = false;
+				}else{
+					$("#mpinyinCheck").addClass("hidden");
+					nameValid = true;
+				}
+			}
+		})
 	}else{
-		$("#mpinyinCheck span").text('公司拼音不能为空');
-		$("#mpinyinCheck").removeClass("hidden");
-		nameValid = false;
+		$("#mnameCheck").addClass("hidden");
 	}
 }
+//function mcheckPinyin(value){
+//	if(value!=""){
+//		$("#mpinyinCheck").addClass("hidden");
+//		nameValid = true;
+//	}else{
+//		$("#mpinyinCheck span").text('公司拼音不能为空');
+//		$("#mpinyinCheck").removeClass("hidden");
+//		nameValid = false;
+//	}
+//}
+
 
 function mcheckAddress(value){
 	if(value!=""){

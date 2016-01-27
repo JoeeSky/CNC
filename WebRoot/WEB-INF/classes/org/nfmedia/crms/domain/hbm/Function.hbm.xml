@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.nfmedia.crms.domain">
+ <class name="Function">
+  <meta attribute="extends">BaseDomain</meta>
+  <id name="id" type="integer">
+   <generator class="native"/>
+  </id>
+  <property length="11" name="parentId" type="integer"/>
+  <property length="20" name="name" type="string"/> 
+  <property length="200" name="description" type="string"/>
+  <property length="1" name="status" type="string"/>
+  <property length="6" name="sortOrder" type="integer"/>
+</class>
+</hibernate-mapping>

@@ -28,6 +28,11 @@ public class DemanderService {
 		return demander;
 	}
 	
+	public Demander loadDemanderByPinyin(String pinyin){
+		Demander demander = demanderDao.getDemanderByPinyin(pinyin);
+		return demander;
+	}
+	
 	public List getDemanderList() {
 		return demanderDao.getDemanderList();
 	}
@@ -44,5 +49,16 @@ public class DemanderService {
 		Demander demander = demanderDao.load(id);
 		demander.setVerifystatus(verifyStatus);
 		demanderDao.update(demander);
+	}
+	
+	public void editDemanderInfo(Demander demander){
+		Demander ori =demanderDao.load(demander.getId());
+		if(demander.getAddress()!=null) ori.setAddress(demander.getAddress());
+		if(demander.getContact()!=null) ori.setContact(demander.getContact());
+		if(demander.getEmail()!=null) ori.setEmail(demander.getEmail());
+		if(demander.getTel()!=null) ori.setTel(demander.getTel());
+		if(demander.getMobile()!=null) ori.setMobile(demander.getMobile());
+		if(demander.getUrl()!=null) ori.setUrl(demander.getUrl());
+		demanderDao.update(ori);
 	}
 }

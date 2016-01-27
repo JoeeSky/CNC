@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CncDao extends BaseDao<Cnc>{
 	private static final String GET_CNC_BY_NAME = "from Cnc c where c.name = :name";
+	private static final String GET_CNC_BY_PINYIN = "from Cnc c where c.pinyin = :pinyin";
 	public static final String GET_CNC_LIST="select c.id, c.name,c.description,c.pinyin, c.address, c.contact, c.email, c.mobile, c.tel, c.verifystatus, c.url from Cnc c ";
 	
 	public Cnc getCncByName(final String name){
@@ -20,6 +21,16 @@ public class CncDao extends BaseDao<Cnc>{
 			public Cnc doInHibernate(Session session)
 					throws HibernateException, SQLException {
 				return (Cnc) session.createQuery(GET_CNC_BY_NAME).setString("name", name).setReadOnly(true).uniqueResult();
+			}
+		});
+	}
+	
+	public Cnc getCncByPinyin(final String pinyin){
+		return getHibernateTemplate().execute(new HibernateCallback<Cnc>() {
+			@Override
+			public Cnc doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				return (Cnc) session.createQuery(GET_CNC_BY_PINYIN).setString("pinyin", pinyin).setReadOnly(true).uniqueResult();
 			}
 		});
 	}

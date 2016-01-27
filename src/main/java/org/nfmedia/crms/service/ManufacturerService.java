@@ -28,6 +28,11 @@ public class ManufacturerService {
 		return manufacturer;
 	}
 	
+	public Manufacturer loadManufacturerByPinyin(String pinyin){
+		Manufacturer manufacturer = manufacturerDao.getManufacturerByPinyin(pinyin);
+		return manufacturer;
+	}
+	
 	public List getManufacturerList() {
 		return manufacturerDao.getManufacturerList();
 	}
@@ -44,5 +49,16 @@ public class ManufacturerService {
 		Manufacturer manufacturer = manufacturerDao.load(id);
 		manufacturer.setVerifystatus(verifyStatus);
 		manufacturerDao.update(manufacturer);
+	}
+	
+	public void editManufacturerInfo(Manufacturer manufacturer){
+		Manufacturer ori =manufacturerDao.load(manufacturer.getId());
+		if(manufacturer.getAddress()!=null) ori.setAddress(manufacturer.getAddress());
+		if(manufacturer.getContact()!=null) ori.setContact(manufacturer.getContact());
+		if(manufacturer.getEmail()!=null) ori.setEmail(manufacturer.getEmail());
+		if(manufacturer.getTel()!=null) ori.setTel(manufacturer.getTel());
+		if(manufacturer.getMobile()!=null) ori.setMobile(manufacturer.getMobile());
+		if(manufacturer.getUrl()!=null) ori.setUrl(manufacturer.getUrl());
+		manufacturerDao.update(ori);
 	}
 }

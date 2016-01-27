@@ -16,8 +16,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONObject;
+import org.nfmedia.crms.cons.CommonConstant;
 import org.nfmedia.crms.cons.UserState;
-import org.nfmedia.crms.domain.Resource;
+import org.nfmedia.crms.domain.Page;
 import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.service.UserService;
 import org.nfmedia.crms.util.CompetenceUtil;
@@ -64,7 +65,7 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 		logger.info("进入AccessPrepossessInterceptor："+returnURL);
 		
 		ActionContext ctx = ActionContext.getContext();
-		Integer userID = (Integer) ctx.getSession().get("id");
+		Integer userID = (Integer) ctx.getSession().get(CommonConstant.SESSION_ID);
 		//首先检查是否登录
 		if(userID == null){ //未登录的情况a
 			ctx.put("messageCode", "notLogin");
@@ -74,13 +75,13 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 			User user = userService.loadUserByID(userID);
 			Assert.notNull(user);
 			
-			UserState state = user.getState();
+			/*UserState state = user.getState();
 			if(state == UserState.DELETE){ //账户已删除
 				ctx.put("messageCode", "deleted");
 				ctx.put("returnURL", returnURL);
 				ctx.getSession().clear(); //清除session
 				return "redirectLogin";
-			}
+			}*/
 			
 			//权限控制，获取用户名，资源列表。根据uri类型来分别处理
 			String suffix = null;
@@ -93,15 +94,15 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 				prefix = uri;
 			}
 			if(suffix == null || suffix.equals("action")){
-				List<Resource> resourcesList = user.getRole().getResources();
+				List<Page> resourcesList = userService.getUserPages(user.getId());
 				if(prefix.endsWith("Action")){ //不需要验证权限，通过
 					addResourcesMapToActionContext(resourcesList, ctx);
 				}else if(prefix.endsWith("Do")){ //需要competence权限，同时获取ResourcesMap
-					boolean flag = validCompetence(user.getRole().getCompetence(), prefix);
+					/*boolean flag = validCompetence(user.getRole().getCompetence(), prefix);
 					if(flag == false){ //无访问权限
 						ctx.put("messageCode", "noAccess");
 						return "noAccess";
-					}
+					}*/
 					addResourcesMapToActionContext(resourcesList, ctx);
 				}else{
 					//resourcesList权限验证，获取resourcesMap和激活信息
@@ -111,30 +112,30 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 						return "noAccess";
 					}
 				}
-				ctx.put("name", user.getName());
-				ctx.put("roleName", user.getRole().getName());
-				ctx.put("roleCompetence", user.getRole().getCompetence());
-				if(state == UserState.FIRST_LOGIN){ //首次登陆
-					ctx.put("firstLogin", true);
-				}
+					ctx.put("name", user.getName());
+					//ctx.put("roleName", user.getRole().getName());
+					//ctx.put("roleCompetence", user.getRole().getCompetence());
+					/*if(state == UserState.FIRST_LOGIN){ //首次登陆
+						ctx.put("firstLogin", true);
+					}*/
 			}else if( suffix.equals("ajax")){
-				boolean flag = validCompetence(user.getRole().getCompetence(), prefix);
-				if(flag == false){ //无访问权限
+				/*boolean flag = validCompetence(user.getRole().getCompetence(), prefix);
+				if(flag == false){ *///无访问权限
 					//ctx.put("messageCode", "noAccess");
 					//return "noAccess";
-					JSONObject jsonObject = new JSONObject();
+					/*JSONObject jsonObject = new JSONObject();
 					jsonObject.put("state", -1);
 					jsonObject.put("info", "无访问权限");
 					sentMsg(jsonObject.toString());
-					return null;
-				}
+					return null;*/
+				//}
 			}
 			return arg0.invoke();
 		}
 	}
 	
-	private void addResourcesMapToActionContext(final List<Resource> resourcesList, ActionContext ctx){
-		TreeMap<String, List<Resource>> resourcesMap = new TreeMap<String, List<Resource>>(new Comparator<String>() {
+	private void addResourcesMapToActionContext(final List<Page> resourcesList, ActionContext ctx){
+		TreeMap<String, List<Page>> resourcesMap = new TreeMap<String, List<Page>>(new Comparator<String>() {
 
 			@Override
 			public int compare(String o1, String o2) {
@@ -148,11 +149,11 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 			
 		});
 		for(int i=0, size=resourcesList.size(); i<size; i++){
-			Resource resource = resourcesList.get(i);
+			Page resource = resourcesList.get(i);
 			String parentName = resource.getParentName();
-			List<Resource> resources = resourcesMap.get(parentName);
+			List<Page> resources = resourcesMap.get(parentName);
 			if(resources == null){
-				resources = new ArrayList<Resource>(10);
+				resources = new ArrayList<Page>(10);
 				resources.add(resource);
 				resourcesMap.put(parentName, resources);
 			}else{
@@ -163,8 +164,8 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 	}
 	
 	//resourcesList权限验证，获取resourcesMap和激活信息(curParentName和curIndex)
-	private boolean getResourcesMapAndActiveMessage(final List<Resource> resourcesList, String uri, ActionContext ctx){
-		TreeMap<String, List<Resource>> resourcesMap = new TreeMap<String, List<Resource>>(new Comparator<String>() {
+	private boolean getResourcesMapAndActiveMessage(final List<Page> resourcesList, String uri, ActionContext ctx){
+		TreeMap<String, List<Page>> resourcesMap = new TreeMap<String, List<Page>>(new Comparator<String>() {
 
 			@Override
 			public int compare(String o1, String o2) {
@@ -181,7 +182,7 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 		boolean curUrl;
 		for(int i=0, size=resourcesList.size(); i<size; i++){
 			curUrl = false;
-			Resource resource = resourcesList.get(i);
+			Page resource = resourcesList.get(i);
 			if(canAccess == false){
 				if(resource.getUrl().equals(uri)){
 					canAccess = true;
@@ -189,12 +190,12 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 				}
 			}
 			String parentName = resource.getParentName();
-			List<Resource> resources = resourcesMap.get(parentName);
+			List<Page> resources = resourcesMap.get(parentName);
 			if(curUrl == true){
 				ctx.put("curParentName", parentName);
 			}
 			if(resources == null){
-				resources = new ArrayList<Resource>(10);
+				resources = new ArrayList<Page>(10);
 				resources.add(resource);
 				resourcesMap.put(parentName, resources);
 				if(curUrl == true)

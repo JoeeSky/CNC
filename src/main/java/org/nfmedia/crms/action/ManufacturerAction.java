@@ -64,6 +64,14 @@ public class ManufacturerAction extends ActionSupport{
 		sentMsg(jsonObject.toString());
 		return null;
 	}
+	
+	public String checkPinyin() throws Exception{
+		Manufacturer mm = manufacturerService.loadManufacturerByPinyin(pinyin);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("info", mm == null);
+		sentMsg(jsonObject.toString());
+		return null;
+	}
 
 	public Integer getId() {
 		return id;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.nfmedia.crms.domain">
+ <class name="RoleFunction">
+  <meta attribute="extends">BaseDomain</meta>
+  <id name="id" type="integer">
+   <generator class="native"/>
+  </id>
+  <many-to-one name="role" class="Role" not-null="true" column="roleId" lazy="proxy"/>
+  <many-to-one name="function" class="Function" not-null="true" column="functionId" lazy="proxy"/>
+  <property name="identify" type="boolean"/>
+ </class>
+</hibernate-mapping>

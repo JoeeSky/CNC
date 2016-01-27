@@ -9,6 +9,12 @@
 		</action>
 		<action name="checkCncName" class="org.nfmedia.crms.action.CncAction" method="checkName">
 		</action>
+		<action name="checkCncPinyin" class="org.nfmedia.crms.action.CncAction" method="checkPinyin">
+		</action>
+		<action name="checkDemanderPinyin" class="org.nfmedia.crms.action.DemanderAction" method="checkPinyin">
+		</action>
+		<action name="checkManufacturerPinyin" class="org.nfmedia.crms.action.ManufacturerAction" method="checkPinyin">
+		</action>
 		<action name="addDemander" class="org.nfmedia.crms.action.DemanderAction" method="add">
 		</action>
 		<action name="checkDemanderName" class="org.nfmedia.crms.action.DemanderAction" method="checkName">

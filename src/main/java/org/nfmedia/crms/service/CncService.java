@@ -29,6 +29,11 @@ public class CncService {
 		return cnc;
 	}
 	
+	public Cnc loadCncByPinyin(String pinyin){
+		Cnc cnc = cncDao.getCncByPinyin(pinyin);
+		return cnc;
+	}
+	
 	public List getCncList() {
 		return cncDao.getCncList();
 	}
@@ -45,5 +50,16 @@ public class CncService {
 	
 	public Cnc loadCncByID(Integer id){
 		return cncDao.load(id);
+	}
+	
+	public void editCncInfo(Cnc cnc){
+		Cnc ori =cncDao.load(cnc.getId());
+		if(cnc.getAddress()!=null) ori.setAddress(cnc.getAddress());
+		if(cnc.getContact()!=null) ori.setContact(cnc.getContact());
+		if(cnc.getEmail()!=null) ori.setEmail(cnc.getEmail());
+		if(cnc.getTel()!=null) ori.setTel(cnc.getTel());
+		if(cnc.getMobile()!=null) ori.setMobile(cnc.getMobile());
+		if(cnc.getUrl()!=null) ori.setUrl(cnc.getUrl());
+		cncDao.update(ori);
 	}
 }

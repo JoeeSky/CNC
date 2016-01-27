@@ -1,10 +1,12 @@
 package org.nfmedia.crms.action;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.nfmedia.crms.cons.CommonConstant;
 import org.nfmedia.crms.cons.UserState;
-import org.nfmedia.crms.domain.Resource;
+import org.nfmedia.crms.domain.Page;
+import org.nfmedia.crms.domain.Role;
 import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.service.UserService;
 
@@ -28,44 +30,47 @@ public class LoginAction extends ActionSupport {
 	 * 登录检查
 	 */
 	@Override
+	//登录身份验证
 	public String execute() throws Exception {
 		ActionContext ctx = ActionContext.getContext();
-		User user = userService.loadUserByAccount(account);
-		if(user != null){ //找到对应账户
-			UserState state = user.getState();
-			if(state == UserState.DELETE){ //账户已删除
-				ctx.put("error", getText("userDeleted"));
-				return ERROR;
-			}
-			if(user.getPassword().equals(password)){ //账户密码匹配
-				ctx.getSession().put(CommonConstant.SESSION_ID, user.getId());
-				String homePage = ((Resource)(user.getRole().getResources().get(0))).getUrl();
-				ctx.getSession().put(CommonConstant.SESSION_HOMEPAGE, homePage);
-				if(returnURL == null){
-					returnURL = homePage;
-				}
-				return SUCCESS;
-			}else{ //账户密码不匹配
-				ctx.put("error",getText("loginFailed"));
-				return ERROR;
-			}
-		}else{ //账户不存在
-			ctx.put("error",getText("userNotExist"));
+		boolean flag =true;
+		User user = userService.getUserByAccount(account);
+		if(user == null){
+			ctx.put("error", getText("不存在该用户"));
 			return ERROR;
 		}
+		else if(!userService.checkPsw(user.getId(), password)){
+			ctx.put("error", getText("密码不正确"));
+			return ERROR;
+		}
+		else if(user.getStatus().equals("N")){
+			ctx.put("error", getText("该用户已被禁用"));
+			return ERROR;
+		}
+		else{	//成功验证身份
+			ctx.getSession().put(CommonConstant.SESSION_ID, user.getId());
+			String homePage = userService.getUserHomePageByID(user.getId());
+			ctx.getSession().put(CommonConstant.SESSION_HOMEPAGE, homePage);
+			if(returnURL == null){
+				returnURL = homePage;
+			}
+			
+			return SUCCESS;
+		}
 	}
-
+	
+	//登录页面
 	public String login() throws Exception{
 		Map session = ActionContext.getContext().getSession();
 		Integer id = (Integer) session.get(CommonConstant.SESSION_ID);
 		if(id != null){
 			if(getReturnURL() == null){
 				String homePage = (String) session.get(CommonConstant.SESSION_HOMEPAGE);
-				if(homePage == null){
-					homePage = userService.getUserHomePageByID(id);
+				/*if(homePage == null){
+					homePage= userService.getUserHomePageByID(id);
 					session.put(CommonConstant.SESSION_HOMEPAGE, homePage);
-				}
-				setReturnURL(homePage);
+				}*/
+				returnURL=homePage;
 			}
 			return SUCCESS;
 		}else{
@@ -75,7 +80,9 @@ public class LoginAction extends ActionSupport {
 	
 	public String logout() throws Exception{
 		Map session = ActionContext.getContext().getSession();
-		session.clear();
+		//session.clear();
+		session.remove(CommonConstant.SESSION_ID);
+		session.remove(CommonConstant.SESSION_HOMEPAGE);
 		return SUCCESS;
 	}
 	
