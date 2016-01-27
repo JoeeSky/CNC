@@ -25,4 +25,22 @@
 		<result>/WEB-INF/content/companyVerify/manufacturerInfo.jsp</result>
 		</action>
 	</package>
+	
+	<package name="editCompanyInfo" extends="default" namespace="/editInfo">
+		<action name="cncInfo" class="org.nfmedia.crms.action.VerifyAction" method="editCncInfoPage">
+		<result>/WEB-INF/content/companyVerify/editCncInfo.jsp</result>
+		</action>
+		<action name="demanderInfo" class="org.nfmedia.crms.action.VerifyAction" method="editDemanderInfoPage">
+		<result>/WEB-INF/content/companyVerify/editDemanderInfo.jsp</result>
+		</action>	
+		<action name="manufacturerInfo" class="org.nfmedia.crms.action.VerifyAction" method="editManufacturerInfoPage">
+		<result>/WEB-INF/content/companyVerify/editManufacturerInfo.jsp</result>
+		</action>
+		<action name="editCncInfo" class="org.nfmedia.crms.action.VerifyAction" method="editCncInfo">
+		</action>	
+		<action name="editDemanderInfo" class="org.nfmedia.crms.action.VerifyAction" method="editDemanderInfo">
+		</action>	
+		<action name="editManufacturerInfo" class="org.nfmedia.crms.action.VerifyAction" method="editManufacturerInfo">
+		</action>	
+	</package>
 </struts>

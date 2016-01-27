@@ -2,19 +2,15 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.nfmedia.crms.domain">
- <class dynamic-insert="true" dynamic-update="true" name="Role">
+ <class name="Role">
   <meta attribute="extends">BaseDomain</meta>
-  <id name="id" type="short">
+  <id name="id" type="integer">
    <generator class="native"/>
   </id>
-  <property generated="never" lazy="false" name="competence"
-   not-null="true" type="long"/>
-  <property generated="never" lazy="false" length="20" name="name"
-   not-null="true" type="string"/>
-  <list cascade="save-update" lazy="true" name="resources" table="Role_Resource">
-   <key column="role_id"/>
-   <list-index base="1" column="position"/>
-   <many-to-many class="Resource" column="resource_id" lazy="proxy" unique="false"/>
-  </list>
- </class>
+  <property length="40" name="name" type="string"/>
+  <property length="20" name="companyType" type="string"/>
+  <property length="200" name="description" type="string"/>
+  <property name="enable" type="boolean"/>
+  <property length="6" name="sortOrder" type="integer"/>
+</class>
 </hibernate-mapping>

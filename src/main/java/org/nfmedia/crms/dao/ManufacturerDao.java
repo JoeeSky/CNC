@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ManufacturerDao extends BaseDao<Manufacturer>{
 	private static final String GET_MANUFACTURER_BY_NAME = "from Manufacturer m where m.name = :name";
+	private static final String GET_MANUFACTURER_BY_PINYIN = "from Manufacturer m where m.pinyin = :pinyin";
 	public static final String GET_MANUFACTURER_LIST="select m.id, m.name,m.description,m.pinyin, m.address, m.contact, m.email, m.mobile, m.tel, m.verifystatus, m.url from Manufacturer m ";
 
 	public Manufacturer getManufacturerByName(final String name){
@@ -20,6 +21,16 @@ public class ManufacturerDao extends BaseDao<Manufacturer>{
 			public Manufacturer doInHibernate(Session session)
 					throws HibernateException, SQLException {
 				return (Manufacturer) session.createQuery(GET_MANUFACTURER_BY_NAME).setString("name", name).setReadOnly(true).uniqueResult();
+			}
+		});
+	}
+	
+	public Manufacturer getManufacturerByPinyin(final String pinyin){
+		return getHibernateTemplate().execute(new HibernateCallback<Manufacturer>() {
+			@Override
+			public Manufacturer doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				return (Manufacturer) session.createQuery(GET_MANUFACTURER_BY_PINYIN).setString("pinyin", pinyin).setReadOnly(true).uniqueResult();
 			}
 		});
 	}

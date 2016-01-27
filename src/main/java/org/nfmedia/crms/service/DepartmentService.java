@@ -5,7 +5,7 @@ import java.util.List;
 import org.nfmedia.crms.dao.DepartmentDao;
 import org.nfmedia.crms.domain.Department;
 //import org.nfmedia.crms.domain.PersonLevel;
-import org.nfmedia.crms.util.Page;
+import org.nfmedia.crms.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ public class DepartmentService {
 		return departmentDao.getAllDepartments();
 	}
 	
-	public Page getDepartmentList(String sidx,String sord,int pageNo,int pageSize){
+	public PageUtil getDepartmentList(String sidx,String sord,int pageNo,int pageSize){
 		return departmentDao.getDepartmentList( sidx, sord, pageNo, pageSize);
 	}
 	

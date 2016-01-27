@@ -70,7 +70,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="pinyin" class="col-sm-4 control-label">名称拼音 <span class="text-danger">*</span></label>
+								<label for="pinyin" class="col-sm-4 control-label">名称拼音（默认作为公司账号） <span class="text-danger">*</span></label>
 								<div class="col-sm-8"><input type="text" class="form-control input-sm" name="demander.pinyin" maxlength="20" onpropertychange="dcheckPinyin(this.value)" oninput="dcheckPinyin(this.value)"></div>
 							</div>		
 							<div class="form-group" style="margin-bottom:0;">
@@ -162,7 +162,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="pinyin" class="col-sm-4 control-label">名称拼音 <span class="text-danger">*</span></label>
+								<label for="pinyin" class="col-sm-4 control-label">名称拼音（默认作为公司账号） <span class="text-danger">*</span></label>
 								<div class="col-sm-8"><input type="text" class="form-control input-sm" name="cnc.pinyin" maxlength="20" onpropertychange="ccheckPinyin(this.value)" oninput="ccheckPinyin(this.value)"></div>
 							</div>		
 							<div class="form-group" style="margin-bottom:0;">
@@ -243,7 +243,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="name" class="col-sm-4 control-label">公司名称 <span class="text-danger">*</span></label>
+								<label for="name" class="col-sm-4 control-label">公司名称<span class="text-danger">*</span></label>
 								<div class="col-sm-8"><input type="text" class="form-control input-sm" name="manufacturer.name" maxlength="20" onpropertychange="mcheckName(this.value)" oninput="mcheckName(this.value)"></div>
 							</div>
 							<div class="form-group" style="margin-bottom:0;">
@@ -253,7 +253,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="pinyin" class="col-sm-4 control-label">名称拼音 <span class="text-danger">*</span></label>
+								<label for="pinyin" class="col-sm-4 control-label">名称拼音（默认作为公司账号）  <span class="text-danger">*</span></label>
 								<div class="col-sm-8"><input type="text" class="form-control input-sm" name="manufacturer.pinyin" maxlength="20" onpropertychange="mcheckPinyin(this.value)" oninput="mcheckPinyin(this.value)"></div>
 							</div>		
 							<div class="form-group" style="margin-bottom:0;">

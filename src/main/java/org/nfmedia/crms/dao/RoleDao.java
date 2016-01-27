@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.nfmedia.crms.domain.Role;
+import org.nfmedia.crms.util.PageUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
@@ -16,21 +17,15 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("rawtypes")
 @Repository
 public class RoleDao extends BaseDao<Role> {
-	private static final String GET_ROLE = "select r.name from Role r where  r.name<>'超级管理员' and r.name<>'管理员' ";
-	public List getAllRoles(){
-		return getHibernateTemplate().execute(new HibernateCallback<List>() {
-
-			@Override
-			public List doInHibernate(Session session)
-					throws HibernateException, SQLException {
-				return session.createQuery("select r.id,r.name from Role r where r.id != 1").list();
-			}
-			
-		});
+	public List getRolesAsOption(){
+		return createQuery("select r.id,r.name from Role r where r.enable=true order by r.sortOrder").list();
 	}
 	
-	public List getqueryRole(){
-		return find(GET_ROLE);
+	public PageUtil getRolesList(String sidx,String sord,int pageNo,int pageSize,String filter){
+		String defaultFilter="";
+		if(filter.equals("")) filter=defaultFilter;
+		return pagedQuery("select r.id,r.name,r.companyType,r.enable,r.sortOrder from Role r "+filter+" order by r."+sidx+" "+sord,
+				pageNo, pageSize);
 	}
 
 

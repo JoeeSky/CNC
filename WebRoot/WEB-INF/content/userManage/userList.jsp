@@ -1,21 +1,23 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html>
-<s:i18n name="contentMessage.userManage.userList">
 <html>
 <head>
- 	<meta charset="utf-8">
-<title><s:text name="title"/></title>
+<meta charset="utf-8">
+<title>用户列表</title>
 </head>
 <body>
 	<div id="jqgrid-wrapper">
 		<!-- 条件搜索 begin-->
 		<div class="row">
 			<div class="col-sm-3 pull-right">
-				<div id="fuzzySearchbox" class="input-group input-group-sm searchbox">
-					<input type="search" id="searchText" class="form-control" placeholder="请输入关键字...">
-					<span class="input-group-btn">
-						<button class="btn btn-default" type="button" id="searchButton"><i class="fa fa-search"></i></button>
+				<div id="fuzzySearchbox"
+					class="input-group input-group-sm searchbox">
+					<input type="search" id="searchText" class="form-control"
+						placeholder="请输入关键字..."> <span class="input-group-btn">
+						<button class="btn btn-default" type="button" id="searchButton">
+							<i class="fa fa-search"></i>
+						</button>
 					</span>
 				</div>
 			</div>
@@ -29,20 +31,12 @@
 						<input type="text" class="form-control" name="name">
 					</div>
 				</div>
-				<div class="col-sm-2" >
-					<div class="input-group input-group-sm">
-						<div class="input-group-addon">部门</div>
-						<select id="department" name="department" class="form-control">
-							<option  value="">所有部门</option>					
-						</select>						
-					</div>
-				</div>
-				<div class="col-sm-3" >
+				<div class="col-sm-3">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">角色</div>
 						<select id="role" name="role" class="form-control">
-							<option  value="">所有角色</option>					
-						</select>						
+							<option value="">所有角色</option>
+						</select>
 					</div>
 				</div>
 				<div class="col-sm-3">
@@ -59,13 +53,11 @@
 	</div>
 </body>
 </html>
-<content tag="scripts">
-    <script src="js/jquery.ba-bbq.min.js"></script>
-    <script src="js/grid.history.js"></script>
+	<content tag="scripts">
+	<script src="js/jquery.ba-bbq.min.js"></script>
+	<script src="js/grid.history.js"></script>
 	<script src="js/i18n/grid/grid.locale-cn.js"></script>
-	<script>
-		$.jgrid.useJSON = true;
-	</script>
+	<script> $.jgrid.useJSON = true; </script>
 	<script src="js/jquery.jqGrid.min.js"></script>
 	<script src="js/jquery.jqGrid.fluid.js"></script>
 	<script src="js/king-common.js"></script>
@@ -74,24 +66,7 @@
 			if(cellvalue.id == null){
 				return "";
 			}
-			return "<a  target='_blank' href='userManage/userInfoDo?tid="+cellvalue.id+"'>"+cellvalue.account+"</a>";
-		}
-
-		function resetPassword(id){
-			if(!confirm("确认重置密码吗？")){
-				return false;
-			}
-			$.ajax({
-				url:"userManage/resetPassword.ajax?tid="+id,
-				type:"get",
-				dataType:"json",
-				success:function(){
-					alert('<s:text name="repeatPasswordSuccess"/>');
-				},
-				error:function(){
-					alert('<s:text name="repeatPasswordFailture"/>');
-				}
-			})
+			return "<a  target='_blank' href='userManage/info?tid="+cellvalue.id+"'>"+cellvalue.account+"</a>";
 		}
 
 		$(document).ready(function() {
@@ -103,16 +78,16 @@
 		    }
 		    var t = $("#jqgrid");
 		    $("#jqgrid").length > 0 && (t.jqGrid({
-		    	url:"userManage/listUser.ajax",
+		    	url:"userManage/listAjax.ajax",
 		    	mtype:"GET",
 		    	datatype:"json",
-		    	colNames:['<s:text name="account"/>','<s:text name="name"/>','<s:text name="department"/>','<s:text name="role"/>',''],
+		    	colNames:['账号','姓名','角色','操作'],
 		    	height:410,
 		    	rowNum:<s:property value="@org.nfmedia.crms.cons.CommonConstant@DEFAULT_PAGE_SIZE"/>,
 		    	rowList: [10, 20, 30],
         		pager: "jqgrid-pager",
         		multiselect: !0,
-        		editurl:"userManage/editUser.ajax",
+        		editurl:"userManage/edit.ajax",
         		sortname:"account",
         		sortorder: "asc",
         		viewrecords: !0,
@@ -124,10 +99,6 @@
         		},{
         			name:"name",
         			index:"name",
-        			align:"center"
-        		},{
-        			name:"department",
-        			index:"department",
         			align:"center"
         		},{
         			name:"role",
@@ -142,11 +113,10 @@
         		gridComplete: function(){
         			var ids = $("#jqgrid").jqGrid("getDataIDs");
         			for(var i=0;i < ids.length;i++){
-        				console.log(ids[i]);
-        				ee = '<button class="btn btn-info btn-xs" onclick="location.href=\'userManage/userUpdateDo?tid='+ids[i]+'\'">修改</button>';
+        				ee = '<button class="btn btn-info btn-xs" onclick="location.href=\'userManage/updateInput?tid='+ids[i]+'\'">修改</button>';
                         de = '<button class="btn btn-danger btn-xs" onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';
-                        pe = '<button class="btn btn-success btn-xs" onclick="resetPassword('+ids[i]+')">重置密码</button>';
-                        t.jqGrid('setRowData',ids[i],{actions:ee+de+pe});
+                        //pe = '<button class="btn btn-success btn-xs" onclick="resetPassword('+ids[i]+')">重置密码</button>';
+                        t.jqGrid('setRowData',ids[i],{actions:ee+de/* +pe */});
                     }
         		}
 		    }), e(), $("#jqgrid").length > 0 && t.jqGrid("navGrid","#jqgrid-pager",{
@@ -162,7 +132,7 @@
 		    })),
 		    $(window).resize(e);
 
-		    //模糊搜索
+		    //根据关键字搜索
 		    $("#searchText").keypress(function(event){
 		    	if(event.keyCode == "13"){
 		    		$("#searchButton").click();
@@ -176,7 +146,7 @@
 		    		t[0].p.search = false;
 		    		$.extend(t[0].p.postData,{searchString:"",searchField:"",searchOper:""});
 		    	}else{
-		    		searchFilter = " and (u.account like '%"+searchFilter+"%' or u.name like '%"+searchFilter+"%' or u.department.name like '%"+searchFilter+"%' or u.role.name like '%"+searchFilter+"%')";
+		    		searchFilter = " where u.status == 'U and (u.account like '%"+searchFilter+"%' or u.name like '%"+searchFilter+"%' or u.companyType like '%"+searchFilter+"%')";
 		    		t[0].p.search = true;
 		    		$.extend(t[0].p.postData,{searchString:searchFilter,searchField:"allfieldsearch",searchOper:"cn"});
 		    	}
@@ -217,79 +187,7 @@
 				$("#searchButton").click();
 				return false;
 			});
-			
-			 $("#importExcel").click(function(){
-				var val= $("#importFile").val();
-				var k = val.substr(val.indexOf("."));
-				if(k!=".xls"){
-					alert("导入失败,没选择导入文件或导入文件不是excel(.xls)文件");return false;}else{
-					 $('#grid').jqGridImport({
-			                imptype: 'json',
-			                impurl:'userManage/importUser.ajax',
-			              /**  impurl: '@Url.Action("Import", "Home")',**/
-			                mtype: 'GET',
-			                jsonGrid: {
-			                    config: 'configs'
-			                }
-			            });
-				/**	$("#jqgrid").jqGrid('excelIxport',{url:'userManage/importUser.ajax'})
-							if(){
-									alert('<s:text name="导入成功"/>');
-									location.reload();
-								}else{
-									alert('<s:text name="导入失败"/>');
-								}*/
-						/**$.ajax({
-							url:"userManage/importUser.ajax",
-							type:"post",
-							data:$("#importExcel").serializeArray(),
-							dataType:"json",
-							success:function(data){ 
-								if(data.info){
-									alert('<s:text name="导入成功"/>');
-									location.reload();
-								}else{
-									alert('<s:text name="导入失败"/>');
-								}
-							},
-							error:function(data){
-								alert('<s:text name="导入失败"/>');
-							}
-						})	**/		 
-					}				
-			});
 		});
-		
-		 function loadingDepartment(){			 
-				 $.ajax({
-				  		type:"post",
-				  		dataType:"json",
-				  		url:"chartsManage/queryDepartment.ajax",
-				  		success:function(data){ 
-				  			var jsonData = data.info;
-				  			for(var i=0, n = jsonData.length;i<n;i++){
-				  				$("#department").append("<option  value='"+jsonData[i]+"'>"+jsonData[i]+"</option>");		
-				  			}
-				  		}
-				  });	
-			}
-		 function loadingRole(){			 
-				 $.ajax({
-				  		type:"post",
-				  		dataType:"json",
-				  		url:"userManage/queryRole.ajax",
-				  		success:function(data){ 
-				  			var jsonData = data.info;
-				  			for(var i=0, n = jsonData.length;i<n;i++){
-				  				$("#role").append("<option  value='"+jsonData[i]+"'>"+jsonData[i]+"</option>");		
-				  			}
-				  		}
-				  });	
-			}
-		$(function(){
-			loadingDepartment();
-			loadingRole();
-		})		
+			
 	</script>
-</content>
-</s:i18n>
+	</content>

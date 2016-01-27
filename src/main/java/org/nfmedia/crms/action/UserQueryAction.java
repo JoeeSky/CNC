@@ -10,7 +10,7 @@ import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nfmedia.crms.service.UserService;
-import org.nfmedia.crms.util.Page;
+import org.nfmedia.crms.util.PageUtil;
 import org.nfmedia.crms.util.PageToJson;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -46,7 +46,7 @@ public class UserQueryAction extends ActionSupport {
 	
 	//@Override
 	public String execute() throws Exception {
-		Page result = null;
+		PageUtil result = null;
 		if(_search == false){
 			result = userService.getUsersList(sidx, sord, page, rows);
 		}else{

@@ -66,6 +66,14 @@ public class CncAction extends ActionSupport{
 		sentMsg(jsonObject.toString());
 		return null;
 	}
+	
+	public String checkPinyin() throws Exception{
+		Cnc cc = cncService.loadCncByPinyin(pinyin);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("info", cc == null);
+		sentMsg(jsonObject.toString());
+		return null;
+	}
 
 	public String getCncList() throws Exception{
 		List result=null;

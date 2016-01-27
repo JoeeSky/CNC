@@ -2,23 +2,23 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.nfmedia.crms.domain">
- <class dynamic-insert="true" dynamic-update="true" name="User">
+ <class name="User">
   <meta attribute="extends">BaseDomain</meta>
   <id name="id" type="integer">
    <generator class="native"/>
   </id>
-  <property generated="never" lazy="false" length="20" name="account"
-   not-null="true" type="string" unique="true"/>
-  <property generated="never" lazy="false" length="50" name="password"
-   not-null="true" type="string"/>
-  <property generated="never" lazy="false" length="20" name="name"
-   not-null="true" type="string"/>
-  <property generated="never" lazy="false" length="20" name="cellphone" type="string"/>
-  <property generated="never" lazy="false" length="50" name="email" type="string"/>
-  <many-to-one cascade="save-update" class="Role" column="role_id"
-   lazy="proxy" name="role" not-null="true"/>
-  <many-to-one cascade="save-update" class="Department"
-   column="department_id" lazy="proxy" name="department" not-null="false"/>
-  <property generated="never" lazy="false" name="state" not-null="true" type="org.nfmedia.crms.usertype.UserStateUserType"/>
+  <property length="20" name="account" type="string" unique="true"/>
+  <property length="50" name="password" type="string"/>
+  <property length="20" name="name" type="string"/>
+  <property length="1" name="status" type="string"/>
+  <property length="20" name="cellphone" type="string"/>
+  <property length="50" name="email" type="string"/>
+  <many-to-one name="role" class="Role" not-null="true" column="roleId" lazy="proxy"/>
+  <property length="10" name="companyId" type="integer"/>
+  <property length="20" name="companyType" type="string"/>
+  
+  <!-- <many-to-one cascade="save-update" class="Role" column="role_id"
+   lazy="proxy" name="role" not-null="true"/> -->
+  
  </class>
 </hibernate-mapping>

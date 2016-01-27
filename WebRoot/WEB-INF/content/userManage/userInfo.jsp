@@ -5,32 +5,41 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title><s:text name="title"/></title>
+<title>用户详细信息</title>
 </head>
 	<body>
 		<form action="" class="form-horizontal" role="form">
-			<!--<div class="form-group">
-				<div class="col-sm-3">
-					<a href='userManage/userUpdateDo?tid=<s:property value="user.id"/>' class="btn btn-success btn-sm">
-						<i class="fa fa-pencil fa-lg"></i> <s:text name="update"/>
-					</a>
-				</div>
-			</div>-->
 			<div class="form-group">
-				<label class="col-sm-3 control-label"><s:text name="name"/></label>
+				<label class="col-sm-3 control-label">账号</label>
+				<div class="col-sm-4"><p class="form-control-static"><s:property value="user.account"/></p></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">姓名</label>
 				<div class="col-sm-4"><p class="form-control-static"><s:property value="user.name"/></p></div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label"><s:text name="department"/></label>
-				<div class="col-sm-4"><p class="form-control-static"><s:property value="user.department.name"/></p></div>
+				<label class="col-sm-3 control-label">公司类型</label>
+				<div class="col-sm-4"><p class="form-control-static"><s:property value="#request.companyType"/></p></div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label"><s:text name="email"/></label>
+				<label class="col-sm-3 control-label">公司</label>
+				<div class="col-sm-4"><p class="form-control-static"><s:property value="user.name"/></p></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">角色</label>
+				<div class="col-sm-4"><p class="form-control-static"><s:property value="user.role.name"/></p></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">邮箱</label>
 				<div class="col-sm-4"><p class="form-control-static"><s:property value="user.email"/></p></div>
 			</div>
 			<div class="form-group">
-				<label class="col-sm-3 control-label"><s:text name="cellphone"/></label>
+				<label class="col-sm-3 control-label">手机</label>
 				<div class="col-sm-4"><p class="form-control-static"><s:property value="user.cellphone"/></p></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">状态</label>
+				<div class="col-sm-4"><p class="form-control-static"><s:property value="#request.userStatus"/></p></div>
 			</div>
 		</form>
 	</body>

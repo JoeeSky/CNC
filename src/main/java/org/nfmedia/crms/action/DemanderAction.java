@@ -67,6 +67,14 @@ public class DemanderAction extends ActionSupport{
 		return null;
 	}
 
+	public String checkPinyin() throws Exception{
+		Demander dd = demanderService.loadDemanderByPinyin(pinyin);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("info", dd == null);
+		sentMsg(jsonObject.toString());
+		return null;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

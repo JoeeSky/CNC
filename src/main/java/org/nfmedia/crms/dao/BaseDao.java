@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.nfmedia.crms.util.Page;
+import org.nfmedia.crms.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
@@ -135,7 +135,7 @@ public class BaseDao<T> {
 	 *
 	 * @param pageNo 页号,从1开始.
 	 */
-	public Page pagedQuery(String hql, int pageNo, int pageSize, Object... values) {
+	public PageUtil pagedQuery(String hql, int pageNo, int pageSize, Object... values) {
 		Assert.hasText(hql);
 		Assert.isTrue(pageNo >= 1, "页码应该不小于1");
 		// Count查询
@@ -146,13 +146,13 @@ public class BaseDao<T> {
 		long totalCount = countlist.isEmpty() ? 0 : (Long) countlist.get(0);
 
 		if (totalCount < 1)
-			return new Page();
+			return new PageUtil();
 		// 实际查询返回分页对象
-		int startIndex = Page.getStartOfPage(pageNo, pageSize);
+		int startIndex = PageUtil.getStartOfPage(pageNo, pageSize);
 		Query query = createQuery(hql, values);
 		List list = query.setFirstResult(startIndex).setMaxResults(pageSize).list();
 
-		return new Page(startIndex, totalCount, pageSize, list);
+		return new PageUtil(startIndex, totalCount, pageSize, list);
 	}
 
 	/**

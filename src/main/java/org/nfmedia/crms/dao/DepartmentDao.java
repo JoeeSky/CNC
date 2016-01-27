@@ -7,7 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.nfmedia.crms.domain.Department;
 //import org.nfmedia.crms.domain.PersonLevel;
-import org.nfmedia.crms.util.Page;
+import org.nfmedia.crms.util.PageUtil;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
@@ -31,7 +31,7 @@ public class DepartmentDao extends BaseDao<Department> {
 	
 	public static final String  GET_CHILD_DEPARTMENT ="select d.name from Department d where d.parentDepartment.name=";
 	
-	public Page getDepartmentList(String sidx,String sord,int pageNo,int pageSize){
+	public PageUtil getDepartmentList(String sidx,String sord,int pageNo,int pageSize){
 		return pagedQuery(GET_DEPARTMENT_LIST+" order by d."+sidx+" "+sord, pageNo, pageSize);
 	}
 

@@ -2,33 +2,126 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
 	<package name="userManage" extends="default" namespace="/userManage">
-		<action name="listUser" class="org.nfmedia.crms.action.UserQueryAction">
+		
+		<action name="list" class="org.nfmedia.crms.action.UserAction" method="list">
+			<result>/WEB-INF/content/userManage/userList.jsp</result>
 		</action>
-		<action name="addUser" class="org.nfmedia.crms.action.UserAction" method="add">
+		<action name="listAjax" class="org.nfmedia.crms.action.UserAction" method="listAjax">
 		</action>
-		<action name="importUser" class="org.nfmedia.crms.action.UserAction" method="batchImportUser">
+		
+		<action name="addInput" class="org.nfmedia.crms.action.UserAction" method="addInput">
+			<result>/WEB-INF/content/userManage/userAddInput.jsp</result>
+		</action>	
+		<action name="add" class="org.nfmedia.crms.action.UserAction" method="add">
 		</action>
-		<action name="updateUser" class="org.nfmedia.crms.action.UserAction" method="update">
-		</action> 
-		<action name="editUser" class="org.nfmedia.crms.action.UserAction" method="edit">
+		
+		<action name="updateInput" class="org.nfmedia.crms.action.UserAction" method="updateInput">
+			<result>/WEB-INF/content/userManage/userUpdateInput.jsp</result>
+		</action>
+		<action name="update" class="org.nfmedia.crms.action.UserAction" method="update">
+		</action>
+		
+		<action name="info" class="org.nfmedia.crms.action.UserAction" method="info">
+			<result>/WEB-INF/content/userManage/userInfo.jsp</result>
+		</action>
+		
+		<action name="edit" class="org.nfmedia.crms.action.UserAction" method="edit">
 		</action>
 		<action name="checkAccount" class="org.nfmedia.crms.action.UserAction" method="checkAccount">
 		</action>
 		<action name="resetPassword" class="org.nfmedia.crms.action.UserAction" method="resetPassword">
 		</action>
-		<action name="userList" class="org.nfmedia.crms.action.UserAction" method="viewListPage">
-			<result>/WEB-INF/content/userManage/userList.jsp</result>
-		</action>
-		<action name="userAdd" class="org.nfmedia.crms.action.UserAction" method="viewAddPage">
-			<result>/WEB-INF/content/userManage/userAdd.jsp</result>
-		</action>
-		<action name="userUpdateDo" class="org.nfmedia.crms.action.UserAction" method="viewUpdatePage">
-			<result>/WEB-INF/content/userManage/userUpdate.jsp</result>
-		</action>
-		<action name="userInfoDo" class="org.nfmedia.crms.action.UserAction" method="viewInfoPage">
-			<result>/WEB-INF/content/userManage/userInfo.jsp</result>
-		</action>
 		<action name="queryRole" class="org.nfmedia.crms.action.UserAction" method="queryRole">
+		</action>
+	</package>
+	
+	
+	<package name="role" extends="default" namespace="/role">
+		<action name="list" class="org.nfmedia.crms.action.RoleAction" method="list">
+			<result>/WEB-INF/content/userManage/roleList.jsp</result>
+		</action>
+		<action name="listAjax" class="org.nfmedia.crms.action.RoleAction" method="listAjax">
+		</action>
+		
+		<action name="addInput" class="org.nfmedia.crms.action.RoleAction" method="addInput">
+			<result>/WEB-INF/content/userManage/roleAddInput.jsp</result>
+		</action>	
+		<action name="add" class="org.nfmedia.crms.action.RoleAction" method="add">
+		</action>
+		
+		<action name="updateInput" class="org.nfmedia.crms.action.RoleAction" method="updateInput">
+			<result>/WEB-INF/content/userManage/roleUpdateInput.jsp</result>
+		</action>
+		<action name="update" class="org.nfmedia.crms.action.RoleAction" method="update">
+		</action>
+		
+		<action name="info" class="org.nfmedia.crms.action.RoleAction" method="info">
+			<result>/WEB-INF/content/userManage/roleInfo.jsp</result>
+		</action>
+		
+		<action name="edit" class="org.nfmedia.crms.action.RoleAction" method="edit">
+		</action>
+		
+		<action name="grantInput" class="org.nfmedia.crms.action.RoleAction" method="grantInput">
+			<result>/WEB-INF/content/userManage/roleGrantInput.jsp</result>
+		</action>
+		<action name="grant" class="org.nfmedia.crms.action.RoleAction" method="grant">
+		</action>
+	</package>
+	
+	
+	<package name="function" extends="default" namespace="/function">
+		<action name="list" class="org.nfmedia.crms.action.FunctionAction" method="list">
+			<result>/WEB-INF/content/userManage/functionList.jsp</result>
+		</action>
+		<action name="listAjax" class="org.nfmedia.crms.action.FunctionAction" method="listAjax">
+		</action>
+		
+		<action name="addInput" class="org.nfmedia.crms.action.FunctionAction" method="addInput">
+			<result>/WEB-INF/content/userManage/functionAddInput.jsp</result>
+		</action>	
+		<action name="add" class="org.nfmedia.crms.action.FunctionAction" method="add">
+		</action>
+		
+		<action name="updateInput" class="org.nfmedia.crms.action.FunctionAction" method="updateInput">
+			<result>/WEB-INF/content/userManage/functionUpdateInput.jsp</result>
+		</action>
+		<action name="update" class="org.nfmedia.crms.action.FunctionAction" method="update">
+		</action>
+		
+		<action name="info" class="org.nfmedia.crms.action.FunctionAction" method="info">
+			<result>/WEB-INF/content/userManage/functionInfo.jsp</result>
+		</action>
+		
+		<action name="edit" class="org.nfmedia.crms.action.FunctionAction" method="edit">
+		</action>
+	</package>
+	
+	
+	<package name="request" extends="default" namespace="/request">
+		<action name="list" class="org.nfmedia.crms.action.RequestAction" method="list">
+			<result>/WEB-INF/content/userManage/requestList.jsp</result>
+		</action>
+		<action name="listAjax" class="org.nfmedia.crms.action.RequestAction" method="listAjax">
+		</action>
+		
+		<action name="addInput" class="org.nfmedia.crms.action.RequestAction" method="addInput">
+			<result>/WEB-INF/content/userManage/requestAddInput.jsp</result>
+		</action>	
+		<action name="add" class="org.nfmedia.crms.action.RequestAction" method="add">
+		</action>
+		
+		<action name="updateInput" class="org.nfmedia.crms.action.RequestAction" method="updateInput">
+			<result>/WEB-INF/content/userManage/requestUpdateInput.jsp</result>
+		</action>
+		<action name="update" class="org.nfmedia.crms.action.RequestAction" method="update">
+		</action>
+		
+		<action name="info" class="org.nfmedia.crms.action.RequestAction" method="info">
+			<result>/WEB-INF/content/userManage/requestInfo.jsp</result>
+		</action>
+		
+		<action name="edit" class="org.nfmedia.crms.action.RequestAction" method="edit">
 		</action>
 	</package>
 </struts> 

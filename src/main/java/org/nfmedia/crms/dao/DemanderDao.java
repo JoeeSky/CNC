@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DemanderDao extends BaseDao<Demander>{
 	private static final String GET_DEMANDER_BY_NAME = "from Demander d where d.name = :name";
+	private static final String GET_DEMANDER_BY_PINYIN = "from Demander d where d.pinyin = :pinyin";
 	public static final String GET_DEMANDER_LIST="select d.id, d.name,d.description,d.pinyin, d.address, d.contact, d.email, d.mobile, d.tel, d.verifystatus, d.url from Demander d ";
 
 	public Demander getDemanderByName(final String name){
@@ -20,6 +21,16 @@ public class DemanderDao extends BaseDao<Demander>{
 			public Demander doInHibernate(Session session)
 					throws HibernateException, SQLException {
 				return (Demander) session.createQuery(GET_DEMANDER_BY_NAME).setString("name", name).setReadOnly(true).uniqueResult();
+			}
+		});
+	}
+	
+	public Demander getDemanderByPinyin(final String pinyin){
+		return getHibernateTemplate().execute(new HibernateCallback<Demander>() {
+			@Override
+			public Demander doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				return (Demander) session.createQuery(GET_DEMANDER_BY_PINYIN).setString("pinyin", pinyin).setReadOnly(true).uniqueResult();
 			}
 		});
 	}
