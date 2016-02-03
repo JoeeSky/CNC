@@ -3,8 +3,6 @@ package org.nfmedia.crms.dao;
 
 import java.util.List;
 
-
-import org.nfmedia.crms.cons.UserState;
 import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.util.PageUtil;
 import org.springframework.stereotype.Repository;
@@ -40,9 +38,9 @@ public class UserDao extends BaseDao<User> {
 	}
 	
 	public PageUtil getUsersList(String sidx,String sord,int pageNo,int pageSize,String filter){
-		String defaultFilter="where u.status = 'U'";
-		if(filter.equals("")) filter=defaultFilter;
-		return pagedQuery("select u.id,u.account,u.name,u.role.name from User u "+filter+" order by u."+sidx+" "+sord,
+		String defaultFilter=" where u.status = 'U'";
+		if(!filter.equals("")) defaultFilter+=" and ("+filter+")";
+		return pagedQuery("select u.id,u.account,u.name,u.role.name from User u"+defaultFilter+" order by u."+sidx+" "+sord,
 				pageNo, pageSize);
 	}
 	

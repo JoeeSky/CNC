@@ -34,7 +34,7 @@
 		<s:iterator value="#request.funcs">
 			<div class="form-group">
 				<label class="col-sm-1 control-label"></label>
-				<label class="col-sm-1 control-label"><s:property value="[0].top[0]"/></label>
+				<label class="col-sm-1 control-label"><s:property value="[0].top[0].getName()"/></label>
 				<s:iterator value="[0].top[1]" var="func">
 					<s:if test="#func.status!=\"N\"">
 						<div class="col-sm-1 checkbox"><label>

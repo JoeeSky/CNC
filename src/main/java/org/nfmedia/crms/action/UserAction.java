@@ -2,19 +2,15 @@ package org.nfmedia.crms.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.nfmedia.crms.cons.CommonConstant;
-import org.nfmedia.crms.domain.Page;
 import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.service.DictService;
 import org.nfmedia.crms.service.RoleService;
@@ -84,12 +80,14 @@ public class UserAction extends ActionSupport {
 	 * @throws Exception
 	 */
 	public String list() throws Exception{
+		ActionContext ctx = ActionContext.getContext();
+		ctx.put("roles", roleService.getAllRoles());
 		return SUCCESS;
 	}
 	
 	public String listAjax() throws Exception{
-		ActionContext ctx = ActionContext.getContext();
-		/*TreeMap<String, List<Page>> resourcesMap = (TreeMap<String, List<Page>>) ctx.get("resourcesMap");
+		/*ActionContext ctx = ActionContext.getContext();
+		TreeMap<String, List<Page>> resourcesMap = (TreeMap<String, List<Page>>) ctx.get("resourcesMap");
 		List breadCrumb = new ArrayList(5);
 		List<Page> lr = resourcesMap.get("用户管理");
 		if(lr.size() == 1){
@@ -138,18 +136,6 @@ public class UserAction extends ActionSupport {
 	
 	public String addInput() throws Exception{
 		ActionContext ctx = ActionContext.getContext();
-		/*TreeMap<String, List<Page>> resourcesMap = (TreeMap<String, List<Page>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Page> lr = resourcesMap.get("用户管理");
-		if(lr.size() == 1){
-			Page resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"用户管理","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"添加用户","javascript:void(0);"});
-		}
-		ctx.put("breadCrumb",breadCrumb);*/
 		
 		ctx.put("roles", roleService.getAllRoles());
 		ctx.put("companyType", dictService.getDictsByWordGroup("companyType"));
@@ -167,19 +153,7 @@ public class UserAction extends ActionSupport {
 	
 	public String updateInput() throws Exception{
 		ActionContext ctx = ActionContext.getContext();
-		/*TreeMap<String, List<Page>> resourcesMap = (TreeMap<String, List<Page>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Page> lr = resourcesMap.get("用户管理");
-		if(lr.size() == 1){
-			Page resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"用户管理","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"用户列表","userManage/userList"});
-		}
-		breadCrumb.add(new Object[]{"修改用户信息","javascript:void(0);"});
-		ctx.put("breadCrumb",breadCrumb);*/
+		
 		user = userService.loadUserByID(tid);
 		ctx.put("roles", roleService.getAllRoles());
 		ctx.put("companyType", dictService.getDictsByWordGroup("companyType"));

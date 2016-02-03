@@ -1,59 +1,62 @@
 package org.nfmedia.crms.domain;
 
-public class ProgramtaskAttachment {
+public class ProgramTaskAttachment {
 	public int id;
 	public String sn;
-	public Programtask task;
-	public int type;
-	public String file_name;
-	public String file_path;
-
+	public ProgramTask task;
+	public String type;
+	public String fileName;
+	public String filePath;
+	
+	public ProgramTaskAttachment(ProgramTask task, String type, String fileName,
+			String filePath) {
+		super();
+		this.task = task;
+		this.type = type;
+		this.fileName = fileName;
+		this.filePath = filePath;
+	}
+	
 	public int getId() {
 		return id;
 	}
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
 	public String getSn() {
 		return sn;
 	}
-
 	public void setSn(String sn) {
 		this.sn = sn;
 	}
-
-	public Programtask getTask() {
+	public ProgramTask getTask() {
 		return task;
 	}
-
-	public void setTask(Programtask task) {
+	public void setTask(ProgramTask task) {
 		this.task = task;
 	}
-
-	public int getType() {
+	
+	public String getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
-	public String getFile_name() {
-		return file_name;
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getFilePath() {
+		return filePath;
+	}
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 
-	public void setFile_name(String file_name) {
-		this.file_name = file_name;
-	}
-
-	public String getFile_path() {
-		return file_path;
-	}
-
-	public void setFile_path(String file_path) {
-		this.file_path = file_path;
-	}
+	
 
 }

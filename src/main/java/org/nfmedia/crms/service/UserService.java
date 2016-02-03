@@ -1,16 +1,8 @@
  package org.nfmedia.crms.service;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
-
 import org.nfmedia.crms.cons.CommonConstant;
-import org.nfmedia.crms.dao.PageDao;
 import org.nfmedia.crms.dao.RoleDao;
 import org.nfmedia.crms.dao.UserDao;
-import org.nfmedia.crms.domain.Page;
-import org.nfmedia.crms.domain.Role;
 import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +20,12 @@ public class UserService {
 	private UserDao userDao;
 	@Autowired
 	private RoleDao roleDao;
-	@Autowired
-	private PageDao pageDao;
 	
 	public User loadUserByID(int id){
+		return userDao.load(id);
+	}
+	
+	public User getUserByID(int id){
 		return userDao.get(id);
 	}
 	
@@ -47,23 +41,6 @@ public class UserService {
 	/**
 	 * 获取登录成功后的首页
 	 */
-	public String getUserHomePageByID(Integer id){
-		User user = loadUserByID(id);
-		String homePage = null;
-		if(user != null){
-			Page page=(Page) pageDao.getPageByCompanyType(user.getCompanyType()).get(0);
-			homePage = page.getUrl();
-		}
-		return homePage;
-	}
-	
-	public List<Page> getUserPages(Integer id){
-		User user = loadUserByID(id);
-		if(user != null){
-			return pageDao.getPageByCompanyType(user.getCompanyType());
-		}
-		return new ArrayList<Page>();
-	}
 	
 	/*public User getUserByAccount(String account){
 		User user = userDao.getUserByAccount(account);

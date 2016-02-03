@@ -104,7 +104,7 @@
 		})
 		function goBack(){
 			if(confirm("您确定要放弃相关操作，返回用户列表中吗？")){
-				location.replace('userManage/userList');
+				location.replace('userManage/list');
 			}
 		}
 	</script>

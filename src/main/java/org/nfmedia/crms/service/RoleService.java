@@ -2,8 +2,8 @@ package org.nfmedia.crms.service;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.nfmedia.crms.dao.RoleDao;
@@ -63,5 +63,9 @@ public class RoleService {
         	String key = (String) iter.next();
         	roleFunctionDao.grant(roleId, Integer.parseInt(key), obj.getBoolean(key));
         }
+	}
+	
+	public Set<Integer> getFunctionsByRole(int roleId){
+		return roleFunctionDao.getFunctionsByRole(roleId);
 	}
 }

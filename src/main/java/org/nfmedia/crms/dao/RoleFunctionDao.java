@@ -1,21 +1,13 @@
 package org.nfmedia.crms.dao;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.nfmedia.crms.domain.Function;
 import org.nfmedia.crms.domain.Role;
 import org.nfmedia.crms.domain.RoleFunction;
-import org.nfmedia.crms.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -111,10 +103,10 @@ public class RoleFunctionDao extends BaseDao<RoleFunction> {
 		return result;
 	}
 	
-	/*根据角色获取功能的树状结构，结构形如[{"model":"用户",[func1,func2...]},
-	{"model":"公司",[func5,func6...]}]*/
+	/*根据角色获取功能的树状结构，结构形如[{functionParent1,[func1,func2...]},
+	{functionParent2,[func5,func6...]}]*/
 	public List<Object[]> getGrantedFunction(int roleId){
-		List<Object[]> result= functionDao.getAllModels();
+		List<Object[]> result= functionDao.getFunctionMap();
 		Set<Integer> functionSet = getFunctionsByRole(roleId);
 		for(Object[] obj : result)
 			for(Function func : (List<Function>)obj[1])

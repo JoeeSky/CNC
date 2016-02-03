@@ -9,9 +9,9 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nfmedia.crms.domain.Manufacturer;
-import org.nfmedia.crms.domain.Resource;
 import org.nfmedia.crms.service.ManufacturerService;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -48,6 +48,27 @@ public class ManufacturerAction extends ActionSupport{
 	public String viewAddPage() throws Exception{
 		return SUCCESS;
 	}
+	
+	public String getManufacturerList() throws Exception{
+		List result=null;
+		result=manufacturerService.getManufacturerList();
+		JSONObject jsonObject = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
+		for(int i=0,size=result.size();i<size;i++){
+			Object[] row = (Object[])result.get(i);
+			JSONObject jsonObject2 = new JSONObject();
+			jsonObject2.put("id", row[0]); //加入id
+			JSONArray jsonArray2 = new JSONArray(); //求取cell
+			jsonArray2.put(row[1]);//manufacturer公司名
+			jsonArray2.put(row[2]);//描述
+			jsonObject2.put("cell", jsonArray2); //加入cell
+			jsonArray.put(jsonObject2);	
+		}
+		jsonObject.put("rows", jsonArray); //加入rows
+		sentMsg(jsonObject.toString());
+		return null;
+	}
+
 	
 	public String add() throws Exception{
 		manufacturerService.addManufacturer(manufacturer);

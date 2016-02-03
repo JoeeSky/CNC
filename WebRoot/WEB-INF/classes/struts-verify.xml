@@ -5,6 +5,10 @@
 		<action name="list" class="org.nfmedia.crms.action.CncAction" method="viewAddPage">
 			<result>/WEB-INF/content/companyVerify/companyList.jsp</result>
 		</action>
+		<action name="getCncList" class="org.nfmedia.crms.action.CncAction" method="getCncList">
+		</action>
+		<action name="getManufacturerList" class="org.nfmedia.crms.action.ManufacturerAction" method="getManufacturerList">
+		</action>
 		<action name="getCncListSimple" class="org.nfmedia.crms.action.CncAction" method="getCncListSimple">
 		</action>
 		<action name="getCompanyListByCondition" class="org.nfmedia.crms.action.VerifyAction" method="getCompanyListByCondition">

@@ -2,39 +2,39 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.nfmedia.crms.domain">
- <class dynamic-insert="true" dynamic-update="true" name="ProgramtaskDetails">
+ <class dynamic-insert="true" dynamic-update="true" name="ProgramTaskDetails">
   <meta attribute="extends">BaseDomain</meta>
   <id name="id" type="integer">
    <generator class="native"/>
   </id>
   
   <property generated="never" lazy="false" length="12" name="sn"
-   not-null="true" type="string"/>
-  <many-to-one cascade="save-update" class="Programtask" column="task_id"
-   lazy="proxy" name="task" not-null="true"/>
+   not-null="false" type="string"/>
+  <many-to-one cascade="save-update" class="ProgramTask" column="taskId"
+   lazy="proxy" name="task" not-null="false"/>
   <property generated="never" lazy="false" length="20" name="type"
-   not-null="true" type="text"/>
-  <property generated="never" lazy="false" length="100" name="drawing_name"
-   not-null="true" type="text"/>
-  <property generated="never" lazy="false" length="200" name="drawing_path"
-   not-null="true" type="text"/>
+   not-null="false" type="text"/>
+  <property generated="never" lazy="false" length="100" name="drawingName"
+   not-null="false" type="text"/>
+  <property generated="never" lazy="false" length="200" name="drawingPath"
+   not-null="false" type="text"/>
   <property generated="never" lazy="false" name="description"
-   not-null="true" type="text"/>
+   not-null="false" type="text"/>
   <property generated="never" lazy="false" name="picture_2d_1"
-   not-null="true" type="blob"/>
-  <property generated="never" lazy="false" length="200" name="pic_description_1"
-   not-null="true" type="text"/>
+   not-null="false" type="blob"/>
+  <property generated="never" lazy="false" length="200" name="picDescription_1"
+   not-null="false" type="text"/>
   <property generated="never" lazy="false" name="picture_2d_2"
-   not-null="true" type="blob"/>
-  <property generated="never" lazy="false" length="200" name="pic_description_2"
-   not-null="true" type="text"/>
+   not-null="false" type="blob"/>
+  <property generated="never" lazy="false" length="200" name="picDescription_2"
+   not-null="false" type="text"/>
   <property generated="never" lazy="false" name="picture_2d_3"
    not-null="true" type="blob"/>
-  <property generated="never" lazy="false" length="200" name="pic_description_3"
+  <property generated="never" lazy="false" length="200" name="picDescription_3"
    not-null="true" type="text"/>
   <property generated="never" lazy="false" name="picture_2d_4"
    not-null="true" type="blob"/>
-  <property generated="never" lazy="false" length="200" name="pic_description_4"
+  <property generated="never" lazy="false" length="200" name="picDescription_4"
    not-null="true" type="text"/>
  </class>
 </hibernate-mapping>

@@ -2,30 +2,41 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="org.nfmedia.crms.domain">
- <class dynamic-insert="true" dynamic-update="true" name="Programtask">
+ <class dynamic-insert="true" dynamic-update="true" name="ProgramTask">
   <meta attribute="extends">BaseDomain</meta>
   <id name="id" type="integer">
    <generator class="native"/>
   </id>
   
   <property generated="never" lazy="false" length="12" name="sn"
+   not-null="false" type="string"/>
+  <property generated="never" lazy="false" length="50" name="taskName"
    not-null="true" type="string"/>
-  <property generated="never" lazy="false" length="200" name="task_name"
-   not-null="true" type="string"/>
-  <many-to-one cascade="save-update" class="Demander" column="demander_id"
-   lazy="proxy" name="demander" not-null="true"/>
-  <many-to-one cascade="save-update" class="User" column="demander_user_id"
-   lazy="proxy" name="demander_user" not-null="true"/>
-  <property generated="never" lazy="false" name="issue_time"
-   not-null="true" type="date"/>
-  <property generated="never" lazy="false" name="modify_time"
-   not-null="true" type="date"/>
+  <many-to-one cascade="save-update" class="Demander" column="demanderId"
+   lazy="proxy" name="demander" not-null="false"/>
+  <many-to-one cascade="save-update" class="User" column="demanderUserId"
+   lazy="proxy" name="demanderUser" not-null="false"/>
+  <property generated="never" lazy="false" name="issueTime"
+   not-null="false" type="timestamp"/>
+  <property generated="never" lazy="false" name="modifyTime"
+   not-null="false" type="timestamp"/>
   <property generated="never" lazy="false" name="description"
-   not-null="true" type="text"/>
-  <many-to-one cascade="save-update" class="Manufacturer" column="manufacturer_id"
-   lazy="proxy" name="manufacturer" not-null="true"/>
-  <property generated="never" lazy="false" length="10" name="status"
-   not-null="true" type="integer"/>
-   
+   not-null="false" type="text"/>
+  <many-to-one cascade="save-update" class="Cnc" column="cncId"
+   lazy="proxy" name="cnc" not-null="false"/>
+  <many-to-one cascade="save-update" class="User" column="cncUserId"
+   lazy="proxy" name="cncUser" not-null="false"/>
+  <property generated="never" lazy="false" name="resultUploadTime"
+   not-null="false" type="timestamp"/>
+  <property generated="never" lazy="false" name="resultModifyTime"
+   not-null="false" type="timestamp"/>
+   <property generated="never" lazy="false" name="resultDescription"
+   not-null="false" type="text"/> 
+  <many-to-one  cascade="save-update" class="Status" column="statusId"
+   lazy="proxy" name="status" not-null="false"/>
+    <many-to-one  cascade="save-update" class="Status" column="resultStatusId"
+   lazy="proxy" name="resultStatus" not-null="false"/>
+   <property generated="never" lazy="false" length="500" name="filePath"
+   not-null="false" type="string"/>
  </class>
 </hibernate-mapping>

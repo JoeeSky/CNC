@@ -12,7 +12,6 @@ import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nfmedia.crms.domain.Cnc;
-import org.nfmedia.crms.domain.Resource;
 import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.service.CncService;
 

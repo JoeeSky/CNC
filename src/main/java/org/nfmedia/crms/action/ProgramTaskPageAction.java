@@ -4,12 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.nfmedia.crms.domain.ProgramTask;
+import org.nfmedia.crms.domain.ProgramTaskAttachment;
 import org.nfmedia.crms.domain.Resource;
+import org.nfmedia.crms.service.ProgramTaskAttachmentService;
+import org.nfmedia.crms.service.ProgramTaskService;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 @SuppressWarnings({"serial","rawtypes","unchecked"})
 public class ProgramTaskPageAction extends ActionSupport {
+	private int tid;
+	private ProgramTask programTask;
+	private ProgramTaskService programTaskService;
+	private ProgramTaskAttachment programTaskAttachment;
+	private ProgramTaskAttachmentService programTaskAttachmentService;
 	
 	public String viewUploadProgramTaskPage() throws Exception{
 		ActionContext ctx = ActionContext.getContext();
@@ -59,6 +68,12 @@ public class ProgramTaskPageAction extends ActionSupport {
 			breadCrumb.add(new Object[]{"接收G代码任务","javascript:void(0);"});
 		}
 		ctx.put("breadCrumb",breadCrumb);
+		return SUCCESS;
+	}
+	
+	public String viewProgramTaskInfoPage() throws Exception{
+		programTask = programTaskService.loadprogramTaskById(tid);
+		programTaskAttachment = programTaskAttachmentService.loadprogramTaskAttachmentById(tid);
 		return SUCCESS;
 	}
 

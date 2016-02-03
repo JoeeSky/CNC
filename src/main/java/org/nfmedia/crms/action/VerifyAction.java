@@ -16,7 +16,6 @@ import org.nfmedia.crms.cons.CommonConstant;
 import org.nfmedia.crms.domain.Cnc;
 import org.nfmedia.crms.domain.Demander;
 import org.nfmedia.crms.domain.Manufacturer;
-import org.nfmedia.crms.domain.Resource;
 import org.nfmedia.crms.domain.Role;
 import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.service.CncService;

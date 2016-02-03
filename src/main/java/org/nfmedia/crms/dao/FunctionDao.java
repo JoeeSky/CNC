@@ -1,16 +1,14 @@
 package org.nfmedia.crms.dao;
 
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
+
 import org.nfmedia.crms.domain.Function;
 import org.nfmedia.crms.util.PageUtil;
-import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -63,9 +61,27 @@ public class FunctionDao extends BaseDao<Function> {
 		return page;
 	}
 	
-	/*获取功能的树状结构，结构形如[{"model":"用户",[func1,func2...]},
-	{"model":"公司",[func5,func6...]}]*/
-	public List<Object[]> getAllModels(){
+	public List<Function> getFunctionPath(int functionId){
+		List<Function> result=new ArrayList<Function>();
+		Function func=load(functionId);
+		Function parent=load(func.getParentId());
+		result.add(parent);
+		result.add(func);
+		return result;
+	}
+	
+	public List<Function> getAllModels(){
+		return find("from Function f where f.parentId = 0 order by f.sortOrder, f.id asc");
+	}
+	
+	/*public List<Function> getFunctionByModelId(int modelId){
+		return find("from Function f where f.parentId = ? order by f.sortOrder, f.id asc",modelId);
+	}*/
+	
+	/*获取功能的树状结构，结构形如[{functionParent1,[func1,func2...]},
+	{functionParent2,[func5,func6...]}]*/
+	public List<Object[]> getFunctionMap(){
+		//获取功能列表，按父id分类，放入funcMap中
 		List<Function> funcs=createQuery("from Function f where f.parentId<>0 order by f.parentId, f.sortOrder, f.id asc").list();
 		Map<Integer,List<Function>> funcMap=new HashMap<Integer,List<Function>>();
 		int curParentId=0;
@@ -81,16 +97,25 @@ public class FunctionDao extends BaseDao<Function> {
 		funcMap.put(curParentId, curModel);
 		
 		//把功能列表和模块名对应，放入list
-		List<Object[]> models=createQuery("select f.id, f.name from Function f where f.parentId = 0 order by f.sortOrder, f.id asc").list();
+		List<Function> models=getAllModels();
 		List<Object[]> result= new ArrayList<Object[]>();
-		for(Object[] objs : models){
+		for(Function model : models){
 			Object[] curM =new Object[2];
-			curM[0]=objs[1];
-			curM[1]=funcMap.get(objs[0]);
+			curM[0]=model;
+			curM[1]=funcMap.get(model.getId());
+			if(curM[1]==null)  curM[1]=new ArrayList<Function>();
 			result.add(curM);
 		}
 		
 		return result;	
+	}
+	
+	//主要用于查询功能的父模块
+	public Map<Integer,Function> getAllFunctions(){
+		List<Function> ls=find("from Function f order by f.id");
+		Map<Integer,Function> result=new HashMap<Integer,Function>();
+		for(Function func : ls) result.put(func.getId(), func);
+		return result;
 	}
 
 

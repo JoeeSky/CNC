@@ -65,7 +65,7 @@
 						dataType:"json",
 						success:function(data){
 							if(data.info){
-								alert('用户已添加成功！');
+								alert('角色已添加成功！');
 								location.reload();
 								//$("#form_save")[0].reset();
 							}else{
@@ -80,8 +80,8 @@
 			
 		});
 		function goBack(){
-			if(confirm("您确定要放弃相关操作，返回到用户列表中吗？")){
-				location.replace('userManage/list');
+			if(confirm("您确定要放弃相关操作，返回到角色列表中吗？")){
+				location.replace('role/list');
 			}
 		}
 	</script>

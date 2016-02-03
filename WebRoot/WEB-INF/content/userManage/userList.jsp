@@ -8,9 +8,14 @@
 </head>
 <body>
 	<div id="jqgrid-wrapper">
-		<!-- 条件搜索 begin-->
 		<div class="row">
-			<div class="col-sm-3 pull-right">
+			<div class="col-sm-2 pull-right">
+				<a class="btn btn-primary btn-sm  pull-right" style="margin:0 10px 20px 30px;" href="user/addInput">添加用户</a>
+		</div></div>
+		<!-- 条件搜索 begin-->
+		<%-- <div class="row">
+			<div class="col-sm-4 pull-right">
+				<a class="btn btn-primary btn-sm  pull-right" style="margin-left:20px;" href="user/addInput">添加用户</a>
 				<div id="fuzzySearchbox"
 					class="input-group input-group-sm searchbox">
 					<input type="search" id="searchText" class="form-control"
@@ -21,7 +26,7 @@
 					</span>
 				</div>
 			</div>
-		</div>
+		</div> --%>
 		<form class="form-horizontal" role="form" id="exactForm">
 			<fieldset>
 				<legend>查询条件</legend>
@@ -34,8 +39,10 @@
 				<div class="col-sm-3">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">角色</div>
-						<select id="role" name="role" class="form-control">
-							<option value="">所有角色</option>
+						<select class="form-control input-sm" name="user.role.id">
+							<s:iterator value="#request.roles">
+								<option value='<s:property value="[0].top[0]"/>'><s:property value="[0].top[1]"/></option>
+							</s:iterator>
 						</select>
 					</div>
 				</div>
@@ -138,7 +145,7 @@
 		    		$("#searchButton").click();
 		    	}
 		    });
-		    $("#searchButton").click(function(){
+		    /* $("#searchButton").click(function(){
 		    	//console.log("searchbox click");
 		    	$("#exactForm")[0].reset();
 		    	var searchFilter = $.trim($("#searchText").val());
@@ -151,30 +158,25 @@
 		    		$.extend(t[0].p.postData,{searchString:searchFilter,searchField:"allfieldsearch",searchOper:"cn"});
 		    	}
 		    	t.trigger("reloadGrid",[{page:1,current:true}]);
-		    })
+		    }) */
 
 		    //精确搜索
 		    $("#exactQuery").click(function(){
 		    	var $name = $.trim($("input[name='name']").val());
-		    	var $department = $.trim($("#department").val());
 		    	var $role = $.trim($("#role").val());
-		    	if($name===""&&$department===""&&$role===""){
+		    	if($name==""&&$role==""){
 		    		t[0].p.search = false;
 		    		$.extend(t[0].p.postData,{searchString:"",searchField:"",searchOper:""});
 		    	}else{
-		    		var searchFilter = " and (";
-		    		if($name!==""){
-		    			searchFilter += "u.name like '%"+$name+"%' and ";
+		    		var $searchFilter = "";
+		    		if($name!==null&&$name!=""){
+		    			if($searchFilter!="") $searchFilter+=" and ";
+		    			searchFilter += "u.name like '%"+$name+"%'";
 		    		}
-		    		if($department !== ""){
-		    			searchFilter += "u.department.name like '%"+$department+"%' and ";
+		    		if($role!==null){
+		    			if($searchFilter!="") $searchFilter+=" and ";
+		    			searchFilter += "u.role.id like '%"+$role+"%'";
 		    		}
-		    		if($role !== ""){
-		    			searchFilter += "u.role.name like '%"+$role+"%'";
-		    		}else{
-		    			searchFilter = searchFilter.substring(0,searchFilter.lastIndexOf('and '));
-		    		}
-		    		searchFilter += ")";
 		    		console.log(searchFilter);
 		    		t[0].p.search = true;
 		    		$.extend(t[0].p.postData,{searchString:searchFilter,searchField:"allfieldsearch",searchOper:"cn"});

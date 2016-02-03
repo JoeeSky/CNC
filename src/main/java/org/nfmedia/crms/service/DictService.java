@@ -1,13 +1,11 @@
  package org.nfmedia.crms.service;
 
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 import org.nfmedia.crms.dao.DictDao;
-import org.nfmedia.crms.domain.Dict;
-import org.nfmedia.crms.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +27,9 @@ public class DictService {
 	
 	public String getDictByGroupAndName(String wordGroup, String name){
 		return dictDao.getDictByGroupAndName(wordGroup, name);
+	}
+	
+	public Map<String,String> getDictsMap(String wordGroup){
+		return dictDao.getDictsMap(wordGroup);
 	}
 }

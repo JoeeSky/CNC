@@ -11,7 +11,23 @@
 		<action name="acceptManufacturerTask" class="org.nfmedia.crms.action.ManufacturerTaskPageAction" method="viewAcceptManufacturerTaskPage">
 			<result>/WEB-INF/content/manufacturerTask/acceptManufacturerTask.jsp</result>
 		</action>
-		<action name="getManufacturerTaskList" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="getManufacturerTaskList">
+		<action name="taskBrowse" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="taskBrowse">
+		</action>
+		<action name="taskResultBrowse" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="taskResultBrowse">
+		</action>
+		<action name="delectManufacturer" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="delectManufacturer">
+		</action>
+		<action name="delectManufacturerTask" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="delectManufacturerTask">
+		</action>
+		<action name="manufacturerTaskComplete" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="manufacturerTaskComplete">
+		</action>
+		<action name="acceptTask" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="acceptTask">
+		</action>
+		<action name="refuseTask" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="refuseTask">
+		</action>
+		<action name="addManufacturerTask" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="addManufacturerTask">
+		</action>
+		<action name="uploadFile" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="uploadFile">
 		</action>
 	</package>
 </struts> 

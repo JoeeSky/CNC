@@ -1,13 +1,10 @@
 package org.nfmedia.crms.dao;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
+
 import org.nfmedia.crms.domain.Role;
 import org.nfmedia.crms.util.PageUtil;
-import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 /**

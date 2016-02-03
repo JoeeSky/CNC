@@ -124,4 +124,37 @@
 		<action name="edit" class="org.nfmedia.crms.action.RequestAction" method="edit">
 		</action>
 	</package>
+	
+	<package name="menu" extends="default" namespace="/menu">
+		<action name="list" class="org.nfmedia.crms.action.MenuAction" method="list">
+			<result>/WEB-INF/content/userManage/menuList.jsp</result>
+		</action>
+		<action name="listAjax" class="org.nfmedia.crms.action.MenuAction" method="listAjax">
+		</action>
+		
+		<action name="addInput" class="org.nfmedia.crms.action.MenuAction" method="addInput">
+			<result>/WEB-INF/content/userManage/menuAddInput.jsp</result>
+		</action>	
+		<action name="add" class="org.nfmedia.crms.action.MenuAction" method="add">
+		</action>
+		
+		<action name="updateInput" class="org.nfmedia.crms.action.MenuAction" method="updateInput">
+			<result>/WEB-INF/content/userManage/menuUpdateInput.jsp</result>
+		</action>
+		<action name="update" class="org.nfmedia.crms.action.MenuAction" method="update">
+		</action>
+		
+		<action name="info" class="org.nfmedia.crms.action.MenuAction" method="info">
+			<result>/WEB-INF/content/userManage/menuInfo.jsp</result>
+		</action>
+		
+		<action name="edit" class="org.nfmedia.crms.action.MenuAction" method="edit">
+		</action>
+	</package>
+	
+	<package name="test" extends="default" namespace="/test">
+		<action name="testSession" class="org.nfmedia.crms.action.TestAction" method="testSession">
+			<result>/WEB-INF/content/userManage/testSession.jsp</result>
+		</action>
+	</package>
 </struts> 

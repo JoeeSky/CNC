@@ -34,6 +34,12 @@
         </a>
         <!-- logged user and the menu -->
         <div class="logged-user navbar-brand-right">
+               <div class="btn-group" style="margin-right:20px;">
+					<a href="messageAction" class="btn btn-link nav-link" title="消息管理">
+						<i class="fa fa-envelope"></i>
+						<div id="msgnum"></div>
+					</a>
+				</div>
             <div class="btn-group">
                 <a href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
                     <i class="fa fa-user"></i>

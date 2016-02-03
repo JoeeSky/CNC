@@ -8,6 +8,10 @@
 </head>
 <body>
 	<div id="jqgrid-wrapper">
+	<div class="row">
+		<div class="col-sm-2 pull-right">
+			<a class="btn btn-primary btn-sm  pull-right" style="margin:0 10px 20px 30px;" href="role/addInput">添加角色</a>
+	</div></div>	
 		<!-- 条件搜索 begin-->
 		<%-- <div class="row">
 			<div class="col-sm-3 pull-right">

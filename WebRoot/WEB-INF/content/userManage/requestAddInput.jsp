@@ -19,41 +19,47 @@
 		</div>
 		<div class="form-group">
 			<label for="companyType" class="col-sm-3 control-label">所属功能<span class="text-danger">*</span></label>
-			<div class="col-sm-4">
-				<select class="form-control input-sm" name="role.companyType">
-					<s:iterator value="#request.companyType">
-						<option value='<s:property value="[0].top[0]"/>'><s:property value="[0].top[1]"/></option>
+			<div>
+				<div class="col-sm-2">
+				<select id="model" class="form-control input-sm">
+					<s:iterator value="#request.model" var="modelObject">
+						<option value='<s:property value="#modelObject[0].getName()"/>'><s:property value="#modelObject[0].getName()"/></option>
 					</s:iterator>
 				</select>
-				<select class="form-control input-sm" name="role.companyType">
-					<s:iterator value="#request.companyType">
-						<option value='<s:property value="[0].top[0]"/>'><s:property value="[0].top[1]"/></option>
+				</div>
+				<div class="col-sm-2">
+				<select id="function" class="form-control input-sm" name="req.functionId">
+					<s:iterator value="#request.model.get(0)[1]" var="func">
+						<option value='<s:property value="#func.getId()"/>'><s:property value="#func.getName()"/></option>
 					</s:iterator>
 				</select>
+				</div>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">已启用<span class="text-danger">*</span></label>
 			<div class="col-sm-4">
 				<select class="form-control input-sm" name="req.status">
-					<s:iterator value="#request.enable">
+					<s:iterator value="#request.status">
 						<option value='<s:property value="[0].top[0]"/>'><s:property value="[0].top[1]"/></option>
 					</s:iterator>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-sm-3 control-label">是否页面</label>
+			<label class="col-sm-3 control-label">是否页面<span class="text-danger">*</span></label>
 			<div class="col-sm-4">
 				<s:iterator value="#request.isPage">
-					<input type="radio" class="radio col-sm-2" name="req.isPage" value='<s:property value="[0].top[0]"/>'> <s:property value="[0].top[1]"/> 
+					<label class="radio-inline col-sm-2" style="padding-left:28px;padding-right:24px;">
+						<input type="radio" name="req.isPage" value='<s:property value="[0].top[0]"/>'> <s:property value="[0].top[1]"/> 
+					</label>
 				</s:iterator>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">面包屑</label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.breadCrumb" maxlength="50">用英文逗号分隔，如用户管理,用户列表</div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.breadCrumb" value="" maxlength="50"><span style="color:#9d9d9d;padding-left:4px">用英文逗号分隔，如用户管理,用户列表</span></div>
 		</div>
 	</form>
 	<p class="text-center">
@@ -66,16 +72,17 @@
 	<script src="js/king-common.js"></script>
 	<script src="js/jquery.maxlength.js"></script>
 	<script>
+		$optionJson=<s:property value="optionJson" escape="false"/>;
 		$(document).ready(function(){
 			$("#save").click(function(){
 					$.ajax({
-						url:"role/add.ajax",
+						url:"request/add.ajax",
 						type:"post",
 						data:$("#form_save").serializeArray(),
 						dataType:"json",
 						success:function(data){
 							if(data.info){
-								alert('用户已添加成功！');
+								alert('请求已添加成功！');
 								location.reload();
 								//$("#form_save")[0].reset();
 							}else{
@@ -88,10 +95,20 @@
 					});
 			});
 			
+			$('#model').change(function(){
+				$('#function').empty();
+				var model=$optionJson[$(this).val()];
+				for(var key1 in model){
+					var func=model[key1];
+					for(var key2 in func)
+					$('#function').append('<option value="'+key2+'">'+func[key2]+'</option>');
+				}
+			});
+			
 		});
 		function goBack(){
-			if(confirm("您确定要放弃相关操作，返回到用户列表中吗？")){
-				location.replace('userManage/list');
+			if(confirm("您确定要放弃相关操作，返回到请求列表中吗？")){
+				location.replace('request/list');
 			}
 		}
 	</script>

@@ -2,12 +2,10 @@ package org.nfmedia.crms.interceptor;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.CollationKey;
-import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
-import java.util.TreeMap;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,11 +15,13 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONObject;
 import org.nfmedia.crms.cons.CommonConstant;
-import org.nfmedia.crms.cons.UserState;
-import org.nfmedia.crms.domain.Page;
+import org.nfmedia.crms.domain.Menu;
+import org.nfmedia.crms.domain.Request;
 import org.nfmedia.crms.domain.User;
+import org.nfmedia.crms.service.MenuService;
+import org.nfmedia.crms.service.RequestService;
 import org.nfmedia.crms.service.UserService;
-import org.nfmedia.crms.util.CompetenceUtil;
+import org.nfmedia.crms.util.LoginUtil;
 import org.springframework.util.Assert;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -38,6 +38,8 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 
 	private static final Log logger = LogFactory.getLog(AccessPrepossessInterceptor.class);
 	private UserService userService;
+	private RequestService requestService;
+	private MenuService menuService;
 	
 	private void sentMsg(String content) throws IOException{
 		HttpServletResponse response=ServletActionContext.getResponse();
@@ -63,7 +65,6 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 		String returnURL = uri+(queryString == null ? "" : "?"+queryString);
 
 		logger.info("进入AccessPrepossessInterceptor："+returnURL);
-		
 		ActionContext ctx = ActionContext.getContext();
 		Integer userID = (Integer) ctx.getSession().get(CommonConstant.SESSION_ID);
 		//首先检查是否登录
@@ -92,129 +93,106 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 				prefix = uri.substring(0, dot);
 			}else{
 				prefix = uri;
+				suffix="";
 			}
-			if(suffix == null || suffix.equals("action")){
-				List<Page> resourcesList = userService.getUserPages(user.getId());
-				if(prefix.endsWith("Action")){ //不需要验证权限，通过
-					addResourcesMapToActionContext(resourcesList, ctx);
-				}else if(prefix.endsWith("Do")){ //需要competence权限，同时获取ResourcesMap
-					/*boolean flag = validCompetence(user.getRole().getCompetence(), prefix);
-					if(flag == false){ //无访问权限
-						ctx.put("messageCode", "noAccess");
-						return "noAccess";
-					}*/
-					addResourcesMapToActionContext(resourcesList, ctx);
-				}else{
-					//resourcesList权限验证，获取resourcesMap和激活信息
-					boolean flag = getResourcesMapAndActiveMessage(resourcesList, prefix, ctx);
-					if(flag == false){ //无访问权限
-						ctx.put("messageCode", "noAccess");
-						return "noAccess";
+			
+			Request request=requestService.getRequestByUrl(prefix);
+			if(request==null){
+				if(suffix.equals("ajax")){
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("state", -1);
+					jsonObject.put("info", "页面未注册");
+					sentMsg(jsonObject.toString());
+					return null;
+				}
+				else{
+					ctx.put("messageCode", "pageNotRegister");
+					return "noAccess";
+				}
+			}
+			
+			//检查有无权限访问该页面或请求
+			if(!LoginUtil.getFunctionSet().contains(request.getFunctionId())){
+				if(suffix.equals("ajax")){
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("state", -1);
+					jsonObject.put("info", "无权限访问");
+					sentMsg(jsonObject.toString());
+					return null;
+				}
+				else{
+					ctx.put("messageCode", "noAccess");
+					return "noAccess";
+				}
+			}
+			
+			//对页面请求的处理
+			if(request.getIsPage()){
+				//添加面包屑
+				String[] breadCrumbs=request.getBreadCrumb().split(",");
+				List<Object[]> breadCrumb = new ArrayList<Object[]>();
+				for(String title : breadCrumbs)
+					breadCrumb.add(new Object[]{title,"javascript:void(0);"});
+				ctx.put("breadCrumb",breadCrumb);
+				
+				//生成菜单
+				List<Object[]> menuMap=menuService.getMenuMap();
+				Set<Integer> functionSet=(Set<Integer>) ctx.getSession().get("functionSet");
+				Integer curMenuId=-1;
+				Integer curParentId=-1;
+				boolean flag=false;
+				//for(Object[] top : menuMap){
+				Iterator<Object[]> iterOut = menuMap.iterator(); 
+				while(iterOut.hasNext()){
+					Object[] top= iterOut.next();
+					Menu topMenu= (Menu) top[0];
+					if(!functionSet.contains(topMenu.getFunctionId())){
+						iterOut.remove();
+						continue;
+					}
+					if(!flag && topMenu.getUrl().equals(returnURL)) {
+						curMenuId=topMenu.getId();
+						curParentId=topMenu.getParentId();
+					}
+					
+					List<Menu> subLs=(List<Menu>) top[1];
+					Iterator<Menu> iter = subLs.iterator();  
+					while(iter.hasNext()){
+						Menu subMenu = iter.next();  
+						if(!functionSet.contains(subMenu.getFunctionId())) iter.remove(); 
+						else if(!flag && subMenu.getUrl().equals(returnURL)) {
+							curMenuId=subMenu.getId();
+							curParentId=subMenu.getParentId();
+						}
 					}
 				}
-					ctx.put("name", user.getName());
-					//ctx.put("roleName", user.getRole().getName());
-					//ctx.put("roleCompetence", user.getRole().getCompetence());
-					/*if(state == UserState.FIRST_LOGIN){ //首次登陆
-						ctx.put("firstLogin", true);
-					}*/
-			}else if( suffix.equals("ajax")){
-				/*boolean flag = validCompetence(user.getRole().getCompetence(), prefix);
-				if(flag == false){ *///无访问权限
-					//ctx.put("messageCode", "noAccess");
-					//return "noAccess";
-					/*JSONObject jsonObject = new JSONObject();
-					jsonObject.put("state", -1);
-					jsonObject.put("info", "无访问权限");
-					sentMsg(jsonObject.toString());
-					return null;*/
-				//}
+				
+				if(curParentId==-1) curParentId=(Integer)ctx.getSession().get("curParentId");
+				else ctx.getSession().put("curParentId", curParentId);
+				ctx.put("curMenuId", curMenuId);
+				ctx.put("curParentId", curParentId);
+				ctx.put("menuTree", menuMap);
+				
+				//显示姓名
+				ctx.put("name", user.getName());
+				
 			}
+			
 			return arg0.invoke();
 		}
 	}
 	
-	private void addResourcesMapToActionContext(final List<Page> resourcesList, ActionContext ctx){
-		TreeMap<String, List<Page>> resourcesMap = new TreeMap<String, List<Page>>(new Comparator<String>() {
-
-			@Override
-			public int compare(String o1, String o2) {
-				if(o1 == null || o2 == null)
-					return 0;
-				Collator collator = Collator.getInstance();
-				CollationKey ck1 = collator.getCollationKey(String.valueOf(o1));
-				CollationKey ck2 = collator.getCollationKey(String.valueOf(o2));
-				return -ck1.compareTo(ck2);
-			}
-			
-		});
-		for(int i=0, size=resourcesList.size(); i<size; i++){
-			Page resource = resourcesList.get(i);
-			String parentName = resource.getParentName();
-			List<Page> resources = resourcesMap.get(parentName);
-			if(resources == null){
-				resources = new ArrayList<Page>(10);
-				resources.add(resource);
-				resourcesMap.put(parentName, resources);
-			}else{
-				resources.add(resource);
-			}
-		}
-		ctx.put("resourcesMap", resourcesMap);
-	}
 	
-	//resourcesList权限验证，获取resourcesMap和激活信息(curParentName和curIndex)
-	private boolean getResourcesMapAndActiveMessage(final List<Page> resourcesList, String uri, ActionContext ctx){
-		TreeMap<String, List<Page>> resourcesMap = new TreeMap<String, List<Page>>(new Comparator<String>() {
-
-			@Override
-			public int compare(String o1, String o2) {
-				if(o1 == null || o2 == null)
-					return 0;
-				Collator collator = Collator.getInstance();
-				CollationKey ck1 = collator.getCollationKey(String.valueOf(o1));
-				CollationKey ck2 = collator.getCollationKey(String.valueOf(o2));
-				return -ck1.compareTo(ck2);
-			}
-			
-		});
-		boolean canAccess = false;
-		boolean curUrl;
-		for(int i=0, size=resourcesList.size(); i<size; i++){
-			curUrl = false;
-			Page resource = resourcesList.get(i);
-			if(canAccess == false){
-				if(resource.getUrl().equals(uri)){
-					canAccess = true;
-					curUrl = true;
-				}
-			}
-			String parentName = resource.getParentName();
-			List<Page> resources = resourcesMap.get(parentName);
-			if(curUrl == true){
-				ctx.put("curParentName", parentName);
-			}
-			if(resources == null){
-				resources = new ArrayList<Page>(10);
-				resources.add(resource);
-				resourcesMap.put(parentName, resources);
-				if(curUrl == true)
-					ctx.put("curIndex", 0);
-			}else{
-				if(curUrl == true)
-					ctx.put("curIndex", resources.size());
-				resources.add(resource);
-			}
-		}
-		ctx.put("resourcesMap", resourcesMap);
-		return canAccess;
-	}
-	
-	private boolean validCompetence(final long competence, final String uri){
-		return CompetenceUtil.getCompetence(uri, competence);
-	}
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
+	}
+
+	public void setRequestService(RequestService requestService) {
+		this.requestService = requestService;
+	}
+
+	public void setMenuService(MenuService menuService) {
+		this.menuService = menuService;
 	}
 }

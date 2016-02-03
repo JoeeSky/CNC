@@ -35,9 +35,9 @@
 				<prop key="hibernate.format_sql">
 					true
 				</prop>
-				<prop key="hibernate.hbm2ddl.auto">
+				<!-- <prop key="hibernate.hbm2ddl.auto">
 					update
-				</prop>
+				</prop> -->
 			</props>
 		</property>
 	</bean>

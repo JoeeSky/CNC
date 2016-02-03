@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="org.nfmedia.crms.domain">
+ <class name="Request">
+  <meta attribute="extends">BaseDomain</meta>
+  <id name="id" type="integer">
+   <generator class="native"/>
+  </id>
+  <property length="40" name="url" type="string"/>
+  <property length="11" name="functionId" type="integer"/>
+  <property name="isPage" type="boolean"/>
+  <property length="100" name="breadCrumb" type="string"/>
+  <property length="1" name="status" type="string"/>
+</class>
+</hibernate-mapping>

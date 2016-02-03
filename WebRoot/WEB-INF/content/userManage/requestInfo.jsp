@@ -15,7 +15,7 @@
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">所属功能</label>
-				<div class="col-sm-4"><p class="form-control-static"><s:property value="req.functionId"/></p></div>
+				<div class="col-sm-4"><p class="form-control-static"><s:property value="#request.functionPath"/></p></div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">使用状态</label>
@@ -23,7 +23,7 @@
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">是否页面</label>
-				<div class="col-sm-4"><p class="form-control-static"><s:property value="req.isPage"/></p></div>
+				<div class="col-sm-4"><p class="form-control-static"><s:property value="#request.isPage"/></p></div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">面包屑</label>

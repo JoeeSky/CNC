@@ -11,5 +11,28 @@
 		<action name="acceptProgramTask" class="org.nfmedia.crms.action.ProgramTaskPageAction" method="viewAcceptProgramTaskPage">
 			<result>/WEB-INF/content/programTask/acceptProgramTask.jsp</result>
 		</action>
+		<action name="programTaskInfoDo" class="org.nfmedia.crms.action.ProgramTaskPageAction" method="viewProgramTaskInfoPage">
+			<result>/WEB-INF/content/programTask/programTaskInfo.jsp</result>
+		</action>
+		<action name="taskBrowse" class="org.nfmedia.crms.action.ProgramTaskAction" method="taskBrowse">
+		</action>
+		<action name="taskResultBrowse" class="org.nfmedia.crms.action.ProgramTaskAction" method="taskResultBrowse">
+		</action>
+		<action name="deleteCnc" class="org.nfmedia.crms.action.ProgramTaskAction" method="deleteCnc">
+		</action>
+		<action name="deleteProgramTask" class="org.nfmedia.crms.action.ProgramTaskAction" method="deleteProgramTask">
+		</action>
+		<action name="makeSureComplete" class="org.nfmedia.crms.action.ProgramTaskAction" method="makeSureComplete">
+		</action>
+		<action name="acceptTask" class="org.nfmedia.crms.action.ProgramTaskAction" method="accept">
+		</action>
+		<action name="refuse" class="org.nfmedia.crms.action.ProgramTaskAction" method="refuse">
+		</action>
+		<action name="getStatusList" class="org.nfmedia.crms.action.ProgramTaskAction" method="getStatusList">
+		</action>
+		<action name="uploadFile" class="org.nfmedia.crms.action.ProgramTaskAction" method="uploadFile">
+		</action>
+		<action name="addProgramTask" class="org.nfmedia.crms.action.ProgramTaskAction" method="addProgramTask">
+		</action>
 	</package>
 </struts> 

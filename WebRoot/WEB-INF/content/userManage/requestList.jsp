@@ -11,6 +11,7 @@
 		<!-- 条件搜索 begin-->
 		<div class="row">
 			<div class="col-sm-3 pull-right">
+			<a class="btn btn-primary btn-sm  pull-right" style="margin-left:20px;" href="request/addInput">添加请求</a>
 				<div id="fuzzySearchbox"
 					class="input-group input-group-sm searchbox">
 					<input type="search" id="searchText" class="form-control"
@@ -117,10 +118,9 @@
         		gridComplete: function(){
         			var ids = $("#jqgrid").jqGrid("getDataIDs");
         			for(var i=0;i < ids.length;i++){
-        				ee = '<button class="btn btn-info btn-xs" onclick="location.href=\'role/updateInput?tid='+ids[i]+'\'">修改</button>';
-                        de = '<button class="btn btn-danger btn-xs" onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';
-                        pe = '<button class="btn btn-success btn-xs" onclick="location.href=\'role/grantInput?tid='+ids[i]+'\'">分配功能</button>';
-                        t.jqGrid('setRowData',ids[i],{actions:ee+de+pe});
+        				ee = '<button class="btn btn-info btn-xs" onclick="location.href=\'request/updateInput?tid='+ids[i]+'\'">修改</button>';
+                        de = '<button class="btn btn-danger btn-xs" onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';                        
+                        t.jqGrid('setRowData',ids[i],{actions:ee+de});
                     }
         		}
 		    }), e(), $("#jqgrid").length > 0 && t.jqGrid("navGrid","#jqgrid-pager",{

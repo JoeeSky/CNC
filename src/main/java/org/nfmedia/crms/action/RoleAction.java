@@ -2,25 +2,18 @@ package org.nfmedia.crms.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.nfmedia.crms.cons.CommonConstant;
 import org.nfmedia.crms.domain.Function;
-import org.nfmedia.crms.domain.Page;
 import org.nfmedia.crms.domain.Role;
-import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.service.DictService;
 import org.nfmedia.crms.service.RoleService;
-import org.nfmedia.crms.service.UserService;
 import org.nfmedia.crms.util.PageToJson;
 import org.nfmedia.crms.util.PageUtil;
 
@@ -84,20 +77,6 @@ public class RoleAction extends ActionSupport {
 	}
 	
 	public String listAjax() throws Exception{
-		ActionContext ctx = ActionContext.getContext();
-		/*TreeMap<String, List<Page>> resourcesMap = (TreeMap<String, List<Page>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Page> lr = resourcesMap.get("用户管理");
-		if(lr.size() == 1){
-			Page resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"用户管理","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"用户列表","javascript:void(0);"});
-		}
-		ctx.put("breadCrumb",breadCrumb);*/
-		
 		PageUtil result = null;
 		result = roleService.getRolesList(sidx, sord, page, rows, "");
 		/*if(_search == false){
@@ -109,6 +88,8 @@ public class RoleAction extends ActionSupport {
 		//把数据封装成jqgrid需要的格式
 		JSONArray rows = new JSONArray();
 		List data = result.getResult();
+		Map<String,String> companyTypeDict=dictService.getDictsMap("companyType");
+		Map<String,String> yesNoDict=dictService.getDictsMap("yesNo");
 		for(int i=0,size=data.size();i<size;i++){
 			Object[] obj = (Object[])data.get(i);		
 			JSONObject row = new JSONObject();
@@ -120,8 +101,8 @@ public class RoleAction extends ActionSupport {
 			idCell.put("id", obj[0]);
 			idCell.put("name", obj[1]);
 			cell.put(idCell); //角色名
-			cell.put(obj[2]); //公司类型
-			cell.put(obj[3]); //已启用
+			cell.put(companyTypeDict.get(obj[2].toString())); //公司类型
+			cell.put(yesNoDict.get(obj[3].toString())); //已启用
 			cell.put(obj[4]); //排序
 			row.put("cell", cell); //加入cell
 			
@@ -136,21 +117,9 @@ public class RoleAction extends ActionSupport {
 	
 	public String addInput() throws Exception{
 		ActionContext ctx = ActionContext.getContext();
-		/*TreeMap<String, List<Page>> resourcesMap = (TreeMap<String, List<Page>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Page> lr = resourcesMap.get("用户管理");
-		if(lr.size() == 1){
-			Page resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"用户管理","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"添加用户","javascript:void(0);"});
-		}
-		ctx.put("breadCrumb",breadCrumb);*/
 		
 		ctx.put("companyType", dictService.getDictsByWordGroup("companyType"));
-		ctx.put("enable", dictService.getDictsByWordGroup("enable"));
+		ctx.put("enable", dictService.getDictsByWordGroup("yesNo"));
 		return SUCCESS;
 	}
 	
@@ -164,22 +133,10 @@ public class RoleAction extends ActionSupport {
 	
 	public String updateInput() throws Exception{
 		ActionContext ctx = ActionContext.getContext();
-		/*TreeMap<String, List<Page>> resourcesMap = (TreeMap<String, List<Page>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Page> lr = resourcesMap.get("用户管理");
-		if(lr.size() == 1){
-			Page resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"用户管理","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"用户列表","userManage/userList"});
-		}
-		breadCrumb.add(new Object[]{"修改用户信息","javascript:void(0);"});
-		ctx.put("breadCrumb",breadCrumb);*/
+		
 		role = roleService.loadRoleByID(tid);
 		ctx.put("companyType", dictService.getDictsByWordGroup("companyType"));
-		ctx.put("enable", dictService.getDictsByWordGroup("enable"));
+		ctx.put("enable", dictService.getDictsByWordGroup("yesNo"));
 		return SUCCESS;
 	}
 	
@@ -213,23 +170,7 @@ public class RoleAction extends ActionSupport {
 	
 	public String grantInput() throws Exception{
 		ActionContext ctx = ActionContext.getContext();
-		/*TreeMap<String, List<Page>> resourcesMap = (TreeMap<String, List<Page>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Page> lr = resourcesMap.get("用户管理");
-		if(lr.size() == 1){
-			Page resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"用户管理","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"用户列表","userManage/userList"});
-		}
-		breadCrumb.add(new Object[]{"修改用户信息","javascript:void(0);"});
-		ctx.put("breadCrumb",breadCrumb);
-		role = roleService.loadRoleByID(tid);
-		ctx.put("companyType", dictService.getDictsByWordGroup("companyType"));
-		ctx.put("enable", dictService.getDictsByWordGroup("enable"));*/
-		//ctx.put("count",new Object[5]);
+		
 		List<Object[]> result=roleService.getGrantedFunction(tid);
 		JSONObject jsonObject = new JSONObject();
 		for(Object[] obj : result)
