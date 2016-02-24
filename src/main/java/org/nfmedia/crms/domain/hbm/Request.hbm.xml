@@ -7,7 +7,7 @@
   <id name="id" type="integer">
    <generator class="native"/>
   </id>
-  <property length="40" name="url" type="string"/>
+  <property length="256" name="url" type="string"/>
   <property length="11" name="functionId" type="integer"/>
   <property name="isPage" type="boolean"/>
   <property length="100" name="breadCrumb" type="string"/>

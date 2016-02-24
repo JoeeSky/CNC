@@ -15,7 +15,7 @@
 	<form id="form_save" class="form-horizontal" role="form">
 		<div class="form-group">
 			<label class="col-sm-3 control-label">url<span class="text-danger">*</span></label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.url"></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.url" maxlength="256"></div>
 		</div>
 		<div class="form-group">
 			<label for="companyType" class="col-sm-3 control-label">所属功能<span class="text-danger">*</span></label>
@@ -51,20 +51,21 @@
 			<div class="col-sm-4">
 				<s:iterator value="#request.isPage">
 					<label class="radio-inline col-sm-2" style="padding-left:28px;padding-right:24px;">
-						<input type="radio" name="req.isPage" value='<s:property value="[0].top[0]"/>'> <s:property value="[0].top[1]"/> 
+						<input type="radio" class="isPage" name="req.isPage" value='<s:property value="[0].top[0]"/>'> <s:property value="[0].top[1]"/> 
 					</label>
 				</s:iterator>
 			</div>
 		</div>
 		
-		<div class="form-group">
+		<div class="form-group" id="breadCrumbRow">
 			<label for="email" class="col-sm-3 control-label">面包屑</label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.breadCrumb" value="" maxlength="50"><span style="color:#9d9d9d;padding-left:4px">用英文逗号分隔，如用户管理,用户列表</span></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.breadCrumb" value="" maxlength="100"><span style="color:#9d9d9d;padding-left:4px">用英文逗号分隔，如用户管理,用户列表</span></div>
 		</div>
 	</form>
 	<p class="text-center">
-		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:left;background:#AAAAAB;border:2px solid #e5e5e5;margin-left:40%;width:63px"></i>返回</button>
-		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="margin-left:-40%"><i class="fa fa-floppy-o"></i>保存</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="copy" style="float:right;margin-right:42%" ><i class="fa fa-floppy-o"></i>保存并复制</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="float:right;margin-right:20px"><i class="fa fa-floppy-o"></i>保存</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:right;background:#AAAAAB;border:1px solid #AAAAAB;width:63px;margin-right:20px"></i>返回</button>	
 	</p>
 </body>
 </html>
@@ -74,8 +75,9 @@
 	<script>
 		$optionJson=<s:property value="optionJson" escape="false"/>;
 		$(document).ready(function(){
-			$("#save").click(function(){
-					$.ajax({
+			$("#save,#copy").click(function(){
+				$isSave=$(this).attr("id")=="save";
+					 $.ajax({
 						url:"request/add.ajax",
 						type:"post",
 						data:$("#form_save").serializeArray(),
@@ -83,7 +85,11 @@
 						success:function(data){
 							if(data.info){
 								alert('请求已添加成功！');
-								location.reload();
+								if($isSave)
+									location.reload();
+								else{
+									location.replace("request/copy?tid="+data.id);
+								}
 								//$("#form_save")[0].reset();
 							}else{
 								alert('保存失败');
@@ -92,7 +98,7 @@
 						error:function(data){
 							alert('保存失败');
 						}
-					});
+					}); 
 			});
 			
 			$('#model').change(function(){
@@ -104,6 +110,14 @@
 					$('#function').append('<option value="'+key2+'">'+func[key2]+'</option>');
 				}
 			});
+			
+			$('#breadCrumbRow').css('display','none');
+			
+			$('.isPage').change(function(){
+				if($(this).attr('value')=='true') $('#breadCrumbRow').show(300);
+				else $('#breadCrumbRow').hide(300);
+			});
+			
 			
 		});
 		function goBack(){

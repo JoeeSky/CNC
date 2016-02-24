@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>添加角色</title>
+<title>添加模块</title>
 	<style>
 		*{padding:0;margin:0;}
 		.browser{margin-left:400px;}
@@ -13,29 +13,20 @@
 </head>
 <body>
 	<form id="form_save" class="form-horizontal" role="form">
+		<input type="text" class="hidden" name="function.parentId" value='0'>
 		<div class="form-group">
-			<label for="name" class="col-sm-3 control-label">角色名<span class="text-danger">*</span></label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="role.name" maxlength="40"></div>
-		</div>
-		<div class="form-group">
-			<label for="companyType" class="col-sm-3 control-label">公司类型<span class="text-danger">*</span></label>
-			<div class="col-sm-4">
-				<select class="form-control input-sm" name="role.companyType">
-					<s:iterator value="#request.companyType">
-						<option value='<s:property value="[0].top[0]"/>'><s:property value="[0].top[1]"/></option>
-					</s:iterator>
-				</select>
-			</div>
+			<label for="name" class="col-sm-3 control-label">模块名<span class="text-danger">*</span></label>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="function.name" maxlength="20"></div>
 		</div>
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">描述</label>
-			<div class="col-sm-4"><textarea class="form-control input-sm" name="role.description" maxlength="200"></textarea></div>
+			<div class="col-sm-4"><textarea class="form-control input-sm" name="fucntion.description" maxlength="200"></textarea></div>
 		</div>
 		<div class="form-group">
 			<label for="cellphone" class="col-sm-3 control-label">已启用<span class="text-danger">*</span></label>
 			<div class="col-sm-4">
-				<select class="form-control input-sm" name="role.enable">
-					<s:iterator value="#request.enable">
+				<select class="form-control input-sm" name="function.status">
+					<s:iterator value="#request.status">
 						<option value='<s:property value="[0].top[0]"/>'><s:property value="[0].top[1]"/></option>
 					</s:iterator>
 				</select>
@@ -43,9 +34,10 @@
 		</div>
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">排序</label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="role.sortOrder" value="20"></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="function.sortOrder" value="20"></div>
 		</div>
 	</form>
+	
 	<p class="text-center">
 		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:left;background:#AAAAAB;border:1px solid #AAAAAB;margin-left:40%;width:63px"></i>返回</button>
 		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="margin-left:-40%"><i class="fa fa-floppy-o"></i>保存</button>
@@ -59,13 +51,13 @@
 		$(document).ready(function(){
 			$("#save").click(function(){
 					$.ajax({
-						url:"role/add.ajax",
+						url:"function/add.ajax",
 						type:"post",
 						data:$("#form_save").serializeArray(),
 						dataType:"json",
 						success:function(data){
 							if(data.info){
-								alert('角色已添加成功！');
+								alert('模块已添加成功！');
 								location.reload();
 								//$("#form_save")[0].reset();
 							}else{
@@ -80,8 +72,8 @@
 			
 		});
 		function goBack(){
-			if(confirm("您确定要放弃相关操作，返回到角色列表中吗？")){
-				location.replace('role/list');
+			if(confirm("您确定要放弃相关操作，返回到模块列表中吗？")){
+				location.replace('function/list');
 			}
 		}
 	</script>

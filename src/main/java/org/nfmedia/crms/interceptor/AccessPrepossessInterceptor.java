@@ -18,6 +18,7 @@ import org.nfmedia.crms.cons.CommonConstant;
 import org.nfmedia.crms.domain.Menu;
 import org.nfmedia.crms.domain.Request;
 import org.nfmedia.crms.domain.User;
+import org.nfmedia.crms.service.DictService;
 import org.nfmedia.crms.service.MenuService;
 import org.nfmedia.crms.service.RequestService;
 import org.nfmedia.crms.service.UserService;
@@ -40,6 +41,7 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 	private UserService userService;
 	private RequestService requestService;
 	private MenuService menuService;
+	private DictService dictService;
 	
 	private void sentMsg(String content) throws IOException{
 		HttpServletResponse response=ServletActionContext.getResponse();
@@ -64,8 +66,41 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 		String queryString = sq.getQueryString();
 		String returnURL = uri+(queryString == null ? "" : "?"+queryString);
 
+		String suffix = null;
+		String prefix = null;
+		int dot = uri.lastIndexOf('.');
+		if(dot != -1){
+			suffix = uri.substring(dot+1, uri.length());
+			prefix = uri.substring(0, dot);
+		}else{
+			prefix = uri;
+			suffix="";
+		}
+		
+		
 		logger.info("进入AccessPrepossessInterceptor："+returnURL);
 		ActionContext ctx = ActionContext.getContext();
+		
+		//判断该页面是否需要进行权限检查
+		Request request=requestService.getRequestByUrl(prefix);
+		if(request==null){
+			if(suffix.equals("ajax")){
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("state", -1);
+				jsonObject.put("info", "页面未注册");
+				sentMsg(jsonObject.toString());
+				return null;
+			}
+			else{
+				ctx.put("messageCode", "pageNotRegister");
+				return "noAccess";
+			}
+		}
+		
+		//仅让不需要权限且不使用sitemesh的外部页面直接通过
+		if(suffix.equals("do") && request.getFunctionId()==Integer.parseInt(dictService.getDictByGroupAndName("system", "freeAccessFunctionId"))) 
+			return arg0.invoke();
+		
 		Integer userID = (Integer) ctx.getSession().get(CommonConstant.SESSION_ID);
 		//首先检查是否登录
 		if(userID == null){ //未登录的情况a
@@ -83,34 +118,8 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 				ctx.getSession().clear(); //清除session
 				return "redirectLogin";
 			}*/
-			
-			//权限控制，获取用户名，资源列表。根据uri类型来分别处理
-			String suffix = null;
-			String prefix = null;
-			int dot = uri.lastIndexOf('.');
-			if(dot != -1){
-				suffix = uri.substring(dot+1, uri.length());
-				prefix = uri.substring(0, dot);
-			}else{
-				prefix = uri;
-				suffix="";
-			}
-			
-			Request request=requestService.getRequestByUrl(prefix);
-			if(request==null){
-				if(suffix.equals("ajax")){
-					JSONObject jsonObject = new JSONObject();
-					jsonObject.put("state", -1);
-					jsonObject.put("info", "页面未注册");
-					sentMsg(jsonObject.toString());
-					return null;
-				}
-				else{
-					ctx.put("messageCode", "pageNotRegister");
-					return "noAccess";
-				}
-			}
-			
+					
+				
 			//检查有无权限访问该页面或请求
 			if(!LoginUtil.getFunctionSet().contains(request.getFunctionId())){
 				if(suffix.equals("ajax")){
@@ -194,5 +203,9 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 
 	public void setMenuService(MenuService menuService) {
 		this.menuService = menuService;
+	}
+
+	public void setDictService(DictService dictService) {
+		this.dictService = dictService;
 	}
 }

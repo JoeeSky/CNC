@@ -33,4 +33,8 @@ public class TestAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
+	
+	public String testNoLogin() throws Exception {
+		return SUCCESS;
+	}
 }

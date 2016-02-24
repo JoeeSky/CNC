@@ -4,55 +4,50 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>添加菜单项</title>
-	<style>
-		*{padding:0;margin:0;}
-		.browser{margin-left:400px;}
-		#importExcel{width:64px;height:25px;margin-left:400px;}
-	</style>
+<title>修改菜单项</title>
 </head>
 <body>
 	<form id="form_save" class="form-horizontal" role="form">
 		<div class="form-group">
 			<label for="name" class="col-sm-3 control-label">菜单项标题<span class="text-danger">*</span></label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.title" maxlength="100"></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.title" maxlength="20" value='<s:property value="menu.title"/>'></div>
 		</div>
 		<div class="form-group">
 			<label for="companyType" class="col-sm-3 control-label">父菜单项<span class="text-danger">*</span></label>
 			<div class="col-sm-4">
 				<select id="parent" class="form-control input-sm" name="menu.parentId">
 					<s:iterator value="#request.topMenus" var="menu">
-						<option value='<s:property value="#menu.getId()"/>' <s:if test='%{#menu.getId()==#request.tid}'>selected</s:if> ><s:property value="#menu.getTitle()"/></option>
+						<option value='<s:property value="#menu.getId()"/>' <s:if test='%{#menu.getId()==menu.parentId}'>selected</s:if>><s:property value="#menu.getTitle()"/></option>
 					</s:iterator>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">url<span class="text-danger">*</span></label>
-			<div class="col-sm-4"><input type="text"  class="form-control input-sm" name="menu.url" maxlength="256"></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.url" maxlength="150" value='<s:property value="menu.url"/>'></div>
 		</div>
 		<div class="form-group">
 			<label for="cellphone" class="col-sm-3 control-label">所属功能<span class="text-danger">*</span></label>
 			<div>
 				<div class="col-sm-2">
-					<select id="model" class="form-control input-sm">
-						<s:iterator value="#request.model"  var="modelObject">
-							<option value='<s:property value="#modelObject[0].getName()"/>'><s:property value="#modelObject[0].getName()"/></option>
-						</s:iterator>
-					</select>
+				<select id="model" class="form-control input-sm">
+					<s:iterator value="#request.model" var="modelObject">
+						<option value='<s:property value="#modelObject[0].getName()"/>' <s:if test='%{#modelObject[0].getName()..equals(#request.modelName)}'>selected</s:if>><s:property value="#modelObject[0].getName()"/></option>
+					</s:iterator>
+				</select>
 				</div>
 				<div class="col-sm-2">
-					<select id="function" class="form-control input-sm" name="menu.functionId">
-						<s:iterator value="#request.model.get(0)[1]" var="func">
-							<option value='<s:property value="#func.getId()"/>'><s:property value="#func.getName()"/></option>
-						</s:iterator>
-					</select>
+				<select id="function" class="form-control input-sm" name="menu.functionId">
+					<s:iterator value="#request.funcs" var="func">
+						<option value='<s:property value="#func.getId()"/>' <s:if test='%{#func.getId().equals(menu.getFunctionId())}'>selected</s:if>><s:property value="#func.getName()"/></option>
+					</s:iterator>
+				</select>
 				</div>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">排序</label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.sortOrder" value="20"></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.sortOrder" maxlength="50" value='<s:property value="menu.sortOrder"/>'></div>
 		</div>
 	</form>
 	<p class="text-center">
@@ -77,13 +72,12 @@
 					dataType:"json",
 					success:function(data){
 						if(data.info){
-							alert('菜单项已添加成功！');
+							alert('保存成功');
 							if($isSave)
-								location.reload();
+								location.replace('menu/list');
 							else{
 								location.replace("menu/copy?tid="+data.id);
 							}
-							//$("#form_save")[0].reset();
 						}else{
 							alert('保存失败');
 						}
@@ -93,12 +87,6 @@
 					}
 				});
 			});
-			
-			if($('#parent').val()==0){
-				$('#model option[value="通用"]').attr("selected",true);
-				reload_subMenu("通用");
-			}
-			
 			$('#model').change(function(){
 				reload_subMenu($(this).val());			
 			});
@@ -110,7 +98,7 @@
 					reload_subMenu("通用");
 				}
 			});
-			
+		    
 		});
 		var reload_subMenu= function($topId){
 			$('#function').empty();
@@ -122,7 +110,7 @@
 			}
 		};
 		function goBack(){
-			if(confirm("您确定要放弃相关操作，返回到菜单项列表中吗？")){
+			if(confirm("您确定要放弃相关操作，返回菜单项列表中吗？")){
 				location.replace('menu/list');
 			}
 		}

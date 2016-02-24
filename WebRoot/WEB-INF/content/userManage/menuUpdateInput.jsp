@@ -11,7 +11,7 @@
 		<input type="text" class="hidden" name="menu.id" value='<s:property value="menu.id"/>'>
 		<div class="form-group">
 			<label for="name" class="col-sm-3 control-label">菜单项标题<span class="text-danger">*</span></label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.title" maxlength="20" value='<s:property value="menu.title"/>'></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.title" maxlength="100" value='<s:property value="menu.title"/>'></div>
 		</div>
 		<div class="form-group">
 			<label for="companyType" class="col-sm-3 control-label">父菜单项<span class="text-danger">*</span></label>
@@ -25,7 +25,7 @@
 		</div>
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">url<span class="text-danger">*</span></label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.url" maxlength="150" value='<s:property value="menu.url"/>'></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.url" maxlength="256" value='<s:property value="menu.url"/>'></div>
 		</div>
 		<div class="form-group">
 			<label for="cellphone" class="col-sm-3 control-label">所属功能<span class="text-danger">*</span></label>
@@ -48,12 +48,13 @@
 		</div>
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">排序</label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.sortOrder" maxlength="50" value='<s:property value="menu.sortOrder"/>'></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.sortOrder" value='<s:property value="menu.sortOrder"/>'></div>
 		</div>
 	</form>
 	<p class="text-center">
-		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:left;background:#AAAAAB;border:2px solid #e5e5e5;margin-left:40%;width:63px"></i>返回</button>
-		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="margin-left:-40%"><i class="fa fa-floppy-o"></i> 保存</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="copy" style="float:right;margin-right:42%" ><i class="fa fa-floppy-o"></i>保存并复制</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="float:right;margin-right:20px"><i class="fa fa-floppy-o"></i>保存</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:right;background:#AAAAAB;border:1px solid #AAAAAB;width:63px;margin-right:20px"></i>返回</button>	
 	</p>
 </body>
 </html>
@@ -63,7 +64,8 @@
 	<script>
 		$optionJson=<s:property value="optionJson" escape="false"/>;
 		$(document).ready(function(){
-			$("#save").click(function(){
+			$("#save,#copy").click(function(){
+				$isSave=$(this).attr("id")=="save";
 				$.ajax({
 					url:"menu/update.ajax",
 					type:"post",
@@ -72,7 +74,11 @@
 					success:function(data){
 						if(data.info){
 							alert('修改成功');
-							location.replace('menu/list');
+							if($isSave)
+								location.replace('menu/list');
+							else{
+								location.replace("menu/copy?tid="+data.id);
+							}
 						}else{
 							alert('修改失败');
 						}
