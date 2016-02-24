@@ -11,7 +11,7 @@
 		<input type="text" class="hidden" name="req.id" value='<s:property value="req.id"/>'>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">url<span class="text-danger">*</span></label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.url" maxlength="20" value='<s:property value="req.url"/>'></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.url"  value='<s:property value="req.url"/>'></div>
 		</div>
 		<div class="form-group">
 			<label for="companyType" class="col-sm-3 control-label">所属功能<span class="text-danger">*</span></label>
