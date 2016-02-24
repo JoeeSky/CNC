@@ -129,7 +129,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</div>
 							<div class="form-group">
 								<label for="url" class="col-sm-4 control-label">公司网址 </label>
-								<div class="col-sm-8"><input type="text" class="form-control input-sm" name="demander.url" maxlength="20" onpropertychange="dcheckUrl(this.value)" oninput="dcheckUrl(this.value)"></div>
+								<div class="col-sm-8"><input type="text" class="form-control input-sm" name="demander.url" maxlength="20" ></div>
 							</div>		
 						</div>
 					
