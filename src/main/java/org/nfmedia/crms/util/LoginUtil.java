@@ -4,6 +4,8 @@ package org.nfmedia.crms.util;
 import java.util.Map;
 import java.util.Set;
 
+import org.nfmedia.crms.domain.User;
+
 import com.opensymphony.xwork2.ActionContext;
 
 public class LoginUtil {
@@ -21,12 +23,12 @@ public class LoginUtil {
 		return getFunctionTree().get(modelName).contains(functionName);
 	}
 	
-	public static Map<String,Set<String>> getMenuTree(){
-		return (Map<String,Set<String>>) getSession().get("menuTree");
-	}
-	
 	public static String getHomePage(){
 		return (String) getSession().get("home");
+	}
+	
+	public static User getUser(){
+		return (User) getSession().get("userMsg");
 	}
 	
 	private static Map<String, Object> getSession() {	
