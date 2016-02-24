@@ -123,6 +123,10 @@
 		
 		<action name="edit" class="org.nfmedia.crms.action.RequestAction" method="edit">
 		</action>
+		
+		<action name="copy" class="org.nfmedia.crms.action.RequestAction" method="copy">
+			<result>/WEB-INF/content/userManage/requestCopy.jsp</result>
+		</action>
 	</package>
 	
 	<package name="menu" extends="default" namespace="/menu">
@@ -150,11 +154,18 @@
 		
 		<action name="edit" class="org.nfmedia.crms.action.MenuAction" method="edit">
 		</action>
+		
+		<action name="copy" class="org.nfmedia.crms.action.MenuAction" method="copy">
+			<result>/WEB-INF/content/userManage/menuCopy.jsp</result>
+		</action>
 	</package>
 	
 	<package name="test" extends="default" namespace="/test">
 		<action name="testSession" class="org.nfmedia.crms.action.TestAction" method="testSession">
 			<result>/WEB-INF/content/userManage/testSession.jsp</result>
+		</action>
+		<action name="testNoLogin" class="org.nfmedia.crms.action.TestAction" method="testNoLogin">
+			<result>/WEB-INF/content/userManage/testNoLogin.jsp</result>
 		</action>
 	</package>
 </struts> 

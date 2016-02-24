@@ -151,8 +151,53 @@ public class RequestAction extends ActionSupport {
 		requestService.addRequest(req);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("info", true);
+		jsonObject.put("id", req.getId());
 		sentMsg(jsonObject.toString());
 		return null;
+	}
+	
+	public String copy() throws Exception{
+		ActionContext ctx = ActionContext.getContext();
+		
+		req = requestService.loadRequestByID(tid);
+		
+		//功能树，用于在在初始化时生成第一级下拉列表
+		List<Object[]> map= functionService.getFunctionMap(); 
+		ctx.put("model",map);
+		
+		//生成功能树的json版，存在js中，用于动态更改二级下拉列表
+		JSONObject optionJson= new JSONObject();
+		for(Object[] model : map){
+			JSONArray ls= new JSONArray();
+			for(Function func : (List<Function>) model[1]){
+				JSONObject f= new JSONObject();
+				f.put(func.getId().toString(), func.getName());
+				ls.put(f);
+			}
+			Function modelP=(Function)model[0];
+			optionJson.put(modelP.getName(), ls);
+		}
+		ctx.put("optionJson", optionJson.toString());
+		
+		//初始化第一级菜单的初始化选中项
+		String modelName=functionService.getFunctionPath(req.getFunctionId()).get(0).getName();
+		ctx.put("modelName", modelName);
+		
+		//用于在在初始化时生成第二级下拉列表
+		List<Function> funcs=null;
+		for(Object[] obj : map){
+			Function modelP=(Function)obj[0];
+			if(modelP.getName().equals(modelName)){
+				funcs= (List<Function>) obj[1];
+				break;
+			}
+		}
+		ctx.put("funcs", funcs);
+		
+		
+		ctx.put("status", dictService.getDictsByWordGroup("requestStatus"));
+		ctx.put("isPage", dictService.getDictsByWordGroup("yesNo"));
+		return SUCCESS;
 	}
 	
 	public String updateInput() throws Exception{
@@ -203,6 +248,7 @@ public class RequestAction extends ActionSupport {
 		requestService.updateRequest(req);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("info", true);
+		jsonObject.put("id", req.getId());
 		sentMsg(jsonObject.toString());
 		return null;
 	}

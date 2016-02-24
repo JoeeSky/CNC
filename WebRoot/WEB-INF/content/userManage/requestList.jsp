@@ -119,8 +119,9 @@
         			var ids = $("#jqgrid").jqGrid("getDataIDs");
         			for(var i=0;i < ids.length;i++){
         				ee = '<button class="btn btn-info btn-xs" onclick="location.href=\'request/updateInput?tid='+ids[i]+'\'">修改</button>';
-                        de = '<button class="btn btn-danger btn-xs" onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';                        
-                        t.jqGrid('setRowData',ids[i],{actions:ee+de});
+                        de = '<button class="btn btn-danger btn-xs" onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>'; 
+                        pe = '<button class="btn btn-success btn-xs" onclick="location.href=\'request/copy?tid='+ids[i]+'\'">复制</button>';
+                        t.jqGrid('setRowData',ids[i],{actions:ee+de+pe});
                     }
         		}
 		    }), e(), $("#jqgrid").length > 0 && t.jqGrid("navGrid","#jqgrid-pager",{

@@ -17,7 +17,7 @@
 			</div>
 			<div class="form-group">
 				<label for="name" class="col-sm-3 control-label">姓名 <span class="text-danger">*</span></label>
-				<div class="col-sm-4"><input type="text" class="form-control input-sm" name="user.name" value='<s:property value="user.name"/>'></div>
+				<div class="col-sm-4"><input type="text" class="form-control input-sm" name="user.name" maxlength="20" value='<s:property value="user.name"/>'></div>
 			</div>
 			<div class="form-group">
 				<label for="companyType" class="col-sm-3 control-label">公司类型<span class="text-danger">*</span></label>
@@ -69,7 +69,7 @@
 			</div>
 	</form>
 	<p class="text-center">
-		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:left;background:#AAAAAB;border:2px solid #e5e5e5;margin-left:40%;width:63px"></i>返回</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:left;background:#AAAAAB;border:1px solid #AAAAAB;margin-left:40%;width:63px"></i>返回</button>
 		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="margin-left:-40%"><i class="fa fa-floppy-o"></i> 保存</button>
 	</p>
 </body>

@@ -11,7 +11,7 @@
 		<input type="text" class="hidden" name="req.id" value='<s:property value="req.id"/>'>
 		<div class="form-group">
 			<label class="col-sm-3 control-label">url<span class="text-danger">*</span></label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.url" maxlength="20" value='<s:property value="req.url"/>'></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.url" maxlength="256" value='<s:property value="req.url"/>'></div>
 		</div>
 		<div class="form-group">
 			<label for="companyType" class="col-sm-3 control-label">所属功能<span class="text-danger">*</span></label>
@@ -55,12 +55,13 @@
 		
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">面包屑</label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.breadCrumb" value="<s:property value="req.breadCrumb"/>" maxlength="50"><span style="color:#9d9d9d;padding-left:4px">用英文逗号分隔，如用户管理,用户列表</span></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.breadCrumb" value="<s:property value="req.breadCrumb"/>" maxlength="100"><span style="color:#9d9d9d;padding-left:4px">用英文逗号分隔，如用户管理,用户列表</span></div>
 		</div>
 	</form>
 	<p class="text-center">
-		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:left;background:#AAAAAB;border:2px solid #e5e5e5;margin-left:40%;width:63px"></i>返回</button>
-		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="margin-left:-40%"><i class="fa fa-floppy-o"></i> 保存</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="copy" style="float:right;margin-right:42%" ><i class="fa fa-floppy-o"></i>保存并复制</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="float:right;margin-right:20px"><i class="fa fa-floppy-o"></i>保存</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:right;background:#AAAAAB;border:1px solid #AAAAAB;width:63px;margin-right:20px"></i>返回</button>	
 	</p>
 </body>
 </html>
@@ -70,7 +71,8 @@
 	<script>
 		$optionJson=<s:property value="optionJson" escape="false"/>;
 		$(document).ready(function(){
-			$("#save").click(function(){
+			$("#save,#copy").click(function(){
+				$isSave=$(this).attr("id")=="save";
 				$.ajax({
 					url:"request/update.ajax",
 					type:"post",
@@ -78,8 +80,12 @@
 					dataType:"json",
 					success:function(data){
 						if(data.info){
-							alert('修改成功');
-							location.replace('request/list');
+							if($isSave)
+								location.replace("request/list");
+							else{
+								location.replace("request/copy?tid="+data.id);
+							}
+
 						}else{
 							alert('修改失败');
 						}

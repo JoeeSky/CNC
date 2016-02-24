@@ -15,7 +15,7 @@
 	<form id="form_save" class="form-horizontal" role="form">
 		<div class="form-group">
 			<label for="name" class="col-sm-3 control-label">菜单项标题<span class="text-danger">*</span></label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.title" maxlength="20"></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.title" maxlength="100"></div>
 		</div>
 		<div class="form-group">
 			<label for="companyType" class="col-sm-3 control-label">父菜单项<span class="text-danger">*</span></label>
@@ -29,7 +29,7 @@
 		</div>
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">url<span class="text-danger">*</span></label>
-			<div class="col-sm-4"><input type="text"  class="form-control input-sm" name="menu.url" maxlength="150"></div>
+			<div class="col-sm-4"><input type="text"  class="form-control input-sm" name="menu.url" maxlength="256"></div>
 		</div>
 		<div class="form-group">
 			<label for="cellphone" class="col-sm-3 control-label">所属功能<span class="text-danger">*</span></label>
@@ -52,12 +52,13 @@
 		</div>
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">排序</label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.sortOrder" maxlength="50"></div>
+			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.sortOrder" value="20"></div>
 		</div>
 	</form>
 	<p class="text-center">
-		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:left;background:#AAAAAB;border:2px solid #e5e5e5;margin-left:40%;width:63px"></i>返回</button>
-		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="margin-left:-40%"><i class="fa fa-floppy-o"></i>保存</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="copy" style="float:right;margin-right:42%" ><i class="fa fa-floppy-o"></i>保存并复制</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="float:right;margin-right:20px"><i class="fa fa-floppy-o"></i>保存</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:right;background:#AAAAAB;border:1px solid #AAAAAB;width:63px;margin-right:20px"></i>返回</button>	
 	</p>
 </body>
 </html>
@@ -67,25 +68,30 @@
 	<script>
 		$optionJson=<s:property value="optionJson" escape="false"/>;
 		$(document).ready(function(){
-			$("#save").click(function(){
-					$.ajax({
-						url:"menu/add.ajax",
-						type:"post",
-						data:$("#form_save").serializeArray(),
-						dataType:"json",
-						success:function(data){
-							if(data.info){
-								alert('菜单项已添加成功！');
+			$("#save,#copy").click(function(){
+				$isSave=$(this).attr("id")=="save";
+				$.ajax({
+					url:"menu/add.ajax",
+					type:"post",
+					data:$("#form_save").serializeArray(),
+					dataType:"json",
+					success:function(data){
+						if(data.info){
+							alert('菜单项已添加成功！');
+							if($isSave)
 								location.reload();
-								//$("#form_save")[0].reset();
-							}else{
-								alert('保存失败');
+							else{
+								location.replace("menu/copy?tid="+data.id);
 							}
-						},
-						error:function(data){
+							//$("#form_save")[0].reset();
+						}else{
 							alert('保存失败');
 						}
-					});
+					},
+					error:function(data){
+						alert('保存失败');
+					}
+				});
 			});
 			
 			if($('#parent').val()==0){

@@ -5,7 +5,7 @@
 	<constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
 	<constant name="struts.ui.theme" value="simple"/>
 	<constant name="struts.custom.i18n.resources" value="contentMessage.globalMessage"/>
-	<constant name="struts.action.extension" value="action,ajax,,"/>
+	<constant name="struts.action.extension" value="action,ajax,do,,"/>
 	<constant name="struts.serve.static.browserCache" value="false"/>
 	<constant name="struts.devMode" value="true"/>
 	<include file="struts-fileDownload.xml"/>

@@ -4,6 +4,7 @@
 	<excludes>
 		<pattern>/config-browser/*</pattern>
 		<pattern>*.ajax*</pattern>
+		<pattern>*.do</pattern>
 		<pattern>*.html</pattern>
 		<pattern>/weixin/*</pattern>
 		<pattern>/weixin2/*</pattern>

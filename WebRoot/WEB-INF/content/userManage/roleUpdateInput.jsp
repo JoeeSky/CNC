@@ -11,7 +11,7 @@
 		    <input type="text" class="hidden" name="role.id" value='<s:property value="role.id"/>'>
 			<div class="form-group">
 				<label for="name" class="col-sm-3 control-label">角色名 <span class="text-danger">*</span></label>
-				<div class="col-sm-4"><input type="text" class="form-control input-sm" name="role.name" value='<s:property value="role.name"/>'></div>
+				<div class="col-sm-4"><input type="text" class="form-control input-sm" name="role.name"  maxlength="40" value='<s:property value="role.name"/>'></div>
 			</div>
 			<div class="form-group">
 				<label for="companyType" class="col-sm-3 control-label">公司类型<span class="text-danger">*</span></label>
@@ -25,7 +25,7 @@
 			</div>
 			<div class="form-group">
 				<label for="name" class="col-sm-3 control-label">描述<span class="text-danger">*</span></label>
-				<div class="col-sm-4"><input type="text" class="form-control input-sm" name="role.description" value='<s:property value="role.description"/>'></div>
+				<div class="col-sm-4"><input type="text" class="form-control input-sm" name="role.description" maxlength="200" value='<s:property value="role.description"/>'></div>
 			</div>
 			<div class="form-group">
 				<label for="cellphone" class="col-sm-3 control-label">已启用<span class="text-danger">*</span></label>
@@ -39,11 +39,11 @@
 			</div>
 			<div class="form-group">
 				<label for="email" class="col-sm-3 control-label">排序</label>
-				<div class="col-sm-4"><input type="text" class="form-control input-sm" name="role.sortOrder" value='<s:property value="role.sortOrder"/>' maxlength="50"></div>
+				<div class="col-sm-4"><input type="text" class="form-control input-sm" name="role.sortOrder" value='<s:property value="role.sortOrder"/>' value="20"></div>
 			</div>
 	</form>
 	<p class="text-center">
-		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:left;background:#AAAAAB;border:2px solid #e5e5e5;margin-left:40%;width:63px"></i>返回</button>
+		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:left;background:#AAAAAB;border:1px solid #AAAAAB;margin-left:40%;width:63px"></i>返回</button>
 		<button type="button" class="btn btn-custom-primary btn-sm" id="save" style="margin-left:-40%"><i class="fa fa-floppy-o"></i> 保存</button>
 	</p>
 </body>
