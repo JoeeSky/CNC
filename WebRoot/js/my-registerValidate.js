@@ -3,7 +3,7 @@ var nameValid = false;
 function ccheckName(value){
 	if(value){
 		$.ajax({
-			url:"register/checkCncName.ajax?name="+value,
+			url:"register/checkCncName.do?name="+value,
 			type:"get",
 			dataType:"json",
 			success:function(data){
@@ -25,7 +25,7 @@ function ccheckName(value){
 function ccheckPinyin(value){
 	if(value){
 		$.ajax({
-			url:"register/checkCncPinyin.ajax?pinyin="+value,
+			url:"register/checkCncPinyin.do?pinyin="+value,
 			type:"get",
 			dataType:"json",
 			success:function(data){
@@ -40,7 +40,7 @@ function ccheckPinyin(value){
 			}
 		})
 	}else{
-		$("#cnameCheck").addClass("hidden");
+		$("#cpinyinCheck").addClass("hidden");
 	}
 }
 
@@ -155,7 +155,7 @@ $("#cnc_save").click(function(){
 					
 	if(nameValid){
 	$.ajax({
-		url:"register/addCnc.ajax",
+		url:"register/addCnc.do",
 		type:"post",
 		data:$("#form_cnc").serializeArray(),
 		dataType:"json",
@@ -182,7 +182,7 @@ $("#cnc_save").click(function(){
 function dcheckName(value){
 	if(value){
 		$.ajax({
-			url:"register/checkDemanderName.ajax?name="+value,
+			url:"register/checkDemanderName.do?name="+value,
 			type:"get",
 			dataType:"json",
 			success:function(data){
@@ -204,7 +204,7 @@ function dcheckName(value){
 function dcheckPinyin(value){
 	if(value){
 		$.ajax({
-			url:"register/checkDemanderPinyin.ajax?pinyin="+value,
+			url:"register/checkDemanderPinyin.do?pinyin="+value,
 			type:"get",
 			dataType:"json",
 			success:function(data){
@@ -219,7 +219,7 @@ function dcheckPinyin(value){
 			}
 		})
 	}else{
-		$("#nameCheck").addClass("hidden");
+		$("#pinyinCheck").addClass("hidden");
 	}
 }
 
@@ -330,7 +330,7 @@ $("#demander_save").click(function(){
 					
 	if(nameValid){
 	$.ajax({
-		url:"register/addDemander.ajax",
+		url:"register/addDemander.do",
 		type:"post",
 		data:$("#form_demander").serializeArray(),
 		dataType:"json",
@@ -356,7 +356,7 @@ $("#demander_save").click(function(){
 function mcheckName(value){
 	if(value){
 		$.ajax({
-			url:"register/checkManufacturerName.ajax?name="+value,
+			url:"register/checkManufacturerName.do?name="+value,
 			type:"get",
 			dataType:"json",
 			success:function(data){
@@ -378,7 +378,7 @@ function mcheckName(value){
 function mcheckPinyin(value){
 	if(value){
 		$.ajax({
-			url:"register/checkManufacturerPinyin.ajax?pinyin="+value,
+			url:"register/checkManufacturerPinyin.do?pinyin="+value,
 			type:"get",
 			dataType:"json",
 			success:function(data){
@@ -393,7 +393,7 @@ function mcheckPinyin(value){
 			}
 		})
 	}else{
-		$("#mnameCheck").addClass("hidden");
+		$("#mpinyinCheck").addClass("hidden");
 	}
 }
 //function mcheckPinyin(value){
@@ -504,7 +504,7 @@ $("#manufacturer_save").click(function(){
 					
 	if(nameValid){
 	$.ajax({
-		url:"register/addManufacturer.ajax",
+		url:"register/addManufacturer.do",
 		type:"post",
 		data:$("#form_manufacturer").serializeArray(),
 		dataType:"json",
