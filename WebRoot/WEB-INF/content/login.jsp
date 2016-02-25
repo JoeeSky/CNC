@@ -60,11 +60,13 @@
                         <s:token/>
                         <button type="submit" class="btn btn-custom-primary btn-block btn-login"><i class="fa fa-arrow-circle-o-right"></i> <s:text name="formSubmit"/></button>
                 	</s:form>
+                	<button  class="btn btn-custom-primary btn-block btn-login" onclick="window.open('register/add.do')"><i class="fa fa-arrow-circle-o-right"></i> 公司注册</button>
                     <%-- <div class="links">
                         <p><a href="#"><s:text name="forgetPassword"/></a></p>
                     </div> --%>
                 </div>
             </div>
+            
             <div class="push-sticky-footer"></div>
         </div><!-- /wrapper -->
 	</body>
