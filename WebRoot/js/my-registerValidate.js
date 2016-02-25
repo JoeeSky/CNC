@@ -30,7 +30,7 @@ function ccheckPinyin(value){
 			dataType:"json",
 			success:function(data){
 				if(!data.info){
-					$("#cpinyinCheck span").text('抱歉，此拼音账号已存在，请在拼音之后添加3位的数字。');
+					$("#cpinyinCheck span").text('抱歉，此拼音账号已存在，请在拼音之后添加1-3位的数字。');
 					$("#cpinyinCheck").removeClass("hidden");
 					nameValid = false;
 				}else{
@@ -209,7 +209,7 @@ function dcheckPinyin(value){
 			dataType:"json",
 			success:function(data){
 				if(!data.info){
-					$("#pinyinCheck span").text('抱歉，此拼音账号已存在，请在拼音之后添加3位的数字。');
+					$("#pinyinCheck span").text('抱歉，此拼音账号已存在，请在拼音之后添加1-3位的数字。');
 					$("#pinyinCheck").removeClass("hidden");
 					nameValid = false;
 				}else{
@@ -383,7 +383,7 @@ function mcheckPinyin(value){
 			dataType:"json",
 			success:function(data){
 				if(!data.info){
-					$("#mpinyinCheck span").text('抱歉，此拼音账号已存在，请在拼音之后添加3位的数字。');
+					$("#mpinyinCheck span").text('抱歉，此拼音账号已存在，请在拼音之后添加1-3位的数字。');
 					$("#mpinyinCheck").removeClass("hidden");
 					nameValid = false;
 				}else{
