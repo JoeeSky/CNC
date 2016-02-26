@@ -12,7 +12,11 @@ import org.apache.struts2.ServletActionContext;
 import org.json.JSONObject;
 import org.nfmedia.crms.domain.Demander;
 import org.nfmedia.crms.domain.Resource;
+import org.nfmedia.crms.domain.Role;
+import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.service.DemanderService;
+import org.nfmedia.crms.service.DictService;
+import org.nfmedia.crms.service.UserService;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -36,6 +40,8 @@ public class DemanderAction extends ActionSupport{
 
 	private Demander demander;
 	private DemanderService demanderService;
+	private UserService userService;
+	private DictService dictService;
 	
 	private void sentMsg(String content) throws IOException{
 		HttpServletResponse response=ServletActionContext.getResponse();
@@ -53,6 +59,22 @@ public class DemanderAction extends ActionSupport{
 	
 	public String add() throws Exception{
 		demanderService.addDemander(demander);
+		
+		User user = new User();
+		user.setAccount(demander.getPinyin());
+		user.setPassword(dictService.getDictByGroupAndName("system", "initialPassword"));
+		user.setName(demander.getName());
+		user.setStatus("F");
+		user.setCellphone(demander.getMobile());
+		user.setEmail(demander.getEmail());
+		Role role = new Role();
+		role.setId(Integer.valueOf(dictService.getDictByGroupAndName("system", "tryUserRoleId")));
+		user.setRole(role);
+		user.setCompanyId(demander.getId());
+		user.setCompanyType("demander");
+		userService.addUser(user);
+		
+		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("info", true);
 		sentMsg(jsonObject.toString());
@@ -187,5 +209,22 @@ public class DemanderAction extends ActionSupport{
 	public void setDemanderService(DemanderService demanderService) {
 		this.demanderService = demanderService;
 	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public DictService getDictService() {
+		return dictService;
+	}
+
+	public void setDictService(DictService dictService) {
+		this.dictService = dictService;
+	}
+	
 	
 }
