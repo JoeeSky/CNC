@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <base href="<%=basePath%>">
     
     <title>接收机加工任务</title>
-    
+    <link rel="stylesheet" href="css/daterangepicker-bs3.css">
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -37,31 +37,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 			<fieldset>
 				<legend>查询条件</legend>
-				<div class="col-sm-2">
+				<div class="row col-md-3" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">时间</div>
-						<input type="text" class="form-control" name="time">
+						<input type="text" id="time" class="form-control" name="time">
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">任务名</div>
 						<input type="text" class="form-control" name="taskName">						
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">需求方</div>
 						<input type="text" class="form-control" name="demander">						
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">操作员</div>
 						<input type="text" class="form-control" name="manufacturerUser">						
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">状态</div>
 						<select id="status" name="status" class="form-control">	
@@ -69,9 +69,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</select>						
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<div>
 					<button class="btn btn-primary btn-sm" id="query">查询</button>
-					<button class="btn btn-danger btn-sm" id="refresh">清除</button>
+					<button class="btn btn-danger btn-sm" id="refresh">重置</button>
 				</div>
 			</fieldset>
 		<!-- 条件搜索 end-->
@@ -122,7 +122,46 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="js/jquery.jqGrid.min.js"></script>
 	<script src="js/jquery.jqGrid.fluid.js"></script>
 	<script src="js/king-common.js"></script>
+	<script src="js/moment.min.js"></script>
+	<script src="js/daterangepicker.js"></script>
 	<script>
+	
+		var  dateRangeSQL ="";
+			//时间范围控件
+			$("#time").daterangepicker({
+				format: 'YYYY/MM/DD',
+				showDropdowns: !0,
+				ranges: {
+	                "今天": [moment(), moment()],
+	                "过去一周": [moment().subtract("days", 6), moment()],
+	                "本周":[moment().startOf("week"), moment().endOf("week")],
+	                "上周":[moment().subtract("week",1).startOf("week"), moment().subtract("week", 1).endOf("week")],
+	                "过去30天": [moment().subtract("days", 29), moment()],
+	                "本月": [moment().startOf("month"), moment().endOf("month")],
+	                "上月": [moment().subtract("month", 1).startOf("month"), moment().subtract("month", 1).endOf("month")]
+	            },
+	            separator: " 至 ", 
+	            locale: {
+	                applyLabel: "确认",
+	                cancelLabel: "清除",
+	                fromLabel: "起始",
+	                toLabel: "截止",
+	                customRangeLabel: "自定义",
+	                daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
+	                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+	                firstDay: 1
+	            }
+			});
+			$('#time').on('cancel.daterangepicker', function(ev, picker) {
+				  //do something, like clearing an input
+				  $('#time').val('');
+				  dateRangeSQL = "";
+				});
+				$('#time').on('apply.daterangepicker', function(ev, picker) {
+				 // console.log("start:"+picker.startDate.format('YYYY-MM-DD')+"\nend:"+picker.endDate.format('YYYY-MM-DD'));
+				  dateRangeSQL = "m.modifyTime between '"+picker.startDate.format('YYYY-MM-DD')+"' and '"+picker.endDate.format('YYYY-MM-DD')+"'  ";
+				});
+				
 	    function  manufacturerUser(id){
 	    	$("#manufacturerUser-jqgrid").jqGrid('setGridParam',{datatype:'json',url:"userManage/getUserListByCompanyIdAndCompanyType.ajax"}).trigger("reloadGrid");
 			$("#modal-id").modal('show');
@@ -134,7 +173,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					type:"get",
 					dataType:"json",
 					success:function(data){
-						alert('操作成功');
+						$("#jqgrid").trigger("reloadGrid",[{page:1,current:true}]);
 					},
 					error:function(data){
 						alert('操作失败！');
@@ -148,7 +187,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					type:"get",
 					dataType:"json",
 					success:function(data){
-						alert('操作成功');
+						$("#jqgrid").trigger("reloadGrid",[{page:1,current:true}]);
 					},
 					error:function(data){
 						alert('操作失败！');
@@ -176,7 +215,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		pager: "jqgrid-pager",
         		multiselect: 0,
         		editurl:"userManage/editUser.ajax",
-        		sortname:"account",
+        		sortname:"id",
         		sortorder: "asc",
         		viewrecords: !0,
         		colModel:[{
@@ -187,12 +226,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		},{
         			name:"time",
         			index:"time",
-        			width:"12%",
-        			align:"center"
+        			width:"10%",
+        			align:"center",
         		},{
         			name:"demander",
         			index:"demander",
-        			width:"26%",
+        			width:"22%",
         			align:"center"
         		},{
         			name:"manufacturerUser",
@@ -213,8 +252,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         			name:"operation",
         			sortable: !1,
         			search: !1,
-        			width:"10%",
-        			align:"center"
+        			width:"14%",
+        			align:"left"
         		}],
         		gridComplete: function(){
         			var ids = $("#jqgrid").jqGrid("getDataIDs");
@@ -232,8 +271,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         					t.jqGrid('setRowData',ids[i],{state:accept+refuse});
         				}
         				if(state=="已接受" && resultState=="未完成"){
-        					load = '<button class="btn btn-info btn-xs">下载文件</button>';
-                        	t.jqGrid('setRowData',ids[i],{operation:load});
+        					browse='<button class="btn btn-primary btn-xs">任务预览</button>';
+        					load = '<button class="btn btn-info btn-xs" style="margin-left:2px">下载文件</button>';
+                        	t.jqGrid('setRowData',ids[i],{operation:browse+load});
+        				}else{
+        					browse='<button class="btn btn-primary btn-xs">任务预览</button>';
+                        	t.jqGrid('setRowData',ids[i],{operation:browse});
         				}
                     }
         		}
@@ -259,7 +302,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		$.extend(t[0].p.postData,{searchString:"",searchField:"",searchOper:""});
 		    	}else{
 		    	t[0].p.search = true;
-		    		searchFilter = " where ( m.taskName like '%"+searchFilter+"%' or m.demander.name like '%"+searchFilter+"%' or m.manufacturerUser.name like '%"+searchFilter+"%' or m.status.name like '%"+searchFilter+"%' or m.resultStatus.name like '%"+searchFilter+"%' ) ";
+		    		searchFilter = " where ( m.taskName like '%"+searchFilter+"%' or m.demander.name like '%"+searchFilter+"%' or m.manufacturerUser.name like '%"+searchFilter+"%' or m.status.name like '%"+searchFilter+"%' or m.resultStatus.name like '%"+searchFilter+"%' or  m.modifyTime like '%"+searchFilter+"%' ) ";
 		    		$.extend(t[0].p.postData,{searchString:searchFilter,searchField:"allfieldsearch",searchOper:"cn"});
 		    	}
 		    	t.trigger("reloadGrid",[{page:1,current:true}]);
@@ -277,6 +320,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		$.extend(t[0].p.postData,{searchString:"",searchField:"",searchOper:""});
 		    	}else{
 		    		var searchFilter = " where (";
+		    		if(dateRangeSQL!==""){
+		    			searchFilter += dateRangeSQL + " and ";
+		    		}
 		    		if(taskName!==""){
 		    			searchFilter += " m.taskName like '%"+taskName+"%' and ";
 		    		}

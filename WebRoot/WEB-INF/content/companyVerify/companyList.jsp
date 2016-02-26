@@ -164,7 +164,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		gridComplete: function(){
         			var ids = $("#jqgrid").jqGrid("getDataIDs");
         			for(var i=0;i < ids.length;i++){
-        				alter = '<button class="btn btn-info btn-xs" onclick="verifyClick('+ids[i]+')")>进行审核</button>';
+        				alter = '<button class="btn btn-info btn-xs" onclick="verifyClick('+ids[i]+')">进行审核</button>';
         				//alter = '<button class="btn btn-info btn-xs" onclick=window.open(\'userManage/userInfoDo?tid='+ids[i]+'\')>进行审核</button>';
         				//alter = '<button class="btn btn-info btn-xs" onclick="location.href=\'userManage/userInfoDo?tid='+ids[i]+'\'">进行审核</button>';
                         //delet = '<button class="btn btn-danger btn-xs" onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';

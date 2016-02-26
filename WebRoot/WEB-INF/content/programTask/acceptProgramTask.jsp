@@ -10,12 +10,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <base href="<%=basePath%>">
     
     <title>接收G代码任务</title>
-    
+     <link rel="stylesheet" href="css/daterangepicker-bs3.css">
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
+	
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
@@ -37,31 +38,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 			<fieldset>
 				<legend>查询条件</legend>
-				<div class="col-sm-2">
+				<div class="row col-md-3" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">时间</div>
-						<input type="text" class="form-control" name="time">
+						<input type="text" id="time" class="form-control">
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">任务名</div>
 						<input type="text" class="form-control" name="taskName">						
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">需求方</div>
 						<input type="text" class="form-control" name="demander">						
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">编程人员</div>
 						<input type="text" class="form-control" name="cncUser">						
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">状态</div>
 						<select id="status" name="status" class="form-control">
@@ -69,7 +70,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</select>						
 					</div>
 				</div>
-				<div class="col-sm-2">
+				<div>
 					<button class="btn btn-primary btn-sm" id="query">查询</button>
 					<button class="btn btn-danger btn-sm" id="refresh">刷新</button>
 				</div>
@@ -103,7 +104,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    </div>  
 				    <div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> 取消</button>
-						<button id="ok" type="button" class="btn btn-custom-primary"><i class="fa fa-check-circle"></i> 确认</button>
+						<button id="ok" type="button" class="btn btn-custom-primary"><i class="fa fa-check-circle"></i>重置</button>
 					</div>  
 				</div>
 			</div><!-- /.modal-content -->
@@ -123,7 +124,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="js/jquery.jqGrid.min.js"></script>
 	<script src="js/jquery.jqGrid.fluid.js"></script>
 	<script src="js/king-common.js"></script>
+	<script src="js/moment.min.js"></script>
+	<script src="js/daterangepicker.js"></script>
 	<script>
+			var  dateRangeSQL ="";
+			//时间范围控件
+			$("#time").daterangepicker({
+				format: 'YYYY/MM/DD',
+				showDropdowns: !0,
+				ranges: {
+	                "今天": [moment(), moment()],
+	                "过去一周": [moment().subtract("days", 6), moment()],
+	                "本周":[moment().startOf("week"), moment().endOf("week")],
+	                "上周":[moment().subtract("week",1).startOf("week"), moment().subtract("week", 1).endOf("week")],
+	                "过去30天": [moment().subtract("days", 29), moment()],
+	                "本月": [moment().startOf("month"), moment().endOf("month")],
+	                "上月": [moment().subtract("month", 1).startOf("month"), moment().subtract("month", 1).endOf("month")]
+	            },
+	            separator: " 至 ", 
+	            locale: {
+	                applyLabel: "确认",
+	                cancelLabel: "清除",
+	                fromLabel: "起始",
+	                toLabel: "截止",
+	                customRangeLabel: "自定义",
+	                daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
+	                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+	                firstDay: 1
+	            }
+			});
+			$('#time').on('cancel.daterangepicker', function(ev, picker) {
+				  //do something, like clearing an input
+				  $('#time').val('');
+				  dateRangeSQL = "";
+				});
+				$('#time').on('apply.daterangepicker', function(ev, picker) {
+				  console.log("start:"+picker.startDate.format('YYYY-MM-DD')+"\nend:"+picker.endDate.format('YYYY-MM-DD'));
+				  dateRangeSQL = "p.issueTime between '"+picker.startDate.format('YYYY-MM-DD')+"' and '"+picker.endDate.format('YYYY-MM-DD')+"'  ";
+				});
+	
 	    function cncUser(id){ //选择cnc编程人员
 	    	$("#cncUser-jqgrid").jqGrid('setGridParam',{datatype:'json',url:"userManage/getUserListByCompanyIdAndCompanyType.ajax"}).trigger("reloadGrid");
 	    	$("#modal-id").modal('show');
@@ -134,7 +173,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					type:"get",
 					dataType:"json",
 					success:function(data){
-						alert('操作成功');
+						$("#jqgrid").trigger("reloadGrid",[{page:1,current:true}]);
 					},
 					error:function(data){
 						alert('操作失败！');
@@ -148,7 +187,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					type:"get",
 					dataType:"json",
 					success:function(data){
-						alert('操作成功');
+						$("#jqgrid").trigger("reloadGrid",[{page:1,current:true}]);
 					},
 					error:function(data){
 						alert('操作失败！');
@@ -176,7 +215,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		pager: "jqgrid-pager",
         		multiselect: 0,
         		//editurl:"userManage/editUser.ajax",
-        		sortname:"account",
+        		sortname:"issueTime",
         		sortorder: "asc",
         		viewrecords: !0,
         		colModel:[{
@@ -187,7 +226,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		},{
         			name:"time",
         			index:"time",
-        			width:"10%",
+        			width:"8%",
         			align:"center"
         		},{
         			name:"demander",
@@ -202,18 +241,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		},{
         			name:"state",
         			index:"state",
-        			width:"12%",
+        			width:"10%",
         			align:"center"
         		},{
         			name:"resultState",
         			index:"resultState",
-        			width:"8%",
+        			width:"7%",
         			align:"center"
         		},{
         			name:"operation",
         			sortable: !1,
         			search: !1,
-        			width:"22%",
+        			width:"27%",
         			align:"left"
         		}],
         		gridComplete: function(){
@@ -230,14 +269,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         					accept='<button class="btn btn-success btn-xs" onclick="acceptTask('+ids[i]+')">接受</button>';
         					refuse='<button class="btn btn-danger btn-xs" style="margin-left:2px" onclick="refuseTask('+ids[i]+')">拒绝</button>';
         					t.jqGrid('setRowData',ids[i],{state:accept+refuse});
-        					browse='<button class="btn btn-primary btn-xs">任务预览</button>';
+        					browse='<button class="btn btn-primary btn-xs" onclick="location.href=\'programTask/programTaskInfo?tid='+ids[i]+'\'">任务预览</button>';
         					t.jqGrid('setRowData',ids[i],{operation:browse});	
         				}
 						if(resultState=="未完成"){
-        					browse='<button class="btn btn-primary btn-xs">任务预览</button>';
-	                        load = '<button class="btn btn-info btn-xs" style="margin-left:2px">下载文件</button>';
-	                        upload = '<button class="btn btn-success btn-xs" style="margin-left:2px">上传文件</button>';
-	                        t.jqGrid('setRowData',ids[i],{operation:browse+load+upload});   
+        					browse='<button class="btn btn-primary btn-xs" onclick="location.href=\'programTask/programTaskInfo?tid='+ids[i]+'\'">任务预览</button>';
+	                        load = '<button class="btn btn-info btn-xs" style="margin-left:2px">下载任务</button>';
+	                        upload = '<button class="btn btn-success btn-xs" style="margin-left:2px">上传结果</button>';
+	                        alter = '<button class="btn btn-info btn-xs" style="margin-left:2px">修改结果</button>';
+	                        t.jqGrid('setRowData',ids[i],{operation:browse+load+upload+alter});   
         				}
                     }
         		}
@@ -265,7 +305,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		$.extend(t[0].p.postData,{searchString:"",searchField:"",searchOper:""});
 		    	}else{
 		    	t[0].p.search = true;
-		    		searchFilter = " where ( p.taskName like '%"+searchFilter+"%' or p.demander.name like '%"+searchFilter+"%' or p.cncUser.name like '%"+searchFilter+"%' or p.status.name like '%"+searchFilter+"%' or p.resultStatus.name like '%"+searchFilter+"%' ) ";
+		    		searchFilter = " where ( p.taskName like '%"+searchFilter+"%' or p.demander.name like '%"+searchFilter+"%' or p.cncUser.name like '%"+searchFilter+"%' or p.status.name like '%"+searchFilter+"%' or p.resultStatus.name like '%"+searchFilter+"%'  or p.issueTime like '%"+searchFilter+"%'  ) ";
 		    		$.extend(t[0].p.postData,{searchString:searchFilter,searchField:"allfieldsearch",searchOper:"cn"});
 		    	}
 		    	t.trigger("reloadGrid",[{page:1,current:true}]);
@@ -283,6 +323,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		$.extend(t[0].p.postData,{searchString:"",searchField:"",searchOper:""});
 		    	}else{
 		    		var searchFilter = " where ";
+		    		if(dateRangeSQL!==""){
+		    			searchFilter += dateRangeSQL + " and ";
+		    		}
 		    		if(taskName!==""){
 		    			searchFilter += " p.taskName like '%"+taskName+"%' and ";
 		    		}

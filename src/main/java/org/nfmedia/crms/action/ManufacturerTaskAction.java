@@ -19,11 +19,18 @@ import org.nfmedia.crms.cons.CommonConstant;
 import org.nfmedia.crms.service.ManufacturerTaskDetailsService;
 import org.nfmedia.crms.service.ManufacturerTaskService;
 import org.nfmedia.crms.service.ProgramTaskService;
+import org.nfmedia.crms.util.PageUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ManufacturerTaskAction extends ActionSupport{
+	
+	private int page;
+	private String sidx;
+	private String sord;
+	private int rows;
+	
 	private boolean _search;
 	private ManufacturerTaskService manufacturerTaskService;
 	private ProgramTaskService programTaskService;
@@ -36,7 +43,8 @@ public class ManufacturerTaskAction extends ActionSupport{
 	private File upload;
 	private String uploadFileName;
 	private String taskFilePath;
-	private int manufacturerTaskId1;
+	private int manufacturerTaskId;
+	private int manufacturerId;
 	
 	private void sentMsg(String content) throws IOException {
 		HttpServletResponse response=ServletActionContext.getResponse();
@@ -49,17 +57,18 @@ public class ManufacturerTaskAction extends ActionSupport{
 	}  
 	 
 	public String  taskBrowse() throws Exception{
-		List result = null;
+		PageUtil result = null;
 		if(_search == false){
-				result=manufacturerTaskService.getManufacturerTaskList();
+				result=manufacturerTaskService.getManufacturerTaskList(sidx, sord, page, rows);
 		}else{
-			result=manufacturerTaskService.getManufacturerTaskListByKeyword(searchString);
+			    result=manufacturerTaskService.getManufacturerTaskListByKeyword(searchString,sidx, sord, page, rows);
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		JSONObject jsonObject = new JSONObject();
 		JSONArray jsonArray = new JSONArray();
-		for(int i=0,size=result.size();i<size;i++){
-			Object[] row = (Object[])result.get(i);
+		List data = result.getResult();
+		for(int i=0,size=data.size();i<size;i++){
+			Object[] row = (Object[])data.get(i);
 			JSONObject jsonObject2 = new JSONObject();
 			jsonObject2.put("id", row[0]); //加入id
 			
@@ -80,17 +89,18 @@ public class ManufacturerTaskAction extends ActionSupport{
 	}
 	
 	public String  taskResultBrowse() throws Exception{
-		List result = null;
+		PageUtil result = null;
 		if(_search == false){
-			result=manufacturerTaskService.getManufacturerTaskResultList();
+			result=manufacturerTaskService.getManufacturerTaskResultList(sidx, sord, page, rows);
 		}else{
-			result=manufacturerTaskService.getManufacturerTaskResultListByKeyword(searchString);
+			result=manufacturerTaskService.getManufacturerTaskResultListByKeyword(searchString,sidx, sord, page, rows);
 		}
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 		JSONObject jsonObject = new JSONObject();
 		JSONArray jsonArray = new JSONArray();
-		for(int i=0,size=result.size();i<size;i++){
-			Object[] row = (Object[])result.get(i);
+		List data = result.getResult();
+		for(int i=0,size=data.size();i<size;i++){
+			Object[] row = (Object[])data.get(i);
 			JSONObject jsonObject2 = new JSONObject();
 			jsonObject2.put("id", row[0]); //加入id
 			JSONArray jsonArray2 = new JSONArray(); //求取cell
@@ -155,7 +165,7 @@ public class ManufacturerTaskAction extends ActionSupport{
 	        fos.close();
 	        fis.close();
 		}
-		manufacturerTaskDetailsService.add(manufacturerTaskId1,fileType,uploadFileName,taskFilePath+"/"+uploadFileName);
+		manufacturerTaskDetailsService.add(manufacturerTaskId,fileType,uploadFileName,taskFilePath+"/"+uploadFileName);
 		//建立文件上传的缓存读和写的流
 		/*FileOutputStream fos = new FileOutputStream(filePath+"/"+fileName);
 		BufferedOutputStream outputStream = new BufferedOutputStream(fos);*/
@@ -197,7 +207,13 @@ public class ManufacturerTaskAction extends ActionSupport{
 		sentMsg(jsonObject.toString());
 		return null;
 	}
-	
+	public String sureSelectManufacturer() throws Exception{
+		manufacturerTaskService.SelectManufacturer(manufacturerTaskId,manufacturerId);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("info", true);
+		sentMsg(jsonObject.toString());
+		return null;
+	}
 	public String manufacturerTaskComplete() throws Exception{
 		manufacturerTaskService.manufacturerTaskComplete(tid);
 		JSONObject jsonObject = new JSONObject();
@@ -220,6 +236,39 @@ public class ManufacturerTaskAction extends ActionSupport{
 		jsonObject.put("info", true);
 		sentMsg(jsonObject.toString());
 		return null;
+	}
+
+	
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public String getSidx() {
+		return sidx;
+	}
+
+	public void setSidx(String sidx) {
+		this.sidx = sidx;
+	}
+
+	public String getSord() {
+		return sord;
+	}
+
+	public void setSord(String sord) {
+		this.sord = sord;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public void setRows(int rows) {
+		this.rows = rows;
 	}
 
 	public void set_search(boolean _search) {
@@ -297,18 +346,26 @@ public class ManufacturerTaskAction extends ActionSupport{
 	public void setTaskFilePath(String taskFilePath) {
 		this.taskFilePath = taskFilePath;
 	}
-
-	public int getProgramTaskId() {
-		return manufacturerTaskId1;
+	
+	public int getManufacturerTaskId() {
+		return manufacturerTaskId;
 	}
 
-	public void setProgramTaskId(int manufacturerTaskId1) {
-		this.manufacturerTaskId1 = manufacturerTaskId1;
+	public void setManufacturerTaskId(int manufacturerTaskId) {
+		this.manufacturerTaskId = manufacturerTaskId;
 	}
 
 	public void setManufacturerTaskDetailsService(
 			ManufacturerTaskDetailsService manufacturerTaskDetailsService) {
 		this.manufacturerTaskDetailsService = manufacturerTaskDetailsService;
+	}
+
+	public int getManufacturerId() {
+		return manufacturerId;
+	}
+
+	public void setManufacturerId(int manufacturerId) {
+		this.manufacturerId = manufacturerId;
 	}
 	
 	

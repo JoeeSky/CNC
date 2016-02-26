@@ -13,6 +13,8 @@
 		</action>
 		<action name="taskBrowse" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="taskBrowse">
 		</action>
+		<action name="sureSelectManufacturer" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="sureSelectManufacturer">
+		</action>
 		<action name="taskResultBrowse" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="taskResultBrowse">
 		</action>
 		<action name="delectManufacturer" class="org.nfmedia.crms.action.ManufacturerTaskAction" method="delectManufacturer">

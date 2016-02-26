@@ -46,5 +46,8 @@
 		</action>	
 		<action name="editManufacturerInfo" class="org.nfmedia.crms.action.VerifyAction" method="editManufacturerInfo">
 		</action>	
+		<action name="editCompany" class="org.nfmedia.crms.action.VerifyAction" method="editCompany">
+			<result name="success" type="redirectAction">${returnURL}</result>
+		</action>
 	</package>
 </struts>

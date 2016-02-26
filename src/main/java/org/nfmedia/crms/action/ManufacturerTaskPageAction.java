@@ -28,53 +28,14 @@ public class ManufacturerTaskPageAction extends ActionSupport {
 	}
 	
 	public String viewUploadManufacturerTaskPage() throws Exception{
-		ActionContext ctx = ActionContext.getContext();
-		TreeMap<String, List<Resource>> resourcesMap = (TreeMap<String, List<Resource>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Resource> lr = resourcesMap.get("机加工");
-		if(lr.size() == 1){
-			Resource resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"机加工","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"上传机加工任务","javascript:void(0);"});
-		}
-		ctx.put("breadCrumb",breadCrumb);
 		return SUCCESS;
 	}
 	
 	public String viewManufacturerTaskListPage() throws Exception{
-		ActionContext ctx = ActionContext.getContext();
-		TreeMap<String, List<Resource>> resourcesMap = (TreeMap<String, List<Resource>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Resource> lr = resourcesMap.get("机加工");
-		if(lr.size() == 1){
-			Resource resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"机加工","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"机加工任务列表","javascript:void(0);"});
-		}
-		ctx.put("breadCrumb",breadCrumb);
 		return SUCCESS;
 	}
 	
 	public String viewAcceptManufacturerTaskPage() throws Exception{
-		ActionContext ctx = ActionContext.getContext();
-		TreeMap<String, List<Resource>> resourcesMap = (TreeMap<String, List<Resource>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Resource> lr = resourcesMap.get("机加工");
-		if(lr.size() == 1){
-			Resource resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"机加工","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"接收机加工任务","javascript:void(0);"});
-		}
-		ctx.put("breadCrumb",breadCrumb);
 		return SUCCESS;
 	}
 	

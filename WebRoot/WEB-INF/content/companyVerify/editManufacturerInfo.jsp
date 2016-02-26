@@ -64,14 +64,14 @@
 	<script>
 	if(<s:property value="manufacturer.verifystatus"/>==0){
 		$("#verifystatus").val("未审核");
-		var btn=$("<button type='button' onclick='passVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:8%'>通过审核</button><button type='button' onclick='noPassVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:5%'> 不通过审核</button>");
-		$("#button").append(btn);
+		//var btn=$("<button type='button' onclick='passVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:8%'>通过审核</button><button type='button' onclick='noPassVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:5%'> 不通过审核</button>");
+		//$("#button").append(btn);
 	}else if(<s:property value="manufacturer.verifystatus"/>==1){
 		$("#verifystatus").val("审核通过");
 	}else{
 		$("#verifystatus").val("审核未通过");
-		var btn=$("<button type='button' onclick='passVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:12%'>通过审核</button>");
-		$("#button").append(btn);
+		//var btn=$("<button type='button' onclick='passVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:12%'>通过审核</button>");
+		//$("#button").append(btn);
 	}
 	
 		$(document).ready(function(){

@@ -9,20 +9,20 @@ import java.util.TreeMap;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.nfmedia.crms.domain.Manufacturer;
+import org.nfmedia.crms.domain.Demander;
+import org.nfmedia.crms.domain.Resource;
 import org.nfmedia.crms.domain.Role;
 import org.nfmedia.crms.domain.User;
+import org.nfmedia.crms.service.DemanderService;
 import org.nfmedia.crms.service.DictService;
-import org.nfmedia.crms.service.ManufacturerService;
 import org.nfmedia.crms.service.UserService;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 @SuppressWarnings({"serial","rawtypes","unchecked"})
-public class ManufacturerAction extends ActionSupport{
+public class DemanderAction extends ActionSupport{
 	private Integer id;
 	private String name;
 	private String description;
@@ -36,8 +36,10 @@ public class ManufacturerAction extends ActionSupport{
 	private String logo;
 	private String url;
 	
-	private Manufacturer manufacturer;
-	private ManufacturerService manufacturerService;
+
+
+	private Demander demander;
+	private DemanderService demanderService;
 	private UserService userService;
 	private DictService dictService;
 	
@@ -55,43 +57,23 @@ public class ManufacturerAction extends ActionSupport{
 		return SUCCESS;
 	}
 	
-	public String getManufacturerList() throws Exception{
-		List result=null;
-		result=manufacturerService.getManufacturerList();
-		JSONObject jsonObject = new JSONObject();
-		JSONArray jsonArray = new JSONArray();
-		for(int i=0,size=result.size();i<size;i++){
-			Object[] row = (Object[])result.get(i);
-			JSONObject jsonObject2 = new JSONObject();
-			jsonObject2.put("id", row[0]); //加入id
-			JSONArray jsonArray2 = new JSONArray(); //求取cell
-			jsonArray2.put(row[1]);//manufacturer公司名
-			jsonArray2.put(row[2]);//描述
-			jsonObject2.put("cell", jsonArray2); //加入cell
-			jsonArray.put(jsonObject2);	
-		}
-		jsonObject.put("rows", jsonArray); //加入rows
-		sentMsg(jsonObject.toString());
-		return null;
-	}
-
-	
 	public String add() throws Exception{
-		manufacturerService.addManufacturer(manufacturer);
+		demanderService.addDemander(demander);
 		
 		User user = new User();
-		user.setAccount(manufacturer.getPinyin());
+		user.setAccount(demander.getPinyin());
 		user.setPassword(dictService.getDictByGroupAndName("system", "initialPassword"));
-		user.setName(manufacturer.getName());
+		user.setName(demander.getName());
 		user.setStatus("F");
-		user.setCellphone(manufacturer.getMobile());
-		user.setEmail(manufacturer.getEmail());
+		user.setCellphone(demander.getMobile());
+		user.setEmail(demander.getEmail());
 		Role role = new Role();
 		role.setId(Integer.valueOf(dictService.getDictByGroupAndName("system", "tryUserRoleId")));
 		user.setRole(role);
-		user.setCompanyId(manufacturer.getId());
-		user.setCompanyType("manufacturer");
+		user.setCompanyId(demander.getId());
+		user.setCompanyType("demander");
 		userService.addUser(user);
+		
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("info", true);
@@ -100,21 +82,21 @@ public class ManufacturerAction extends ActionSupport{
 	}
 	
 	public String checkName() throws Exception{
-		Manufacturer mm = manufacturerService.loadManufacturerByName(name);
+		Demander dd = demanderService.loadDemanderByName(name);
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("info", mm == null);
-		sentMsg(jsonObject.toString());
-		return null;
-	}
-	
-	public String checkPinyin() throws Exception{
-		Manufacturer mm = manufacturerService.loadManufacturerByPinyin(pinyin);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("info", mm == null);
+		jsonObject.put("info", dd == null);
 		sentMsg(jsonObject.toString());
 		return null;
 	}
 
+	public String checkPinyin() throws Exception{
+		Demander dd = demanderService.loadDemanderByPinyin(pinyin);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("info", dd == null);
+		sentMsg(jsonObject.toString());
+		return null;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -211,20 +193,21 @@ public class ManufacturerAction extends ActionSupport{
 		this.url = url;
 	}
 
-	public Manufacturer getManufacturer() {
-		return manufacturer;
+
+	public Demander getDemander() {
+		return demander;
 	}
 
-	public void setManufacturer(Manufacturer manufacturer) {
-		this.manufacturer = manufacturer;
+	public void setDemander(Demander demander) {
+		this.demander = demander;
 	}
 
-	public ManufacturerService getManufacturerService() {
-		return manufacturerService;
+	public DemanderService getDemanderService() {
+		return demanderService;
 	}
 
-	public void setManufacturerService(ManufacturerService manufacturerService) {
-		this.manufacturerService = manufacturerService;
+	public void setDemanderService(DemanderService demanderService) {
+		this.demanderService = demanderService;
 	}
 
 	public UserService getUserService() {
@@ -242,7 +225,6 @@ public class ManufacturerAction extends ActionSupport{
 	public void setDictService(DictService dictService) {
 		this.dictService = dictService;
 	}
-
-
+	
 	
 }
