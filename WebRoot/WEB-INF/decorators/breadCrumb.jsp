@@ -7,7 +7,7 @@
 		<s:if test="#st.last">
 			<li class="active"><s:property value="[0].top[0]"/></li>
 		</s:if><s:else>
-			<li><a href='<s:property value="[0].top[1]"/>'><s:property value="[0].top[0]"/></a></li>
+			<li><s:property value="[0].top[0]"/></li>
 		</s:else>
 	</s:iterator>
 </ul>

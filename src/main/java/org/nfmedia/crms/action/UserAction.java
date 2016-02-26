@@ -2,6 +2,7 @@ package org.nfmedia.crms.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +13,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nfmedia.crms.cons.CommonConstant;
 import org.nfmedia.crms.domain.User;
+import org.nfmedia.crms.service.CncService;
+import org.nfmedia.crms.service.DemanderService;
 import org.nfmedia.crms.service.DictService;
+import org.nfmedia.crms.service.ManufacturerService;
 import org.nfmedia.crms.service.RoleService;
 import org.nfmedia.crms.service.UserService;
+import org.nfmedia.crms.util.LoginUtil;
 import org.nfmedia.crms.util.PageToJson;
 import org.nfmedia.crms.util.PageUtil;
 
@@ -36,6 +41,7 @@ public class UserAction extends ActionSupport {
 	private String oldPassword;
 	private String newPassword;
 	private String repeatedNewPassword;
+	private String companyType;
 	
 	private int page;
 	private String sidx;
@@ -52,6 +58,9 @@ public class UserAction extends ActionSupport {
 	private UserService userService;
 	private RoleService roleService;
 	private DictService dictService;
+	private CncService cncService;
+	private DemanderService demanderService;
+	private ManufacturerService manufacturerService;
 	
 	private void sentMsg(String content) throws IOException{
 		HttpServletResponse response=ServletActionContext.getResponse();
@@ -158,6 +167,14 @@ public class UserAction extends ActionSupport {
 		ctx.put("roles", roleService.getAllRoles());
 		ctx.put("companyType", dictService.getDictsByWordGroup("companyType"));
 		ctx.put("userStatus", dictService.getDictsByWordGroup("userStatus"));
+		
+		List<Object[]> ls=new ArrayList<Object[]>();
+		if(user.getCompanyType().equals("cnc")) ls=cncService.getCncList();
+		else if(user.getCompanyType().equals("demander")) ls=demanderService.getDemanderList();
+		else if(user.getCompanyType().equals("manufacturer")) ls=manufacturerService.getManufacturerList();
+		
+		ctx.put("companyList", ls);
+		
 		return SUCCESS;
 	}
 	
@@ -169,11 +186,58 @@ public class UserAction extends ActionSupport {
 		return null;
 	}
 	
-	public String updateInitPassword()throws Exception{
-		Map session = ActionContext.getContext().getSession();
-		userService.updateInitPassword((Integer) session.get(CommonConstant.SESSION_ID), newPassword);
+	public String updatePasswordInput() throws Exception{
+		return SUCCESS;
+	}
+	
+	public String updatePassword() throws Exception{
+		userService.updatePassword(user.getId(),user.getPassword());
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("info", true);
+		sentMsg(jsonObject.toString());
+		return null;
+	}
+	
+	public String updateInitPasswordInput() throws Exception{
+		return SUCCESS;
+	}
+	
+	public String updateInitPassword() throws Exception{
+		JSONObject jsonObject = new JSONObject();
+		if(newPassword.equals(repeatedNewPassword)){
+			userService.updateInitPassword(user.getId(), newPassword);
+			jsonObject.put("info", true);
+		}
+		else{
+			jsonObject.put("info", false);
+			jsonObject.put("msg", "修改失败，两次输入的密码不同");
+		}
+		
+		
+		sentMsg(jsonObject.toString());
+		return null;
+	}
+	
+	public String updateMyPasswordInput() throws Exception{
+		return SUCCESS;
+	}
+	
+	public String updateMyPassword() throws Exception{
+		JSONObject jsonObject = new JSONObject();
+		if(!userService.checkPsw(LoginUtil.getUserId(), oldPassword)){
+			jsonObject.put("info", false);
+			jsonObject.put("msg", "修改失败，原密码不正确");
+		}
+		else if(!newPassword.equals(repeatedNewPassword)){
+			jsonObject.put("info", false);
+			jsonObject.put("msg", "修改失败，两次输入的密码不同");
+		}
+		else {
+			userService.updatePassword(LoginUtil.getUserId(), newPassword);
+			jsonObject.put("info", true);
+		}
+		
+		
 		sentMsg(jsonObject.toString());
 		return null;
 	}
@@ -184,6 +248,25 @@ public class UserAction extends ActionSupport {
 			Integer id = new Integer(ids[i]);
 			userService.deleteUserByID(id);
 		}
+		return null;
+	}
+	
+	public String companyListAjax() throws Exception{
+		JSONArray rows = new JSONArray();
+		List<Object[]> ls=new ArrayList<Object[]>();
+		if(companyType.equals("cnc")) ls=cncService.getCncList();
+		else if(companyType.equals("demander")) ls=demanderService.getDemanderList();
+		else if(companyType.equals("manufacturer")) ls=manufacturerService.getManufacturerList();
+		
+		for(Object[] objs :ls){
+			JSONObject row=new JSONObject();
+			row.put("id", (Integer)objs[0]);
+			row.put("name", (String)objs[1]);
+			rows.put(row);
+		}
+		
+		sentMsg(rows.toString());
+		
 		return null;
 	}
 	
@@ -203,15 +286,7 @@ public class UserAction extends ActionSupport {
 		return null;
 	}
 	
-	public String updateMyPassword() throws Exception{
-		Map session = ActionContext.getContext().getSession();
-		JSONObject jsonObject = new JSONObject();
-		int result = userService.updatePassword((Integer) session.get(CommonConstant.SESSION_ID), oldPassword, newPassword, repeatedNewPassword);
-		jsonObject.put("state", result==0);
-		jsonObject.put("info", CommonConstant.UPDATE_MY_MESSAGE[result]);
-		sentMsg(jsonObject.toString());
-		return null;
-	}*/
+	*/
 
 
 	public String info() throws Exception{
@@ -231,6 +306,13 @@ public class UserAction extends ActionSupport {
 		ctx.put("breadCrumb",breadCrumb);*/
 		user = userService.loadUserByID(tid);
 		ctx.put("companyType", dictService.getDictByGroupAndName("companyType", user.getCompanyType()) );
+		
+		String companyName="";
+		if(user.getCompanyType().equals("cnc")) companyName=cncService.loadCncByID(user.getCompanyId()).getName();
+		else if(user.getCompanyType().equals("demander")) companyName=demanderService.loadDemanderByID(user.getCompanyId()).getName();
+		else if(user.getCompanyType().equals("manufacturer")) companyName=manufacturerService.loadManufacturerByID(user.getCompanyId()).getName();
+		ctx.put("companyName", companyName );
+		
 		ctx.put("userStatus", dictService.getDictByGroupAndName("userStatus", user.getStatus()) );
 		return SUCCESS;
 	}
@@ -240,14 +322,6 @@ public class UserAction extends ActionSupport {
 		User uu = userService.getUserByAccount(account);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("info", uu == null);
-		sentMsg(jsonObject.toString());
-		return null;
-	}
-	
-	public String resetPassword()throws Exception{
-		userService.resetPassword(tid, CommonConstant.INITIAL_PASSWORD);
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("info", true);
 		sentMsg(jsonObject.toString());
 		return null;
 	}
@@ -382,6 +456,14 @@ public class UserAction extends ActionSupport {
 		this.id = id;
 	}
 
+	public String getCompanyType() {
+		return companyType;
+	}
+
+	public void setCompanyType(String companyType) {
+		this.companyType = companyType;
+	}
+
 	public void setUserService(UserService userService) {
 		this.userService = userService;
 	}
@@ -392,6 +474,18 @@ public class UserAction extends ActionSupport {
 
 	public void setDictService(DictService dictService) {
 		this.dictService = dictService;
+	}
+
+	public void setCncService(CncService cncService) {
+		this.cncService = cncService;
+	}
+
+	public void setDemanderService(DemanderService demanderService) {
+		this.demanderService = demanderService;
+	}
+
+	public void setManufacturerService(ManufacturerService manufacturerService) {
+		this.manufacturerService = manufacturerService;
 	}
 	
 	

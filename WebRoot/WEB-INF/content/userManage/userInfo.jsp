@@ -23,7 +23,7 @@
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">公司</label>
-				<div class="col-sm-4"><p class="form-control-static"><s:property value="user.name"/></p></div>
+				<div class="col-sm-4"><p class="form-control-static"><s:property value="#request.companyName"/></p></div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">角色</label>

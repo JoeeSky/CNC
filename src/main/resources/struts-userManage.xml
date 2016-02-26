@@ -9,6 +9,9 @@
 		<action name="listAjax" class="org.nfmedia.crms.action.UserAction" method="listAjax">
 		</action>
 		
+		<action name="companyListAjax" class="org.nfmedia.crms.action.UserAction" method="companyListAjax">
+		</action>
+		
 		<action name="addInput" class="org.nfmedia.crms.action.UserAction" method="addInput">
 			<result>/WEB-INF/content/userManage/userAddInput.jsp</result>
 		</action>	
@@ -19,6 +22,24 @@
 			<result>/WEB-INF/content/userManage/userUpdateInput.jsp</result>
 		</action>
 		<action name="update" class="org.nfmedia.crms.action.UserAction" method="update">
+		</action>
+		
+		<action name="updatePasswordInput" class="org.nfmedia.crms.action.UserAction" method="updatePasswordInput">
+			<result>/WEB-INF/content/userManage/userUpdatePasswordInput.jsp</result>
+		</action>
+		<action name="updatePassword" class="org.nfmedia.crms.action.UserAction" method="updatePassword">
+		</action>
+		
+		<action name="updateInitPasswordInput" class="org.nfmedia.crms.action.UserAction" method="updateInitPasswordInput">
+			<result>/WEB-INF/content/userManage/userUpdateInitPasswordInput.jsp</result>
+		</action>
+		<action name="updateInitPassword" class="org.nfmedia.crms.action.UserAction" method="updateInitPassword">
+		</action>
+		
+		<action name="updateMyPasswordInput" class="org.nfmedia.crms.action.UserAction" method="updateMyPasswordInput">
+			<result>/WEB-INF/content/userManage/userUpdateMyPasswordInput.jsp</result>
+		</action>
+		<action name="updateMyPassword" class="org.nfmedia.crms.action.UserAction" method="updateMyPassword">
 		</action>
 		
 		<action name="info" class="org.nfmedia.crms.action.UserAction" method="info">

@@ -1,6 +1,7 @@
  package org.nfmedia.crms.service;
 
 import org.nfmedia.crms.cons.CommonConstant;
+import org.nfmedia.crms.dao.DictDao;
 import org.nfmedia.crms.dao.RoleDao;
 import org.nfmedia.crms.dao.UserDao;
 import org.nfmedia.crms.domain.User;
@@ -20,6 +21,8 @@ public class UserService {
 	private UserDao userDao;
 	@Autowired
 	private RoleDao roleDao;
+	@Autowired
+	private DictDao dictDao;
 	
 	public User loadUserByID(int id){
 		return userDao.load(id);
@@ -100,7 +103,13 @@ public class UserService {
 		userDao.update(ori);
 	}
 	
-	public int updatePassword(Integer id,String oldPassword,String newPassword,String repeatedNewPassword){
+	public void updatePassword(Integer id, String password){
+		User ori =userDao.load(id);
+		ori.setPassword(password);
+		userDao.update(ori);
+	}
+	
+	/*public int updatePassword(Integer id,String oldPassword,String newPassword,String repeatedNewPassword){
 		if(id == null){
 			return 1;
 		}
@@ -112,13 +121,13 @@ public class UserService {
 		user.setPassword(newPassword);
 		userDao.update(user);
 		return 0;
-	}
+	}*/
 	
 	public void updateInitPassword(Integer id,String password){
-		User user = userDao.load(id);
-		user.setPassword(password);
-		//user.setState(UserState.NORMAL);
-		userDao.update(user);
+		User ori =userDao.load(id);
+		ori.setPassword(password);
+		ori.setStatus("U");
+		userDao.update(ori);
 	}
 	
 	public void resetPassword(Integer id,String password){
@@ -135,11 +144,14 @@ public class UserService {
 	}
 	
 	public void addUser(User user){
-		user.setPassword(CommonConstant.INITIAL_PASSWORD);
-		if(user.getCellphone().equals(""))
+		if(user.getPassword()==null || user.getPassword().equals(""))
+			user.setPassword(dictDao.getDictByGroupAndName("system", "initialPassword"));
+		if(user.getStatus()==null || user.getStatus().equals(""))
+			user.setStatus("F");
+		/*if(user.getCellphone().equals(""))
 			user.setCellphone(null);
 		if(user.getEmail().equals(""))
-			user.setEmail(null);
+			user.setEmail(null);*/
 		/*if(user.getRole().getId() == null)
 			user.setRole(null);
 		else{

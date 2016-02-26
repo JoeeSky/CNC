@@ -22,7 +22,7 @@
 			<div class="form-group">
 				<label for="companyType" class="col-sm-3 control-label">公司类型<span class="text-danger">*</span></label>
 				<div class="col-sm-4">
-					<select class="form-control input-sm" name="user.companyType">
+					<select class="form-control input-sm" id="companyType" name="user.companyType">
 						<s:iterator value="#request.companyType">
 							<option value='<s:property value="[0].top[0]"/>' <s:if test='%{[0].top[0].equals(user.companyType)}'>selected</s:if> ><s:property value="[0].top[1]"/></option>
 						</s:iterator>
@@ -32,8 +32,8 @@
 			<div class="form-group">
 				<label for="companyId" class="col-sm-3 control-label">公司<span class="text-danger">*</span></label>
 				<div class="col-sm-4">
-					<select class="form-control input-sm" name="user.companyId">
-						<s:iterator value="#request.roles">
+					<select class="form-control input-sm" id="companyId" name="user.companyId">
+						<s:iterator value="#request.companyList">
 							<option value='<s:property value="[0].top[0]"/>'><s:property value="[0].top[1]"/></option>
 						</s:iterator>
 					</select>
@@ -99,7 +99,22 @@
 					}
 				})
 				
-			})
+			});
+			
+			$("#companyType").change(function(){
+				 $.ajax({
+						url:"userManage/companyListAjax.ajax?companyType="+$("#companyType").val(),
+						type:"get",
+						dataType:"json",
+						success:function(data){
+							$("#companyId option").remove();
+							
+							for(var key in data)
+								$("#companyId").append("<option value='"+data[key].id+"'>"+data[key].name+"</option>");
+						}
+				});
+				 
+			});
 		    
 		})
 		function goBack(){

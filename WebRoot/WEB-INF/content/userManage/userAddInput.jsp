@@ -36,7 +36,7 @@
 		<div class="form-group">
 			<label for="companyType" class="col-sm-3 control-label">公司类型<span class="text-danger">*</span></label>
 			<div class="col-sm-4">
-				<select class="form-control input-sm" name="user.companyType">
+				<select class="form-control input-sm" id="companyType" name="user.companyType">
 					<s:iterator value="#request.companyType">
 						<option value='<s:property value="[0].top[0]"/>'><s:property value="[0].top[1]"/></option>
 					</s:iterator>
@@ -46,10 +46,10 @@
 		<div class="form-group">
 			<label for="companyId" class="col-sm-3 control-label">公司<span class="text-danger">*</span></label>
 			<div class="col-sm-4">
-				<select class="form-control input-sm" name="user.companyId">
-					<s:iterator value="#request.roles">
+				<select class="form-control input-sm" id="companyId" name="user.companyId">
+					<%-- <s:iterator value="#request.roles">
 						<option value='<s:property value="[0].top[0]"/>'><s:property value="[0].top[1]"/></option>
-					</s:iterator>
+					</s:iterator> --%>
 				</select>
 			</div>
 		</div>
@@ -71,16 +71,7 @@
 			<label for="cellphone" class="col-sm-3 control-label">手机</label>
 			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="user.cellphone" maxlength="20"></div>
 		</div>
-		<div class="form-group">
-			<label for="status" class="col-sm-3 control-label">用户状态<span class="text-danger">*</span></label>
-			<div class="col-sm-4">
-				<select class="form-control input-sm" name="user.status">
-					<s:iterator value="#request.userStatus">
-						<option value='<s:property value="[0].top[0]"/>'><s:property value="[0].top[1]"/></option>
-					</s:iterator>
-				</select>
-			</div>
-		</div>
+		<input type="text" class="hidden" name="user.status" value="F">
 	</form>
 	<p class="text-center">
 		<button type="button" class="btn btn-custom-primary btn-sm" id="back" onclick="goBack()" style="float:left;background:#AAAAAB;border:1px solid #AAAAAB;margin-left:40%;width:63px"></i>返回</button>
@@ -160,7 +151,21 @@
 				}
 			})
 			
-
+			
+			$("#companyType").change(function(){
+				 $.ajax({
+						url:"userManage/companyListAjax.ajax?companyType="+$("#companyType").val(),
+						type:"get",
+						dataType:"json",
+						success:function(data){
+							$("#companyId option").remove();
+							
+							for(var key in data)
+								$("#companyId").append("<option value='"+data[key].id+"'>"+data[key].name+"</option>");
+						}
+				});
+				 
+			}); 
 
 			$("input[name='user.account']").maxlength({
 		    	maxCharacters:20,

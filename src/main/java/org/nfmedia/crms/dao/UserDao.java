@@ -44,6 +44,7 @@ public class UserDao extends BaseDao<User> {
 				pageNo, pageSize);
 	}
 	
+	
 	/*public List getqueryUser(String str) {
 		return   find(GET_USER_NAME+str);
 	}*/

@@ -118,7 +118,6 @@ public class AccessPrepossessInterceptor extends AbstractInterceptor {
 				ctx.getSession().clear(); //清除session
 				return "redirectLogin";
 			}*/
-					
 				
 			//检查有无权限访问该页面或请求
 			if(!LoginUtil.getFunctionSet().contains(request.getFunctionId())){

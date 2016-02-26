@@ -59,7 +59,7 @@
 		
 		<div class="form-group" id="breadCrumbRow">
 			<label for="email" class="col-sm-3 control-label">面包屑</label>
-			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="req.breadCrumb" value="" maxlength="100"><span style="color:#9d9d9d;padding-left:4px">用英文逗号分隔，如用户管理,用户列表</span></div>
+			<div class="col-sm-4"><input type="text" id="breadCrumb" class="form-control input-sm" name="req.breadCrumb" value="" maxlength="100"><span style="color:#9d9d9d;padding-left:4px">用英文逗号分隔，如用户管理,用户列表</span></div>
 		</div>
 	</form>
 	<p class="text-center">

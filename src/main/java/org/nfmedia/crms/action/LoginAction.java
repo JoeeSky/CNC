@@ -62,6 +62,8 @@ public class LoginAction extends ActionSupport {
 			initFunctionTree();
 			initHomePage();
 			/**/
+			if(user.getStatus().equals("F"))
+				returnURL="userManage/updateInitPasswordInput?tid="+user.getId();
 			if(returnURL == null){
 				returnURL = LoginUtil.getHomePage();
 			}

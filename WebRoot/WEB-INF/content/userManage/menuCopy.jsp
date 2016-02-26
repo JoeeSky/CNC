@@ -23,7 +23,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="email" class="col-sm-3 control-label">url<span class="text-danger">*</span></label>
+			<label for="email" class="col-sm-3 control-label">url</label>
 			<div class="col-sm-4"><input type="text" class="form-control input-sm" name="menu.url" maxlength="150" value='<s:property value="menu.url"/>'></div>
 		</div>
 		<div class="form-group">

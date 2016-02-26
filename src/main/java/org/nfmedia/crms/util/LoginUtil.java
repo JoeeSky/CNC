@@ -14,7 +14,6 @@ public class LoginUtil {
 		return (Set<Integer>) getSession().get("functionSet");
 	}
 	
-	
 	public static Map<String,Set<String>> getFunctionTree(){
 		return (Map<String,Set<String>>) getSession().get("functionTree");
 	}
@@ -25,6 +24,10 @@ public class LoginUtil {
 	
 	public static String getHomePage(){
 		return (String) getSession().get("home");
+	}
+	
+	public static Integer getUserId(){
+		return (Integer) getSession().get("id");
 	}
 	
 	public static User getUser(){
