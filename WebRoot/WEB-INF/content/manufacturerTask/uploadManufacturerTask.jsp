@@ -127,7 +127,7 @@
 	 				url:"manufacturerTask/uploadFile.ajax?taskFilePatn="+filePath,
 					type:"post",
 					dataType:"json",
-					data:{"taskFilePath":taskFilePath,"manufacturerTaskId1":manufacturerTaskId},
+					data:{"taskFilePath":taskFilePath,"manufacturerTaskId":manufacturerTaskId},
 					success:function(data){
 						if(fileName){
 						$("#fileList").append("<li> <div class='col-sm-8'><a class='fileName'>"+fileName+"</a></div><div class='col-sm-3'><a>"+fileType+"</a></div><div class='col-sm-1'><button style='border:0;background:none;color:red;'>X</button></div></li>");

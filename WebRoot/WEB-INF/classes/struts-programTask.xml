@@ -11,8 +11,15 @@
 		<action name="acceptProgramTask" class="org.nfmedia.crms.action.ProgramTaskPageAction" method="viewAcceptProgramTaskPage">
 			<result>/WEB-INF/content/programTask/acceptProgramTask.jsp</result>
 		</action>
-		<action name="programTaskInfoDo" class="org.nfmedia.crms.action.ProgramTaskPageAction" method="viewProgramTaskInfoPage">
-			<result>/WEB-INF/content/programTask/programTaskInfo.jsp</result>
+		<action name="programTaskInfo" class="org.nfmedia.crms.action.ProgramTaskPageAction" method="viewProgramTaskInfoPage">
+			<result>/WEB-INF/content/programTask/viewProgramTask.jsp</result>
+		</action>
+		<action name="programTaskUpdateDo" class="org.nfmedia.crms.action.ProgramTaskPageAction" method="viewProgramTaskUpdatePage">
+			<result>/WEB-INF/content/programTask/programTaskUpdate.jsp</result>
+		</action>
+		<action name="updataProgramTask" class="org.nfmedia.crms.action.ProgramTaskAction" method="updataProgramTask">
+		</action>
+		<action name="getFileList" class="org.nfmedia.crms.action.ProgramTaskAction" method="getFileList">
 		</action>
 		<action name="taskBrowse" class="org.nfmedia.crms.action.ProgramTaskAction" method="taskBrowse">
 		</action>
@@ -33,6 +40,8 @@
 		<action name="uploadFile" class="org.nfmedia.crms.action.ProgramTaskAction" method="uploadFile">
 		</action>
 		<action name="addProgramTask" class="org.nfmedia.crms.action.ProgramTaskAction" method="addProgramTask">
+		</action>
+		<action name="sureSelectCnc" class="org.nfmedia.crms.action.ProgramTaskAction" method="sureSelectCnc">
 		</action>
 	</package>
 </struts> 

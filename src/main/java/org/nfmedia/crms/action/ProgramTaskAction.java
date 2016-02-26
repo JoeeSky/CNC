@@ -26,6 +26,7 @@ import org.nfmedia.crms.service.ProgramTaskAttachmentService;
 import org.nfmedia.crms.service.ProgramTaskService;
 import org.nfmedia.crms.service.StatusService;
 import org.nfmedia.crms.util.PageToJson;
+import org.nfmedia.crms.util.PageUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -50,6 +51,7 @@ public class ProgramTaskAction extends ActionSupport {
 	private String description;
 	private String taskFilePath;
 	private int programTaskId;
+	private int cncId;
 	
 	private ProgramTaskService programTaskService;
 	private ProgramTaskAttachmentService programTaskAttachmentService;
@@ -119,17 +121,18 @@ public class ProgramTaskAction extends ActionSupport {
 	
 	
 		public String taskBrowse() throws Exception {
-			List result = null;
+			PageUtil result = null;
 			if(_search == false){
-				result=programTaskService.getProgramTaskList();
+				result=programTaskService.getProgramTaskList(sidx, sord, page, rows);
 			}else{
-				result =programTaskService.getProgramTaskListByKeyWord(searchString);
+				result =programTaskService.getProgramTaskListByKeyWord(searchString,sidx, sord, page, rows);
 			}
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 			JSONObject jsonObject = new JSONObject();
 			JSONArray jsonArray = new JSONArray();
-			for(int i=0,size=result.size();i<size;i++){
-				Object[] row = (Object[])result.get(i);
+			List data = result.getResult();
+			for(int i=0,size=data.size();i<size;i++){
+				Object[] row = (Object[])data.get(i);
 				JSONObject jsonObject2 = new JSONObject();
 				jsonObject2.put("id", row[0]); //加入id
 				JSONArray jsonArray2 = new JSONArray(); //求取cell
@@ -149,18 +152,19 @@ public class ProgramTaskAction extends ActionSupport {
 		}
 		
 		public String taskResultBrowse() throws Exception {
-			List result = null;
+			PageUtil result = null;
 			if(_search == false){
-				result=programTaskService.getProgramTaskResultList();
+				result=programTaskService.getProgramTaskResultList(sidx, sord, page, rows);
 			}else{
-				result=programTaskService.getProgramTaskResultListByKeyWord(searchString);
+				result=programTaskService.getProgramTaskResultListByKeyWord(searchString,sidx, sord, page, rows);
 			}
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 			JSONObject jsonObject = new JSONObject();
 			JSONArray jsonArray = new JSONArray();
-			for(int i=0,size=result.size();i<size;i++){
-				Object[] row = (Object[])result.get(i);
+			List data = result.getResult();
+			for(int i=0,size=data.size();i<size;i++){
+				Object[] row = (Object[])data.get(i);
 				JSONObject jsonObject2 = new JSONObject();
 				jsonObject2.put("id", row[0]); //加入id
 				JSONArray jsonArray2 = new JSONArray(); //求取cell
@@ -195,6 +199,14 @@ public class ProgramTaskAction extends ActionSupport {
 			int programTaskId=(Integer) (programTaskService.getProgramTaskIdByFilePath(taskName)).get(0);
 			jsonObject.put("programTaskId", programTaskId);
 			jsonObject.put("filePath", filePath);
+			jsonObject.put("info", true);
+			sentMsg(jsonObject.toString());
+			return null;
+		}
+		
+		public String sureSelectCnc()throws  Exception{
+			programTaskService.SelectCnc(programTaskId,cncId);
+			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("info", true);
 			sentMsg(jsonObject.toString());
 			return null;
@@ -248,8 +260,23 @@ public class ProgramTaskAction extends ActionSupport {
 			sentMsg(jsonObject.toString());
 			return null;
 		}
+		
+		public String updataProgramTask() throws Exception{
+			programTaskService.updataProgramTask(tid,description);
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("info", true);
+			sentMsg(jsonObject.toString());
+			return null;
+		}
 
-
+		public String getFileList() throws Exception{
+			List result=null;
+			result=programTaskAttachmentService.getFileListByTaskId(tid);
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("info", result);
+			sentMsg(jsonObject.toString());
+			return null;
+		}
 
 		public int getPage() {
 			return page;
@@ -390,6 +417,14 @@ public class ProgramTaskAction extends ActionSupport {
 
 		public void setFileType(String fileType) {
 			this.fileType = fileType;
+		}
+
+		public int getCncId() {
+			return cncId;
+		}
+
+		public void setCncId(int cncId) {
+			this.cncId = cncId;
 		}
 		
 		

@@ -21,60 +21,61 @@ public class ProgramTaskPageAction extends ActionSupport {
 	private ProgramTaskAttachmentService programTaskAttachmentService;
 	
 	public String viewUploadProgramTaskPage() throws Exception{
-		ActionContext ctx = ActionContext.getContext();
-		TreeMap<String, List<Resource>> resourcesMap = (TreeMap<String, List<Resource>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Resource> lr = resourcesMap.get("G代码");
-		if(lr.size() == 1){
-			Resource resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"G代码","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"上传G代码任务","javascript:void(0);"});
-		}
-		ctx.put("breadCrumb",breadCrumb);
 		return SUCCESS;
 	}
 	
 	public String viewProgramTaskListPage() throws Exception{
-		ActionContext ctx = ActionContext.getContext();
-		TreeMap<String, List<Resource>> resourcesMap = (TreeMap<String, List<Resource>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Resource> lr = resourcesMap.get("G代码");
-		if(lr.size() == 1){
-			Resource resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"G代码","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"G代码任务列表","javascript:void(0);"});
-		}
-		ctx.put("breadCrumb",breadCrumb);
 		return SUCCESS;
 	}
 	
 	public String viewAcceptProgramTaskPage() throws Exception{
-		ActionContext ctx = ActionContext.getContext();
-		TreeMap<String, List<Resource>> resourcesMap = (TreeMap<String, List<Resource>>) ctx.get("resourcesMap");
-		List breadCrumb = new ArrayList(5);
-		List<Resource> lr = resourcesMap.get("G代码");
-		if(lr.size() == 1){
-			Resource resource = lr.get(0);
-			Object[] item = new Object[]{resource.getName(),resource.getUrl()};
-			breadCrumb.add(item);
-		}else{
-			breadCrumb.add(new Object[]{"G代码","javascript:void(0);"});
-			breadCrumb.add(new Object[]{"接收G代码任务","javascript:void(0);"});
-		}
-		ctx.put("breadCrumb",breadCrumb);
+		return SUCCESS;
+	}
+	
+	public String viewProgramTaskUpdatePage() throws Exception{
+		programTask = programTaskService.loadprogramTaskById(tid);
 		return SUCCESS;
 	}
 	
 	public String viewProgramTaskInfoPage() throws Exception{
 		programTask = programTaskService.loadprogramTaskById(tid);
-		programTaskAttachment = programTaskAttachmentService.loadprogramTaskAttachmentById(tid);
+		//programTaskAttachment = programTaskAttachmentService.loadprogramTaskAttachmentById(tid);
 		return SUCCESS;
 	}
+
+	public int getTid() {
+		return tid;
+	}
+
+	public void setTid(int tid) {
+		this.tid = tid;
+	}
+
+	public ProgramTask getProgramTask() {
+		return programTask;
+	}
+
+	public void setProgramTask(ProgramTask programTask) {
+		this.programTask = programTask;
+	}
+
+	public ProgramTaskAttachment getProgramTaskAttachment() {
+		return programTaskAttachment;
+	}
+
+	public void setProgramTaskAttachment(ProgramTaskAttachment programTaskAttachment) {
+		this.programTaskAttachment = programTaskAttachment;
+	}
+
+	public void setProgramTaskService(ProgramTaskService programTaskService) {
+		this.programTaskService = programTaskService;
+	}
+
+	public void setProgramTaskAttachmentService(
+			ProgramTaskAttachmentService programTaskAttachmentService) {
+		this.programTaskAttachmentService = programTaskAttachmentService;
+	}
+	
+	
 
 }

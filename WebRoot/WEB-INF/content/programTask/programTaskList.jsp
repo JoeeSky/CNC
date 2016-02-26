@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <base href="<%=basePath%>">
     
     <title>G代码任务列表</title>
-    
+    <link rel="stylesheet" href="css/daterangepicker-bs3.css">
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -26,6 +26,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div id="jqgrid-wrapper">
 		<!-- 条件搜索 begin-->
 		<div class="row">
+		<s:if test='%{@org.nfmedia.crms.util.LoginUtil@isGranted("用户","增加") }' >
+			<button type="button"" class="btn btn-custom-primary btn-sm" style="margin-left:15px">导出报表</button>
+		</s:if>
 			<div class="col-sm-3 pull-right">
 				<div id="fuzzySearchbox" class="input-group input-group-sm searchbox">
 					<input type="search" id="searchText" class="form-control" placeholder="请输入关键字...">
@@ -37,31 +40,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 			<fieldset>
 				<legend>查询条件</legend>
-				<div class="col-sm-2">
+				<div class="row col-md-3" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">时间</div>
-						<input type="text" class="form-control" name="time">
+						<input type="text" class="form-control" id="time" name="time">
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">任务名</div>
 						<input type="text" class="form-control" name="taskName">						
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">发布人</div>
 						<input type="text" class="form-control" name="demanderUser">						
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">cnc</div>
 						<input type="text" class="form-control" name="cnc">						
 					</div>
 				</div>
-				<div class="col-sm-2" >
+				<div class="row col-md-2" style="margin-right:1px">
 					<div class="input-group input-group-sm">
 						<div class="input-group-addon">状态</div>
 						<select id="status" name="status" class="form-control">
@@ -70,9 +73,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					</div>
 				</div>
 				
-				<div class="col-sm-2">
+				<div style="margin-right:1px">
 					<button class="btn btn-primary btn-sm" id="query">查询</button>
-					<button class="btn btn-danger btn-sm" id="refresh">刷新</button>
+					<button class="btn btn-danger btn-sm" id="refresh">重置</button>
 				</div>
 			</fieldset>
 		<!-- 条件搜索 end-->
@@ -122,18 +125,64 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="js/jquery.jqGrid.min.js"></script>
 	<script src="js/jquery.jqGrid.fluid.js"></script>
 	<script src="js/king-common.js"></script>
+	<script src="js/moment.min.js"></script>
+	<script src="js/daterangepicker.js"></script>
 	<script>
 		var programTaskId;
+
+			var  dateRangeSQL ="";
+			//时间范围控件
+			$("#time").daterangepicker({
+				format: 'YYYY/MM/DD',
+				showDropdowns: !0,
+				ranges: {
+	                "今天": [moment(), moment()],
+	                "过去一周": [moment().subtract("days", 6), moment()],
+	                "本周":[moment().startOf("week"), moment().endOf("week")],
+	                "上周":[moment().subtract("week",1).startOf("week"), moment().subtract("week", 1).endOf("week")],
+	                "过去30天": [moment().subtract("days", 29), moment()],
+	                "本月": [moment().startOf("month"), moment().endOf("month")],
+	                "上月": [moment().subtract("month", 1).startOf("month"), moment().subtract("month", 1).endOf("month")]
+	            },
+	            separator: " 至 ", 
+	            locale: {
+	                applyLabel: "确认",
+	                cancelLabel: "清除",
+	                fromLabel: "起始",
+	                toLabel: "截止",
+	                customRangeLabel: "自定义",
+	                daysOfWeek: ["日", "一", "二", "三", "四", "五", "六"],
+	                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+	                firstDay: 1
+	            }
+			});
+			$('#time').on('cancel.daterangepicker', function(ev, picker) {
+				  //do something, like clearing an input
+				  $('#time').val('');
+				  dateRangeSQL = "";
+				});
+				$('#time').on('apply.daterangepicker', function(ev, picker) {
+				  console.log("start:"+picker.startDate.format('YYYY-MM-DD')+"\nend:"+picker.endDate.format('YYYY-MM-DD'));
+				  dateRangeSQL = "p.issueTime between '"+picker.startDate.format('YYYY-MM-DD')+"' and '"+picker.endDate.format('YYYY-MM-DD')+"'  ";
+				});
+
 		function sureSelectCnc(){
-			alert(programTaskId);
-			/* var cncIds = $("#cnc-jqgrid").jqGrid("getRowData","selarrrow")
-			if(cncIds.length<0 & cncIds.length>1){
-				alert("选择有误");
-			}
-			else {
-				alert(cncIds[0]);
-			} */
+			var cncId = $("#cnc-jqgrid").jqGrid("getGridParam","selrow");
+			$.ajax({
+		    		url:"programTask/sureSelectCnc.ajax",
+					type:"get",
+					dataType:"json",
+					data:{programTaskId:programTaskId,cncId:cncId},
+					success:function(data){
+						$("#jqgrid").trigger("reloadGrid",[{page:1,current:true}]);
+					},
+					error:function(data){
+						alert('选择失败！');
+					}
+		    	})
+		    	$("#modal-id").modal('hide');
 		}
+		
 		function selectCnc(id){
 			$("#cnc-jqgrid").jqGrid('setGridParam',{datatype:'json',url:"verify/getCncList.ajax"}).trigger("reloadGrid");
 			$("#modal-id").modal('show');
@@ -147,7 +196,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					type:"get",
 					dataType:"json",
 					success:function(data){
-						alert('清除成功');
+						$("#jqgrid").trigger("reloadGrid",[{page:1,current:true}]);
 					},
 					error:function(data){
 						alert('清除失败！');
@@ -161,7 +210,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					type:"get",
 					dataType:"json",
 					success:function(data){
-						alert('操作成功');
+						$("#jqgrid").trigger("reloadGrid",[{page:1,current:true}]);
 					},
 					error:function(data){
 						alert('操作失败！');
@@ -175,8 +224,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					type:"get",
 					dataType:"json",
 					success:function(data){
-						$("#jqgrid").delGridRow(id);
-						alert('清除成功');
+						$("#jqgrid").trigger("reloadGrid",[{page:1,current:true}]);
 					},
 					error:function(data){
 						alert('清除失败！');
@@ -206,8 +254,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    	rowList: [10, 20, 30],
         		pager: "jqgrid-pager",
         		multiselect: 0,
+        		//editurl:"",
         		//editurl:"userManage/editUser.ajax",
-        		sortname:"account",
+        		sortname:"issueTime",
         		sortorder: "asc",
         		viewrecords: !0,
         		colModel:[{
@@ -265,17 +314,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         					t.jqGrid('setRowData',ids[i],{resultState:deleteCnc});
         				}
         				
-                        if(state=="已接受"){
-                        query = '<button class="btn btn-primary btn-xs" style="margin-left:2px" onclick="location.href=\'programTask/programTaskInfoDo?tid='+ids[i]+'\'">查看</button>';
-                        alter = '<button class="btn btn-info btn-xs" style="margin-left:2px"  onclick="location.href=\'programTask/programTaskUpdate?tid='+ids[i]+'\'">修改</button>';
-                        //delet = '<button class="btn btn-danger btn-xs" style="margin-left:2px"  onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';
-                        load = '<button class="btn btn-success btn-xs" style="margin-left:2px"  onclick="resetPassword('+ids[i]+')">下载文件</button>';
-                        t.jqGrid('setRowData',ids[i],{operation:query+alter+load});
+                        if(state=="已接受" && resultState=="已完成"){
+	                        query = '<button class="btn btn-primary btn-xs" style="margin-left:2px" onclick="location.href=\'programTask/programTaskInfo?tid='+ids[i]+'\'">查看</button>';
+	                        alter = '<button class="btn btn-info btn-xs" style="margin-left:2px"  onclick="location.href=\'programTask/programTaskUpdateDo?tid='+ids[i]+'\'">修改</button>';
+	                        //delet = '<button class="btn btn-danger btn-xs" style="margin-left:2px"  onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';
+	                        load = '<button class="btn btn-success btn-xs" style="margin-left:2px"  onclick="resetPassword('+ids[i]+')">下载文件</button>';
+	                        t.jqGrid('setRowData',ids[i],{operation:query+load});
+                        }else if(state=="已接受"){
+	                        query = '<button class="btn btn-primary btn-xs" style="margin-left:2px" onclick="location.href=\'programTask/programTaskInfo?tid='+ids[i]+'\'">查看</button>';
+	                        alter = '<button class="btn btn-info btn-xs" style="margin-left:2px"  onclick="location.href=\'programTask/programTaskUpdateDo?tid='+ids[i]+'\'">修改</button>';
+	                        //delet = '<button class="btn btn-danger btn-xs" style="margin-left:2px"  onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';
+	                        load = '<button class="btn btn-success btn-xs" style="margin-left:2px"  onclick="resetPassword('+ids[i]+')">下载文件</button>';
+	                        t.jqGrid('setRowData',ids[i],{operation:query+alter+load});
                         }else{
-                        query = '<button class="btn btn-primary btn-xs"  style="margin-left:2px" onclick="location.href=\'programTask/programTaskInfo?tid='+ids[i]+'\'">查看</button>';
-                        alter = '<button class="btn btn-info btn-xs" style="margin-left:2px"  onclick="location.href=\'programTask/programTaskUpdate?tid='+ids[i]+'\'">修改</button>';
-                        delet = '<button class="btn btn-danger btn-xs" style="margin-left:2px"  onclick="delProgramTask('+ids[i]+')">删除</button>';
-                        t.jqGrid('setRowData',ids[i],{operation:query+alter+delet});
+	                        query = '<button class="btn btn-primary btn-xs" style="margin-left:2px" onclick="location.href=\'programTask/programTaskInfo?tid='+ids[i]+'\'">查看</button>';
+	                        alter = '<button class="btn btn-info btn-xs" style="margin-left:2px"  onclick="location.href=\'programTask/programTaskUpdateDo?tid='+ids[i]+'\'">修改</button>';
+	                        delet = '<button class="btn btn-danger btn-xs" style="margin-left:2px"  onclick="delProgramTask('+ids[i]+')">删除</button>';
+	                        t.jqGrid('setRowData',ids[i],{operation:query+alter+delet});
                         }
                     }
         		}
@@ -301,7 +356,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		$.extend(t[0].p.postData,{searchString:"",searchField:"",searchOper:""});
 		    	}else{
 		    	t[0].p.search = true;
-		    		searchFilter = " where  p.taskName like '%"+searchFilter+"%' or p.demanderUser.name like '%"+searchFilter+"%' or p.cnc.name like '%"+searchFilter+"%' or p.status.name like '%"+searchFilter+"%' or p.resultStatus.name like '%"+searchFilter+"%' ";
+		    		searchFilter = " where  p.taskName like '%"+searchFilter+"%' or p.demanderUser.name like '%"+searchFilter+"%' or p.cnc.name like '%"+searchFilter+"%' or p.status.name like '%"+searchFilter+"%' or p.resultStatus.name like '%"+searchFilter+"%' or p.issueTime like '%"+searchFilter+"%' ";
 		    		$.extend(t[0].p.postData,{searchString:searchFilter,searchField:"allfieldsearch",searchOper:"cn"});
 		    	}
 		    	//alert(searchFilter);
@@ -321,6 +376,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		$.extend(t[0].p.postData,{searchString:"",searchField:"",searchOper:""});
 		    	}else{
 		    		var searchFilter = " where ";
+		    		if(dateRangeSQL!==""){
+		    			searchFilter += dateRangeSQL + " and ";
+		    		}
 		    		if(taskName!==""){
 		    			searchFilter += " p.taskName like '%"+taskName+"%' and ";
 		    		}
@@ -374,7 +432,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        //sortname: "followUser.name",
 		        viewrecords: !0,
 		        sortorder: "asc",
-		        multiselect: !0,
+		        multiselect: 1,
 		    }).navGrid('#cnc-jqgrid-pager',{edit:false,add:false,del:false,search:false}));
 		
 		function getStatus(){
