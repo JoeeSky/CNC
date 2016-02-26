@@ -37,6 +37,10 @@ public class ProgramTaskAttachmentService {
 	public ProgramTaskAttachment loadprogramTaskAttachmentById(int id) {
 		return programTaskAttachmentDao.load(id);
 	}
+
+	public List getFileListByTaskId(int taskId) {
+		return programTaskAttachmentDao.getProgramTaskAttachmentListByTaskId(taskId);
+	}
 	
 	
 

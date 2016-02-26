@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.nfmedia.crms.dao.ProgramTaskDao;
 import org.nfmedia.crms.dao.UserDao;
+import org.nfmedia.crms.domain.Manufacturer;
 import org.nfmedia.crms.domain.ManufacturerTask;
 import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.domain.Cnc;
@@ -28,10 +29,13 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.nfmedia.crms.cons.CommonConstant;
 import org.nfmedia.crms.cons.UserState;
 import org.nfmedia.crms.dao.DemanderDao;
+import org.nfmedia.crms.dao.ManufacturerDao;
 import org.nfmedia.crms.dao.ManufacturerTaskDao;
 import org.nfmedia.crms.dao.RoleDao;
 import org.nfmedia.crms.dao.StatusDao;
 import org.nfmedia.crms.domain.Demander;
+import org.nfmedia.crms.util.PageUtil;
+
 
 @Service
 public class ManufacturerTaskService {
@@ -45,22 +49,25 @@ public class ManufacturerTaskService {
 	private DemanderDao demanderDao;
 	@Autowired
 	private UserDao userDao;
+	@Autowired
+	private ManufacturerDao manufacturerDao;
 	
-	public List getManufacturerTaskList() {
-		return manufacturerTaskDao.getManufacturerTaskList();		
+	public PageUtil getManufacturerTaskList(String sidx, String sord, int page, int rows) {
+		return manufacturerTaskDao.getManufacturerTaskList(sidx, sord, page,rows);		
 	}
-	public List getManufacturerTaskResultList() {
-		return manufacturerTaskDao.getManufacturerTaskResultList();
+	public PageUtil getManufacturerTaskResultList(String sidx, String sord, int page, int rows) {
+		return manufacturerTaskDao.getManufacturerTaskResultList(sidx, sord, page,rows);
 	}
-	public List getManufacturerTaskListByKeyword(String keyword) {
-		return manufacturerTaskDao.getManufacturerTaskListByKeyword(keyword);
+	public PageUtil getManufacturerTaskListByKeyword(String keyword,String sidx, String sord, int page, int rows) {
+		return manufacturerTaskDao.getManufacturerTaskListByKeyword(keyword,sidx, sord, page, rows);
 	}
-	public List getManufacturerTaskResultListByKeyword(String keyword) {
-		return manufacturerTaskDao.getManufacturerTaskResultListByKeyword(keyword);
+	public PageUtil getManufacturerTaskResultListByKeyword(String keyword,String sidx, String sord, int page, int rows) {
+		return manufacturerTaskDao.getManufacturerTaskResultListByKeyword(keyword,sidx, sord, page, rows);
 	}
 	public void deleteProgramTaskManufacturer(int id) {
 		ManufacturerTask manufacturerTask = manufacturerTaskDao.load(id);
 		manufacturerTask.setManufacturer(null);
+		manufacturerTask.setStatus(null);
 		manufacturerTaskDao.update(manufacturerTask);
 	}
 	public void delectManufacturerTask(int tid) {
@@ -97,6 +104,14 @@ public class ManufacturerTaskService {
 	}
 	public List getManufacturerTaskIdByTaskName(String taskName) {
 		return manufacturerTaskDao.getManufacturerTaskIdByTaskName(taskName);
+	}
+	public void SelectManufacturer(int manufacturerTaskId, int manufacturerId) {
+		ManufacturerTask manufacturerTask=manufacturerTaskDao.load(manufacturerTaskId);
+		Manufacturer manufacturer = manufacturerDao.load(manufacturerId);
+		manufacturerTask.setManufacturer(manufacturer);
+		manufacturerTask.setStatus(statusDao.load(1));
+		manufacturerTaskDao.update(manufacturerTask);
+		
 	}
 
 }

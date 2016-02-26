@@ -13,4 +13,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ProgramTaskAttachmentDao extends BaseDao<ProgramTaskAttachment>{
 
+	public static final String GET_PROGRAMTASK_ATTACHMENT_LIST_BY_TASK_ID="select p.id,p.type,p.fileName,p.filePath from ProgramTaskAttachment p left join p.task where p.task.id = ";
+	public List getProgramTaskAttachmentListByTaskId(
+			int id) {
+		return find(GET_PROGRAMTASK_ATTACHMENT_LIST_BY_TASK_ID + id);
+	}
+
 }

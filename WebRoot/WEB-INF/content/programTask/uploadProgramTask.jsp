@@ -119,6 +119,8 @@
 		$("#form_save1").ajaxForm(options).submit();
 	})
 	 function upload1(){
+	// Console.log($("#form_save2").ajaxForm(options));
+	 alert($("#form_save2").ajaxForm(options));
 	 	var fileType=$("select[name='fileType']").val();
 	 	var filePath=$("input[name='upload']").val();
 	 	var n=filePath.lastIndexOf("\\");
