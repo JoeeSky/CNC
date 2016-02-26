@@ -17,7 +17,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
 	
+    <link rel="stylesheet" href="css/bootstrap.cosmo.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/darkblue.css">	
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+					
   </head>
   
   <body>
@@ -322,8 +327,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </body>
 </html>
 
-<content tag="scripts">	
+<content tag="scripts">
+	<script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/my-registerValidate.js"></script>
+    <script type="text/javascript" src="js/jquery.maxlength.js"></script>
 	<script type="text/javascript" src="js/king-common.js"></script>
-	<script type="text/javascript" src="js/jquery.maxlength.js"></script>
-	<script type="text/javascript" src="js/my-registerValidate.js"></script>
+
 </content>

@@ -12,7 +12,11 @@ import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nfmedia.crms.domain.Manufacturer;
+import org.nfmedia.crms.domain.Role;
+import org.nfmedia.crms.domain.User;
+import org.nfmedia.crms.service.DictService;
 import org.nfmedia.crms.service.ManufacturerService;
+import org.nfmedia.crms.service.UserService;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -34,6 +38,8 @@ public class ManufacturerAction extends ActionSupport{
 	
 	private Manufacturer manufacturer;
 	private ManufacturerService manufacturerService;
+	private UserService userService;
+	private DictService dictService;
 	
 	private void sentMsg(String content) throws IOException{
 		HttpServletResponse response=ServletActionContext.getResponse();
@@ -72,6 +78,21 @@ public class ManufacturerAction extends ActionSupport{
 	
 	public String add() throws Exception{
 		manufacturerService.addManufacturer(manufacturer);
+		
+		User user = new User();
+		user.setAccount(manufacturer.getPinyin());
+		user.setPassword(dictService.getDictByGroupAndName("system", "initialPassword"));
+		user.setName(manufacturer.getName());
+		user.setStatus("F");
+		user.setCellphone(manufacturer.getMobile());
+		user.setEmail(manufacturer.getEmail());
+		Role role = new Role();
+		role.setId(Integer.valueOf(dictService.getDictByGroupAndName("system", "tryUserRoleId")));
+		user.setRole(role);
+		user.setCompanyId(manufacturer.getId());
+		user.setCompanyType("manufacturer");
+		userService.addUser(user);
+		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("info", true);
 		sentMsg(jsonObject.toString());
@@ -204,6 +225,22 @@ public class ManufacturerAction extends ActionSupport{
 
 	public void setManufacturerService(ManufacturerService manufacturerService) {
 		this.manufacturerService = manufacturerService;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public DictService getDictService() {
+		return dictService;
+	}
+
+	public void setDictService(DictService dictService) {
+		this.dictService = dictService;
 	}
 
 

@@ -48,7 +48,7 @@
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">公司网站链接</label>
-				<div class="col-sm-8"><input type="text" class="input-sm" size="40" value=<s:property value="cnc.url"/> name="cnc.url" ></div>
+				<div class="col-sm-8"><input type="text" class="input-sm" size="40" name="cnc.url"  value=<s:property value="cnc.url"/> ></div>
 			</div>	
 			<div class="form-group" id="button">
 			</div>	
@@ -64,14 +64,14 @@
 	<script>
 	if(<s:property value="cnc.verifystatus"/>==0){
 		$("#verifystatus").val("未审核");
-		var btn=$("<button type='button' onclick='passVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:8%'>通过审核</button><button type='button' onclick='noPassVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:5%'> 不通过审核</button>");
-		$("#button").append(btn);
+		//var btn=$("<button type='button' onclick='passVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:8%'>通过审核</button><button type='button' onclick='noPassVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:5%'> 不通过审核</button>");
+		//$("#button").append(btn);
 	}else if(<s:property value="cnc.verifystatus"/>==1){
 		$("#verifystatus").val("审核通过");
 	}else{
 		$("#verifystatus").val("审核未通过");
-		var btn=$("<button type='button' onclick='passVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:12%'>通过审核</button>");
-		$("#button").append(btn);
+		//var btn=$("<button type='button' onclick='passVerify()' class='btn btn-custom-primary btn-sm'  style='margin-left:12%'>通过审核</button>");
+		//$("#button").append(btn);
 	}
 	
 		$(document).ready(function(){

@@ -22,6 +22,7 @@ import org.nfmedia.crms.service.CncService;
 import org.nfmedia.crms.service.DemanderService;
 import org.nfmedia.crms.service.ManufacturerService;
 import org.nfmedia.crms.service.UserService;
+import org.nfmedia.crms.util.LoginUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -32,6 +33,7 @@ public class VerifyAction extends ActionSupport{
 	private Cnc cnc;
 	private Demander demander;
 	private Manufacturer manufacturer;
+	private User user;
 	
 	private CncService cncService;
 	private DemanderService demanderService;
@@ -46,7 +48,7 @@ public class VerifyAction extends ActionSupport{
 	private Integer verifyStatus;
 	private Integer id;
 	
-
+	private String returnURL;
 
 	
 	private void sentMsg(String content) throws IOException{
@@ -111,22 +113,22 @@ public class VerifyAction extends ActionSupport{
 	public String updateCncVerifyStatus()throws Exception{
 		//Map session = ActionContext.getContext().getSession();
 		cnc = cncService.loadCncByID(id);
-		User user = new User();
-		
-		if(verifyStatus==1){
-			user.setAccount(cnc.getPinyin());
-			user.setPassword("123456");
-			user.setName(cnc.getName());
-			user.setStatus("U");
-			user.setCellphone(cnc.getMobile());
-			user.setEmail(cnc.getEmail());
-			Role role = new Role();
-			role.setId(1);
-			user.setRole(role);
-			user.setCompanyId(cnc.getId());
-			user.setCompanyType(cnc.getDescription());
-			userService.addUser(user);
-		}
+//		User user = new User();
+//		
+//		if(verifyStatus==1){
+//			user.setAccount(cnc.getPinyin());
+//			user.setPassword("123456");
+//			user.setName(cnc.getName());
+//			user.setStatus("U");
+//			user.setCellphone(cnc.getMobile());
+//			user.setEmail(cnc.getEmail());
+//			Role role = new Role();
+//			role.setId(1);
+//			user.setRole(role);
+//			user.setCompanyId(cnc.getId());
+//			user.setCompanyType(cnc.getDescription());
+//			userService.addUser(user);
+//		}
 		cncService.updateVerifyStatus(id, verifyStatus);
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("info", true);
@@ -136,23 +138,23 @@ public class VerifyAction extends ActionSupport{
 	
 	public String updateDemanderVerifyStatus()throws Exception{
 		//Map session = ActionContext.getContext().getSession();
-		demander = demanderService.loadDemanderByID(id);
-		User user = new User();
-		
-		if(verifyStatus==1){
-			user.setAccount(demander.getPinyin());
-			user.setPassword("123456");
-			user.setName(demander.getName());
-			user.setStatus("U");
-			user.setCellphone(demander.getMobile());
-			user.setEmail(demander.getEmail());
-			Role role = new Role();
-			role.setId(1);
-			user.setRole(role);
-			user.setCompanyId(demander.getId());
-			user.setCompanyType(demander.getDescription());
-			userService.addUser(user);
-		}
+//		demander = demanderService.loadDemanderByID(id);
+//		User user = new User();
+//		
+//		if(verifyStatus==1){
+//			user.setAccount(demander.getPinyin());
+//			user.setPassword("123456");
+//			user.setName(demander.getName());
+//			user.setStatus("U");
+//			user.setCellphone(demander.getMobile());
+//			user.setEmail(demander.getEmail());
+//			Role role = new Role();
+//			role.setId(1);
+//			user.setRole(role);
+//			user.setCompanyId(demander.getId());
+//			user.setCompanyType(demander.getDescription());
+//			userService.addUser(user);
+//		}
 		
 		demanderService.updateVerifyStatus(id, verifyStatus);
 		JSONObject jsonObject = new JSONObject();
@@ -163,23 +165,23 @@ public class VerifyAction extends ActionSupport{
 	
 	public String updateManufacturerVerifyStatus()throws Exception{
 		//Map session = ActionContext.getContext().getSession();
-		manufacturer = manufacturerService.loadManufacturerByID(id);
-		User user = new User();
-		
-		if(verifyStatus==1){
-			user.setAccount(manufacturer.getPinyin());
-			user.setPassword("123456");
-			user.setName(manufacturer.getName());
-			user.setStatus("U");
-			user.setCellphone(manufacturer.getMobile());
-			user.setEmail(manufacturer.getEmail());
-			Role role = new Role();
-			role.setId(1);
-			user.setRole(role);
-			user.setCompanyId(manufacturer.getId());
-			user.setCompanyType(manufacturer.getDescription());
-			userService.addUser(user);
-		}
+//		manufacturer = manufacturerService.loadManufacturerByID(id);
+//		User user = new User();
+//		
+//		if(verifyStatus==1){
+//			user.setAccount(manufacturer.getPinyin());
+//			user.setPassword("123456");
+//			user.setName(manufacturer.getName());
+//			user.setStatus("U");
+//			user.setCellphone(manufacturer.getMobile());
+//			user.setEmail(manufacturer.getEmail());
+//			Role role = new Role();
+//			role.setId(1);
+//			user.setRole(role);
+//			user.setCompanyId(manufacturer.getId());
+//			user.setCompanyType(manufacturer.getDescription());
+//			userService.addUser(user);
+//		}
 		
 		manufacturerService.updateVerifyStatus(id, verifyStatus);
 		JSONObject jsonObject = new JSONObject();
@@ -190,19 +192,22 @@ public class VerifyAction extends ActionSupport{
 	
 	public String editCncInfoPage() throws Exception{
 		//cnc = cncService.loadCncByID(id);
-		id=27;
+		user = LoginUtil.getUser();
+		id=user.getCompanyId();
 		cnc = cncService.loadCncByID(id);
 		return SUCCESS;
 	}
 	
 	public String editDemanderInfoPage() throws Exception{
-		id=5;
+		user = LoginUtil.getUser();
+		id=user.getCompanyId();
 		demander = demanderService.loadDemanderByID(id);
 		return SUCCESS;
 	}
 	
 	public String editManufacturerInfoPage() throws Exception{
-		id=6;
+		user = LoginUtil.getUser();
+		id=user.getCompanyId();
 		manufacturer = manufacturerService.loadManufacturerByID(id);
 		return SUCCESS;
 	}
@@ -244,6 +249,20 @@ public class VerifyAction extends ActionSupport{
 		jsonObject.put("info", true);
 		sentMsg(jsonObject.toString());
 		return null;
+	}
+	
+	public String editCompany(){
+		user = LoginUtil.getUser();
+		String companyType = user.getCompanyType();
+		if(companyType.equals("demander"))
+		{
+			returnURL = "demanderInfo";
+		}else if(companyType.equals("cnc")){
+			returnURL = "cncInfo";
+		}else if(companyType.equals("manufacturer")){
+			returnURL = "manufacturerInfo";
+		}
+		return SUCCESS;
 	}
 	
 	public CncService getCncService() {
@@ -360,6 +379,22 @@ public class VerifyAction extends ActionSupport{
 	public void setManufacturer(Manufacturer manufacturer) {
 		this.manufacturer = manufacturer;
 	}
-	
+
+	public String getReturnURL() {
+		return returnURL;
+	}
+
+	public void setReturnURL(String returnURL) {
+		this.returnURL = returnURL;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	
 }

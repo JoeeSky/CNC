@@ -12,8 +12,11 @@ import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.nfmedia.crms.domain.Cnc;
+import org.nfmedia.crms.domain.Role;
 import org.nfmedia.crms.domain.User;
 import org.nfmedia.crms.service.CncService;
+import org.nfmedia.crms.service.DictService;
+import org.nfmedia.crms.service.UserService;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -35,6 +38,8 @@ public class CncAction extends ActionSupport{
 	
 	private Cnc cnc;
 	private CncService cncService;
+	private UserService userService;
+	private DictService dictService;
 	
 	private void sentMsg(String content) throws IOException{
 		HttpServletResponse response=ServletActionContext.getResponse();
@@ -52,6 +57,21 @@ public class CncAction extends ActionSupport{
 	
 	public String add() throws Exception{
 		cncService.addCnc(cnc);
+		
+		User user = new User();
+		user.setAccount(cnc.getPinyin());
+		user.setPassword(dictService.getDictByGroupAndName("system", "initialPassword"));
+		user.setName(cnc.getName());
+		user.setStatus("F");
+		user.setCellphone(cnc.getMobile());
+		user.setEmail(cnc.getEmail());
+		Role role = new Role();
+		role.setId(Integer.valueOf(dictService.getDictByGroupAndName("system", "tryUserRoleId")));
+		user.setRole(role);
+		user.setCompanyId(cnc.getId());
+		user.setCompanyType("cnc");
+		userService.addUser(user);
+		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("info", true);
 		sentMsg(jsonObject.toString());
@@ -205,6 +225,22 @@ public class CncAction extends ActionSupport{
 
 	public void setCncService(CncService cncService) {
 		this.cncService = cncService;
+	}
+
+	public UserService getUserService() {
+		return userService;
+	}
+
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	public DictService getDictService() {
+		return dictService;
+	}
+
+	public void setDictService(DictService dictService) {
+		this.dictService = dictService;
 	}
 	
 	
