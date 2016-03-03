@@ -1,5 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -33,7 +37,7 @@
 				<div class="col-sm-2">
 				<select id="model" class="form-control input-sm">
 					<s:iterator value="#request.model" var="modelObject">
-						<option value='<s:property value="#modelObject[0].getName()"/>' <s:if test='%{#modelObject[0].getName()..equals(#request.modelName)}'>selected</s:if>><s:property value="#modelObject[0].getName()"/></option>
+						<option value='<s:property value="#modelObject[0].getName()"/>' <s:if test='%{#modelObject[0].getName().equals(#request.modelName)}'>selected</s:if>><s:property value="#modelObject[0].getName()"/></option>
 					</s:iterator>
 				</select>
 				</div>
@@ -75,9 +79,9 @@
 						if(data.info){
 							alert('修改成功');
 							if($isSave)
-								location.replace('menu/list');
+								location.replace('<%= basePath%>menu/list');
 							else{
-								location.replace("menu/copy?tid="+data.id);
+								location.replace("<%= basePath%>menu/copy?tid="+data.id);
 							}
 						}else{
 							alert('修改失败');
@@ -112,7 +116,7 @@
 		};
 		function goBack(){
 			if(confirm("您确定要放弃相关操作，返回菜单项列表中吗？")){
-				location.replace('menu/list');
+				location.replace('<%= basePath%>menu/list');
 			}
 		}
 	</script>

@@ -1,5 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -84,9 +88,9 @@
 						if(data.info){
 							alert('修改成功');
 							if($isSave)
-								location.replace("request/list");
+								location.replace("<%= basePath%>request/list");
 							else{
-								location.replace("request/copy?tid="+data.id);
+								location.replace("<%= basePath%>request/copy?tid="+data.id);
 							}
 
 						}else{
@@ -119,7 +123,7 @@
 		});
 		function goBack(){
 			if(confirm("您确定要放弃相关操作，返回请求列表中吗？")){
-				location.replace('request/list');
+				location.replace('<%= basePath%>request/list');
 			}
 		}
 	</script>

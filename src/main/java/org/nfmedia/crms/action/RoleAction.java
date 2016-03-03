@@ -180,6 +180,7 @@ public class RoleAction extends ActionSupport {
 				}
 		grantJson=jsonObject.toString();
 		ctx.put("funcs",result);
+		role=roleService.loadRoleByID(tid);
 		return SUCCESS;
 	}
 	

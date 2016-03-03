@@ -1,5 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -121,7 +125,7 @@
         		gridComplete: function(){
         			var ids = $("#jqgrid").jqGrid("getDataIDs");
         			for(var i=0;i < ids.length;i++){
-        				ee = '<button class="btn btn-info btn-xs" onclick="location.href=\'function/updateInput?tid='+ids[i]+'\'">修改</button>';
+        				ee = '<button class="btn btn-info btn-xs" onclick="location.href=\'<%= basePath%>function/updateInput?tid='+ids[i]+'\'">修改</button>';
                         de = '<button class="btn btn-danger btn-xs" onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';
                         
                         t.jqGrid('setRowData',ids[i],{actions:ee+de});

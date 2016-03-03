@@ -1,5 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -81,7 +85,7 @@
 							if($isSave)
 								location.reload();
 							else{
-								location.replace("menu/copy?tid="+data.id);
+								location.replace("<%= basePath%>menu/copy?tid="+data.id);
 							}
 							//$("#form_save")[0].reset();
 						}else{
@@ -123,7 +127,7 @@
 		};
 		function goBack(){
 			if(confirm("您确定要放弃相关操作，返回到菜单项列表中吗？")){
-				location.replace('menu/list');
+				location.replace('<%= basePath%>menu/list');
 			}
 		}
 	</script>

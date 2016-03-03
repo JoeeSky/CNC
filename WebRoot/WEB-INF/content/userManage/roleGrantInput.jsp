@@ -1,10 +1,14 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
-<title>分配功能 到 管理员</title>
+<title>分配功能 到 <s:property value="role.name"/></title>
 	<style>
 		*{padding:0;margin:0;}
 		.browser{margin-left:400px;}
@@ -35,15 +39,17 @@
 			<div class="form-group">
 				<label class="col-sm-1 control-label"></label>
 				<label class="col-sm-1 control-label"><s:property value="[0].top[0].getName()"/></label>
-				<s:iterator value="[0].top[1]" var="func">
+				<div class="col-sm-10">
+					<s:iterator value="[0].top[1]" var="func">
 					<s:if test="#func.status!=\"N\"">
-						<div class="col-sm-1 checkbox"><label>
+						<div class="col-sm-2 checkbox"><label>
 							<input class="grant" type="checkbox" value='<s:property value="#func.id"/>' 
 							<s:if test="#func.status==\"U\"">checked</s:if> >
 							<s:property value="#func.name"/>
 					    </label></div>
 					</s:if>
-				</s:iterator>
+					</s:iterator>
+				</div>
 			</div>
 		</s:iterator>
 	</form>
@@ -69,7 +75,7 @@
 						success:function(data){
 							if(data.info){
 								alert('功能分配成功！');
-								location.replace('role/list');
+								location.replace('<%= basePath%>role/list');
 								//$("#form_save")[0].reset();
 							}else{
 								alert('保存失败');
@@ -95,7 +101,7 @@
 		});
 		function goBack(){
 			if(confirm("您确定要放弃相关操作，返回到用户列表中吗？")){
-				location.replace('userManage/list');
+				location.replace('<%= basePath%>role/list');
 			}
 		}
 	</script>

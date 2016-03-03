@@ -25,6 +25,9 @@ public class RoleService {
 	private RoleDao roleDao;
 	@Autowired
 	private RoleFunctionDao roleFunctionDao;
+	public Role getRoleByID(int id){
+		return roleDao.get(id);
+	}
 	
 	public Role loadRoleByID(int id){
 		return roleDao.load(id);
