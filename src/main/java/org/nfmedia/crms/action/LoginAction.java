@@ -6,15 +6,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.json.JSONObject;
+
 import org.nfmedia.crms.cons.CommonConstant;
 import org.nfmedia.crms.domain.Function;
 import org.nfmedia.crms.domain.Menu;
 import org.nfmedia.crms.domain.User;
+import org.nfmedia.crms.dto.UserDto;
 import org.nfmedia.crms.service.MenuService;
 import org.nfmedia.crms.service.RoleService;
 import org.nfmedia.crms.service.UserService;
 import org.nfmedia.crms.util.LoginUtil;
-
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -57,7 +59,7 @@ public class LoginAction extends ActionSupport {
 			
 			/*数据写到session*/
 			getSession().put(CommonConstant.SESSION_ID, user.getId());
-			getSession().put("userMsg", user);
+			initUser(user);
 			initFunctionSet();
 			initFunctionTree();
 			initHomePage();
@@ -89,8 +91,7 @@ public class LoginAction extends ActionSupport {
 	public String logout() throws Exception{
 		//session.clear();
 		getSession().remove(CommonConstant.SESSION_ID);
-		getSession().remove("userMsg");
-		//session.remove(CommonConstant.SESSION_HOMEPAGE);
+		delUser();
 		delFunctionSet();
 		delFunctionTree();
 		delHomePage();
@@ -99,6 +100,16 @@ public class LoginAction extends ActionSupport {
 	
 	private Map<String, Object> getSession() {	
 		return ActionContext.getContext().getSession();
+	}
+	
+	private void initUser(User user){
+		UserDto userDto=new UserDto();
+		userDto.fromUser(user);
+		getSession().put("userMsg", JSONObject.fromObject(userDto).toString());
+	}
+	
+	private void delUser(){
+		getSession().remove("userMsg");
 	}
 	
 	private void initFunctionSet(){

@@ -1,5 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +45,7 @@
 					success:function(data){
 						if(data.info==true){
 							alert('修改成功');
-							location.replace('<s:property value="@org.nfmedia.crms.util.LoginUtil@getHomePage()"/>');
+							location.replace('<%= basePath%><s:property value="@org.nfmedia.crms.util.LoginUtil@getHomePage()"/>');
 						}else{
 							alert(data.msg);
 						}
@@ -56,7 +60,7 @@
 		})
 		function goBack(){
 			if(confirm("您确定要放弃相关操作，返回用户列表中吗？")){
-				location.replace('userManage/list');
+				location.replace('<%= basePath%>userManage/list');
 			}
 		}
 	</script>

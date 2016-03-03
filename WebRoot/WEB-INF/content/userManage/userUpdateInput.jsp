@@ -1,5 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,6 +82,7 @@
 	<script src="js/king-common.js"></script>
 	<script src="js/jquery.maxlength.js"></script>
 	<script>
+	
 		$(document).ready(function(){
 			$("#save").click(function(){	
 				$.ajax({
@@ -88,7 +93,7 @@
 					success:function(data){
 						if(data.info){
 							alert('修改成功');
-							location.replace('userManage/list');
+							location.href='<%= basePath%>userManage/list';
 							//location.reload();
 						}else{
 							alert('修改失败');
@@ -119,7 +124,7 @@
 		})
 		function goBack(){
 			if(confirm("您确定要放弃相关操作，返回用户列表中吗？")){
-				location.replace('userManage/list');
+				location.href='<%= basePath%>userManage/list';
 			}
 		}
 	</script>

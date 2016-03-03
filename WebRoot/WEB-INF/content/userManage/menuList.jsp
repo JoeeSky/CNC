@@ -1,5 +1,9 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -115,10 +119,10 @@
         		gridComplete: function(){
         			var ids = $("#jqgrid").jqGrid("getDataIDs");
         			for(var i=0;i < ids.length;i++){
-        				ee = '<button class="btn btn-danger btn-xs" onclick="location.href=\'menu/updateInput?tid='+ids[i]+'\'">修改</button>';
+        				ee = '<button class="btn btn-danger btn-xs" onclick="location.href=\'<%= basePath%>menu/updateInput?tid='+ids[i]+'\'">修改</button>';
                         de = '<button class="btn btn-success btn-xs" onclick="$(\'#jqgrid\').delGridRow(\''+ids[i]+'\')">删除</button>';                        
-                        pe = '<button class="btn btn-info btn-xs" onclick="location.href=\'menu/addInput?tid='+ids[i]+'\'">添加子菜单</button>';
-                        fe = '<button class="btn btn-primary btn-xs" onclick="location.href=\'menu/copy?tid='+ids[i]+'\'">复制</button>';
+                        pe = '<button class="btn btn-info btn-xs" onclick="location.href=\'<%= basePath%>menu/addInput?tid='+ids[i]+'\'">添加子菜单</button>';
+                        fe = '<button class="btn btn-primary btn-xs" onclick="location.href=\'<%= basePath%>menu/copy?tid='+ids[i]+'\'">复制</button>';
                         var rowData = $("#jqgrid").jqGrid("getRowData",ids[i]);//根据上面的id获得本行的所有数据
                         if(rowData.parentId==0) t.jqGrid('setRowData',ids[i],{actions:ee+de+pe+fe});
                         else t.jqGrid('setRowData',ids[i],{actions:ee+de+fe});

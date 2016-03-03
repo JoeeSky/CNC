@@ -4,7 +4,10 @@ package org.nfmedia.crms.util;
 import java.util.Map;
 import java.util.Set;
 
+import net.sf.json.JSONObject;
+
 import org.nfmedia.crms.domain.User;
+import org.nfmedia.crms.dto.UserDto;
 
 import com.opensymphony.xwork2.ActionContext;
 
@@ -31,7 +34,9 @@ public class LoginUtil {
 	}
 	
 	public static User getUser(){
-		return (User) getSession().get("userMsg");
+		String json=(String) getSession().get("userMsg");
+		UserDto userDto= (UserDto)JSONObject.toBean(JSONObject.fromObject(json),UserDto.class);		
+		return userDto.toUser(); 
 	}
 	
 	private static Map<String, Object> getSession() {	
